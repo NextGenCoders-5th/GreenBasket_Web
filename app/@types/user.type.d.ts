@@ -1,20 +1,38 @@
+import { Role } from "../enums/role.enum";
+import { ApiResponse } from "./base.type";
 
- interface IUser {
+enum UserStatus {
+    ACTIVE = "ACTIVE",
+    INACTIVE = "INACTIVE",
+}
+enum AuthProvider {
+    EMAIL = "EMAIL",
+    GOOGLE = "GOOGLE",
+}
+interface CreateUserRequest {
+    firstName: string,
+    lastName: string,
+    email: string,
+    phoneNumber: string,
+    role: Role
+}
+
+interface CreateUserResponse  extends ApiResponse<IUser> {
+
+}
+
+
+ interface IUser extends CreateUserRequest , ITimeStamp{
     id: string;
-    updatedAt: string;
-    createdAt: string;
-    first_name: string | null;
-    last_name: string | null;
-    email: string;
-    phone_number: string;
-    password: string;
     profile_picture: string | null;
-    role: "CUSTOMER" | "ADMIN" | string; // You can expand this if needed
-    status: "ACTIVE" | "INACTIVE" | string;
-    authProvider: "EMAIL" | "GOOGLE" | string;
+    status: UserStatus;
+    auth_provider: AuthProvider;
+    is_verified: boolean;
     is_onboarding: boolean;
     need_reset_password: boolean;
   }
 
-  export {IUser}
+
+
+  export {IUser, CreateUserRequest,CreateUserResponse, UserStatus, AuthProvider}
   
