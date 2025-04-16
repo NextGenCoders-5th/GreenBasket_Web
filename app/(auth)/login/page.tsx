@@ -3,12 +3,17 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema } from "@/app/schema/auth.schema";
-import { ILoginRequest } from "@/app/@types/auth.type";
+import { ILoginRequest } from "@/app/types/auth.type";
 import Link from "next/link";
 import { useLoginMutation } from "@/app/redux/api/auth.api";
 import { toast } from "sonner";
+import { useDispatch } from "react-redux";
+import { setCredentials } from "@/app/redux/slices/auth.slice";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
+  const dispatch = useDispatch();
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -23,7 +28,13 @@ export default function LoginPage() {
       .unwrap()
       .then((response) => {
         console.log("Login successful:", response);
+        dispatch(setCredentials({
+          user: response.data.data.user,
+          accessToken: response.data.data.accessToken,
+          refreshToken: response.data.data.refreshToken,
+        }))
         toast.success("Login successful!");
+        router.push("/marketplace"); // Redirect to the home page or any other page
       })
       .catch((error) => {
         if (error.status === 'UNKOWN_ERROR') {

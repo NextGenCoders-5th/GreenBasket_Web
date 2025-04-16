@@ -11,7 +11,11 @@ interface SignUpResponse {
     status: string;
     message: string;
     timestamp: string; // ISO date string
-    data: IUser;
+    data: {
+      user : IUser;
+      accessToken: string;
+      refreshToken: string;
+    };
   };
 }
 

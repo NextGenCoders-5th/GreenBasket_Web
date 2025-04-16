@@ -1,9 +1,8 @@
-// pages/users?.tsx
-import React, { useEffect, useState } from 'react';
+import React, {  } from 'react';
 import Image from 'next/image';
-import { IUser, UserStatus } from '../@types/user.type';
 import {  useGetUsersQuery } from '../redux/api/user.api';
 import LoadingPage from '../_components/Loading';
+import { UserStatus } from '../types/user.type';
 
 const UsersPage = () => {
 

@@ -1,7 +1,7 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { baseQuery } from "./base.query";
-import { CreateUserRequest, CreateUserResponse, IUser } from "@/app/@types/user.type";
-import { ApiResponse } from "@/app/@types/base.type";
+import { CreateUserRequest, CreateUserResponse, IUser } from "@/app/types/user.type";
+import { ApiResponse } from "@/app/types/base.type";
 
 export enum UserTags {
     USER = "User",

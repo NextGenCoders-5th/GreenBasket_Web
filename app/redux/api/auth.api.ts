@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { BASE_URL, baseQuery, baseQueryWithReauth } from "./base.query";
-import { ILoginRequest, ISignUpRequest, SignUpResponse } from "@/app/@types/auth.type";
+import { ILoginRequest, ISignUpRequest, SignUpResponse } from "@/app/types/auth.type";
 
 export enum AuthTags {
     Login = "Login",

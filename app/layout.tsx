@@ -31,7 +31,9 @@ export default function RootLayout({
       >
         <ClientProviders>
           <Header/>
+          <main className="p-4">
           {children}
+          </main>
           <Footer/>
         </ClientProviders>
 

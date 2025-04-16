@@ -1,5 +1,5 @@
 'use client';
-import { CreateUserRequest } from '@/app/@types/user.type';
+import { CreateUserRequest } from '@/app/types/user.type';
 import { useCreateUserMutation } from '@/app/redux/api/user.api';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
