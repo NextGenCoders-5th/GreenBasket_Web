@@ -129,3 +129,26 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* globals.css */
+.scrollbar-custom {
+  scrollbar-width: thin;
+  scrollbar-color: #10b981 #f3f4f6; /* thumb and track colors (green + gray-100) */
+}
+
+.scrollbar-custom::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+.scrollbar-custom::-webkit-scrollbar-track {
+  background: #f3f4f6; /* gray-100 */
+  border-radius: 10px;
+}
+
+.scrollbar-custom::-webkit-scrollbar-thumb {
+  background-color: #10b981; /* Tailwind green-500 */
+  border-radius: 10px;
+  border: 2px solid #f3f4f6;
+}
+
