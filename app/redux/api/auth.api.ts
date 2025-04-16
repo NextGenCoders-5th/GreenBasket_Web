@@ -1,5 +1,5 @@
-import { createApi } from "@reduxjs/toolkit/query/react";
-import { baseQuery } from "./base.query";
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { BASE_URL, baseQuery, baseQueryWithReauth } from "./base.query";
 import { ILoginRequest, ISignUpRequest, SignUpResponse } from "@/app/@types/auth.type";
 
 export enum AuthTags {
@@ -15,15 +15,23 @@ export enum AuthTags {
 
 const authApi = createApi({
     reducerPath: "authApi",
-    baseQuery:baseQuery,
+    baseQuery: baseQueryWithReauth,
     tagTypes: Object.values(AuthTags),
     endpoints: (builder) => ({
         login: builder.mutation<SignUpResponse, ILoginRequest>({
-            query: (credentials) => ({
-                url: "auth/sign-in",
-                method: "POST",
-                body: credentials,
-            }),
+            query: (credentials) =>{
+                // Check if the identifier is a phone number or email
+                const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(credentials.identifier);
+                const key = isEmail ? "email" : "phoneNumber";
+                return {
+                    url: "auth/sign-in",
+                    method: "POST",
+                    body: {
+                        [key]: credentials.identifier,
+                        password: credentials.password,
+                    },
+                };
+            },
             invalidatesTags: [AuthTags.Login],
         }),
         logout: builder.mutation({
@@ -90,3 +98,5 @@ export const {
     useChangePasswordMutation,
     useVerifyTokenMutation,
 } = authApi;
+
+export { authApi };
