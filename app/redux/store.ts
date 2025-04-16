@@ -1,10 +1,18 @@
+"use client";
 import { configureStore } from "@reduxjs/toolkit";
-import cartReducer from "./slices/cartSlice";
+import { userApi } from "./api/user.api";
+import { authApi } from "./api/auth.api";
 
 export const store = configureStore({
   reducer: {
-    cart: cartReducer,
+    [userApi.reducerPath]: userApi.reducer,
+    [authApi.reducerPath]: authApi.reducer,
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(userApi.middleware)
+      .concat(authApi.middleware),
+
+
 });
 
 export type RootState = ReturnType<typeof store.getState>;
