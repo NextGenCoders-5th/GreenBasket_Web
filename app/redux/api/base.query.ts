@@ -1,9 +1,9 @@
 import { BaseQueryApi, FetchArgs, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { toast } from 'sonner';
 
-const BASE_URL = process.env.NEXT_APP_API_URL;
+export const BASE_URL = "http://localhost:5000/api/"; // Replace with your actual base URL
 export const baseQuery = fetchBaseQuery({
-  baseUrl: BASE_URL,
+  baseUrl:BASE_URL ,
   credentials: 'include',
 });
 
@@ -35,6 +35,34 @@ export const baseQueryWithReauth = async (args: string | FetchArgs, api: BaseQue
       console.log("Token refresh failed, logging out...");
       // api.dispatch(logout());
     }
+  }
+  else if (result.error && result.error.status === 403) {
+    console.log("Forbidden: ", result.error);
+    toast.error("You do not have permission to access this resource.");
+    return { error: { status: "FORBIDDEN", message: "Forbidden" } };
+  }
+  else if (result.error && result.error.status === 404) {
+    console.log("Not Found: ", result.error);
+    toast.error("The requested resource was not found.");
+    return { error: { status: "NOT_FOUND", message: "Not Found" } };
+  }
+  else if (result.error && result.error.status === 500) {
+    console.log("Server Error: ", result.error);
+    toast.error("An internal server error occurred.");
+    return { error: { status: "SERVER_ERROR", message: "Server Error" } };
+  }
+  else if (result.error && result.error.status === 400) {
+    console.log("Bad Request: ", result.error);
+    if (result.error.data && typeof result.error.data === "string") {
+      toast.error(result.error.data as string);
+    }
+    else if (result.error.data && typeof result.error.data === 'object' && 'message' in result.error.data) {
+      toast.error(result.error.data.message as string);
+    }
+    else{
+      return {error: {status: "UNKOWN_ERROR", message: "Bad Request"}}
+    }
+    return { error: { status: "BAD_REQUEST", message: "Bad Request" } };
   }
   else if (result.error?.status === "FETCH_ERROR") {
     console.log("Network error: ", result.error);
