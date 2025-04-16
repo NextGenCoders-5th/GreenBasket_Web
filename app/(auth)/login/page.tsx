@@ -1,12 +1,12 @@
 'use client';
 import React from "react";
 import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { loginSchema } from "@/app/schema/autg.schema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { loginSchema } from "@/app/schema/auth.schema";
 import { ILoginRequest } from "@/app/@types/auth.type";
-
-
-
+import Link from "next/link";
+import { useLoginMutation } from "@/app/redux/api/auth.api";
+import { toast } from "sonner";
 
 export default function LoginPage() {
   const {
@@ -14,60 +14,91 @@ export default function LoginPage() {
     handleSubmit,
     formState: { errors },
   } = useForm<ILoginRequest>({
-    resolver: yupResolver(loginSchema),
+    resolver: zodResolver(loginSchema),
   });
 
+  const [login, { isLoading ,error}] = useLoginMutation();
   const onSubmit = (data: ILoginRequest) => {
-    console.log("Form submitted:", data);
-    // You can send the data to your API here
+    login(data)
+      .unwrap()
+      .then((response) => {
+        console.log("Login successful:", response);
+        toast.success("Login successful!");
+      })
+      .catch((error) => {
+        if (error.status === 'UNKOWN_ERROR') {
+          toast.error("Login failed. Please try again.");
+        }
+        console.error("Login failed:", error);
+      });
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="bg-white p-6 rounded-lg shadow-md w-full max-w-sm space-y-4"
-      >
-        <h2 className="text-2xl font-semibold text-center">Login</h2>
-
-        <div>
-          <label className="block text-sm font-medium mb-1">
-            Email or Phone Number
-          </label>
-          <input
-            {...register("identifier")}
-            className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-accent-500"
-            placeholder="example@gmail.com or +2519xxxxxxx"
-          />
-          {errors.identifier && (
-            <p className="text-red-500 text-sm mt-1">
-              {errors.identifier.message}
-            </p>
+      <div className=" bg-white p-6 rounded-lg shadow-md w-full max-w-sm space-y-4">
+        <pre>
+          {error && (
+            JSON.stringify(error, null, 2)
           )}
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium mb-1">Password</label>
-          <input
-            {...register("password")}
-            type="password"
-            className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-accent-500"
-            placeholder="Enter your password"
-          />
-          {errors.password && (
-            <p className="text-red-500 text-sm mt-1">
-              {errors.password.message}
-            </p>
-          )}
-        </div>
-
-        <button
-          type="submit"
-          className="w-full cursor-pointer   bg-accent-600/95 hover:bg-accent-600 text-white py-2 px-4 rounded-md"
+        </pre>
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="w-full space-y-4"
         >
-          Log In
-        </button>
-      </form>
+          <h2 className="text-2xl font-semibold text-center">Login</h2>
+
+          <div>
+            <label className="block text-sm font-medium mb-1">
+              Email or Phone Number
+            </label>
+            <input
+              {...register("identifier")}
+              className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-green-500"
+              placeholder="example@gmail.com or +2519xxxxxxx"
+            />
+            {errors.identifier && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.identifier.message}
+              </p>
+            )}
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium mb-1">Password</label>
+            <input
+              {...register("password")}
+              type="password"
+              className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-green-500"
+              placeholder="Enter your password"
+            />
+            {errors.password && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.password.message}
+              </p>
+            )}
+          </div>
+
+          <button
+            type="submit"
+            className="w-full cursor-pointer   bg-green-400/95 hover:bg-green-400 text-white py-2 px-4 rounded-md"
+          >
+            Log In
+          </button>
+        </form>
+        <div className="mt-4 text-center">
+          <p className="text-sm text-gray-600">
+            Don't have an account?{" "}
+            <Link href="/signup" className="text-blue-500 hover:underline">
+              Sign Up
+            </Link>
+          </p>
+          <p className="text-sm text-gray-600">
+            <Link href="" className="text-blue-500 hover:underline">
+              Forgot Password?
+            </Link>
+          </p>
+        </div>
+      </div>
     </div>
   );
 }
