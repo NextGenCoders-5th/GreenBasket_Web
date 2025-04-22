@@ -1,41 +1,43 @@
 'use client';
-import Link from 'next/link'
+import Link from 'next/link';
 import React from 'react';
 import Image from 'next/image';
 import { Menu, X } from 'lucide-react';
 import { useAppSelector } from '../redux/store';
+import { Button } from '@/components/ui/button';
 
 export const Header = () => {
-    const [menuOpen, setMenuOpen] = React.useState(false);
-    const user = useAppSelector(state => state.auth.user);
+  const [menuOpen, setMenuOpen] = React.useState(false);
+  const user = useAppSelector((state) => state.auth.user);
   return (
-   <>
-   <header className="w-full px-4 md:px-8 py-4 flex items-center justify-between shadow bg-white sticky top-0 z-50">
-        <Link href="/" className="flex items-center gap-2 text-green-600 font-bold text-xl md:text-2xl">
+    <>
+      <header className="w-full px-4 md:px-8 py-4 flex items-center justify-between shadow bg-white sticky top-0 z-50">
+        <Link href="/" className="flex items-center gap-2 text-primary font-bold text-xl md:text-2xl">
           <Image src="/logo.png" alt="GreenBasket Logo" width={32} height={32} />
           GreenBasket
         </Link>
 
         {/* Desktop Nav */}
         <nav className="hidden md:flex items-center gap-6 text-sm font-medium">
-          <Link href="/" className="hover:text-green-600 transition">Home</Link>
-          <Link href="/marketplace" className="hover:text-green-600 transition">Marketplace</Link>
-          <Link href="/vendors" className="hover:text-green-600 transition">Vendors</Link>
-          {
-            user ?
+          <Link href="/marketplace" className="hover:text-green-600 transition">
+            Marketplace
+          </Link>
+          <Link href="/vendors" className="hover:text-green-600 transition">
+            Vendors
+          </Link>
+          {user ? (
             <div className="flex">
-              <span className='px-3 py-2 rounded-full bg-green-400 text-white'>U</span>
+              <span className="px-3 py-2 rounded-full bg-green-400 text-white">U</span>
             </div>
-            :
-            <Link href="/signup" className="bg-green-400/85 hover:bg-green-400 text-white font-semibold py-2 px-4 rounded-lg transition duration-200">Sign Up</Link>
-          }
+          ) : (
+            <Button asChild>
+              <Link href="/signup">Sign Up</Link>
+            </Button>
+          )}
         </nav>
 
         {/* Hamburger */}
-        <button
-          onClick={() => setMenuOpen(!menuOpen)}
-          className="md:hidden text-green-700"
-        >
+        <button onClick={() => setMenuOpen(!menuOpen)} className="md:hidden text-green-700">
           {menuOpen ? <X size={28} /> : <Menu size={28} />}
         </button>
       </header>
@@ -43,12 +45,24 @@ export const Header = () => {
       {/* Mobile Menu */}
       {menuOpen && (
         <div className="md:hidden bg-white px-4 py-4 shadow-lg flex flex-col gap-4 text-sm font-medium">
-          <Link href="/" onClick={() => setMenuOpen(false)} className="hover:text-green-600">Home</Link>
-          <Link href="/marketplace" onClick={() => setMenuOpen(false)} className="hover:text-green-600">Marketplace</Link>
-          <Link href="/vendors" onClick={() => setMenuOpen(false)} className="hover:text-green-600">Vendors</Link>
-          <Link href="/signup" onClick={() => setMenuOpen(false)} className="bg-green-400/95 hover:bg-green-400 text-white font-semibold py-2 px-4 rounded-lg transition duration-200">Sign Up</Link>
+          <Link href="/" onClick={() => setMenuOpen(false)} className="hover:text-green-600">
+            Home
+          </Link>
+          <Link href="/marketplace" onClick={() => setMenuOpen(false)} className="hover:text-green-600">
+            Marketplace
+          </Link>
+          <Link href="/vendors" onClick={() => setMenuOpen(false)} className="hover:text-green-600">
+            Vendors
+          </Link>
+          <Link
+            href="/signup"
+            onClick={() => setMenuOpen(false)}
+            className="bg-green-400/95 hover:bg-green-400 text-white font-semibold py-2 px-4 rounded-lg transition duration-200"
+          >
+            Sign Up
+          </Link>
         </div>
       )}
-   </>
-  )
-}
+    </>
+  );
+};
