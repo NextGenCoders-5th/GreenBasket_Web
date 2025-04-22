@@ -1,17 +1,17 @@
 'use client';
+import { Button } from '@/components/ui/button';
+import { Menu, X } from 'lucide-react';
+import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
-import Image from 'next/image';
-import { Menu, X } from 'lucide-react';
 import { useAppSelector } from '../redux/store';
-import { Button } from '@/components/ui/button';
 
 export const Header = () => {
   const [menuOpen, setMenuOpen] = React.useState(false);
   const user = useAppSelector((state) => state.auth.user);
   return (
     <>
-      <header className="w-full px-4 md:px-8 py-4 flex items-center justify-between shadow bg-white sticky top-0 z-50">
+      <header className="w-full px-4 md:px-8 py-4 flex items-center justify-between shadow  sticky top-0 z-50">
         <Link href="/" className="flex items-center gap-2 text-primary font-bold text-xl md:text-2xl">
           <Image src="/logo.png" alt="GreenBasket Logo" width={32} height={32} />
           GreenBasket
