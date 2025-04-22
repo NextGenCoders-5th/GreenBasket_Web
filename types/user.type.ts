@@ -1,5 +1,5 @@
 import { Role } from '../enums/role.enum';
-import { ApiResponse } from './base.type';
+import { ApiResponse, ITimeStamp } from './base.type';
 
 enum UserStatus {
   ACTIVE = 'ACTIVE',
@@ -29,5 +29,5 @@ interface IUser extends CreateUserRequest, ITimeStamp {
   need_reset_password: boolean;
 }
 
-export { IUser, CreateUserRequest, CreateUserResponse, UserStatus, AuthProvider };
-
+export type { IUser, CreateUserRequest, CreateUserResponse };
+export { UserStatus, AuthProvider };

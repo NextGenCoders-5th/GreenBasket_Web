@@ -1,11 +1,13 @@
-import Link from "next/link";
-import { useRouter } from "next/router";
+'use client';
+
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 const menuItems = [
-  { name: "Dashboard", path: "/dashboard" },
-  { name: "My Orders", path: "/dashboard/orders" },
-  { name: "Favorites", path: "/dashboard/favorites" },
-  { name: "Account Settings", path: "/dashboard/settings" },
+  { name: 'Dashboard', path: '/dashboard' },
+  { name: 'My Orders', path: '/dashboard/orders' },
+  { name: 'Favorites', path: '/dashboard/favorites' },
+  { name: 'Account Settings', path: '/dashboard/settings' },
 ];
 
 export default function UserDashboardLayout({ children }: { children: React.ReactNode }) {
@@ -21,9 +23,7 @@ export default function UserDashboardLayout({ children }: { children: React.Reac
             <Link
               key={item.path}
               href={item.path}
-              className={`block px-6 py-3 text-gray-700 hover:bg-green-50 rounded-l-full ${
-                router.pathname === item.path ? "bg-green-100 font-semibold text-green-700" : ""
-              }`}
+              className={`block px-6 py-3 text-gray-700 hover:bg-green-50 rounded-l-full ${router.pathname === item.path ? 'bg-green-100 font-semibold text-green-700' : ''}`}
             >
               {item.name}
             </Link>
