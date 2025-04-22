@@ -1,7 +1,8 @@
 'use client';
 
+import { cn } from '@/lib/utils';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
+import { usePathname } from 'next/navigation';
 
 const menuItems = [
   { name: 'Dashboard', path: '/dashboard' },
@@ -11,7 +12,7 @@ const menuItems = [
 ];
 
 export default function UserDashboardLayout({ children }: { children: React.ReactNode }) {
-  const router = useRouter();
+  const pathname = usePathname();
 
   return (
     <div className="min-h-screen flex bg-gray-50">
@@ -23,7 +24,9 @@ export default function UserDashboardLayout({ children }: { children: React.Reac
             <Link
               key={item.path}
               href={item.path}
-              className={`block px-6 py-3 text-gray-700 hover:bg-green-50 rounded-l-full ${router.pathname === item.path ? 'bg-green-100 font-semibold text-green-700' : ''}`}
+              className={cn('block px-6 py-3 text-gray-700 hover:bg-green-50 rounded-l-full', {
+                'bg-green-100 font-semibold text-green-700': pathname === item.path,
+              })}
             >
               {item.name}
             </Link>

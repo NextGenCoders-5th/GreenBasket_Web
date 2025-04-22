@@ -14,7 +14,9 @@ export const Header = () => {
       <header className="w-full bg-white px-4 md:px-8 py-4 flex items-center justify-between shadow  sticky top-0 z-50">
         <Link href="/" className="flex items-center gap-2 text-primary font-bold text-xl md:text-2xl">
           <Image src="/logo.png" alt="GreenBasket Logo" width={32} height={32} />
-          GreenBasket
+          <p className="inline-block tracking-tighter">
+            Green<span className="font-extrabold text-2xl">Basket</span>
+          </p>
         </Link>
 
         {/* Desktop Nav */}
