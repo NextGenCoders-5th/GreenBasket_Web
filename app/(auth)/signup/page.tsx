@@ -3,8 +3,8 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
-import { signupSchema, SignupSchemaType } from '@/app/schema/auth.schema';
-import { useSignUpMutation } from '@/app/redux/api/auth.api';
+import { signupSchema, SignupSchemaType } from '@/schema/auth.schema';
+import { useSignUpMutation } from '@/redux/api/auth.api';
 import { toast } from 'sonner';
 
 export default function SignupPage() {
@@ -17,24 +17,24 @@ export default function SignupPage() {
   });
 
   const router = useRouter();
-  const [signUp, {isLoading, error}] = useSignUpMutation()
+  const [signUp, { isLoading, error }] = useSignUpMutation();
   const onSubmit = async (data: SignupSchemaType) => {
     console.log('Submitted Data:', data);
     try {
-       await signUp(data).unwrap()
-      .then((response) => {
-        console.log("Login successful:", response);
-        toast.success("Login successful!");
-        router.push('/login');
-      })
-      .catch((error) => {
-        if (error.status === 'UNKOWN_ERROR') {
-          toast.error("Login failed. Please try again.");
-        }
-        console.error("Login failed:", error);
-      });
+      await signUp(data)
+        .unwrap()
+        .then((response) => {
+          console.log('Login successful:', response);
+          toast.success('Login successful!');
+          router.push('/login');
+        })
+        .catch((error) => {
+          if (error.status === 'UNKOWN_ERROR') {
+            toast.error('Login failed. Please try again.');
+          }
+          console.error('Login failed:', error);
+        });
     } catch (error) {
-      
       console.error('Error:', error);
     }
   };

@@ -1,10 +1,14 @@
 'use client';
 
-import { Toaster } from 'sonner';
+import { store } from '@/redux/store';
 import { Provider } from 'react-redux';
-import { store } from '../redux/store';
+import { Toaster } from 'sonner';
 
-export default function ClientProviders({ children }: { children: React.ReactNode }) {
+export default function ReduxProvider({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
   return (
     <Provider store={store}>
       {children}
@@ -18,7 +22,7 @@ export default function ClientProviders({ children }: { children: React.ReactNod
           },
         }}
         closeButton={true}
-        theme='light'
+        theme="light"
       />
     </Provider>
   );

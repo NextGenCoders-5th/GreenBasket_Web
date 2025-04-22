@@ -1,7 +1,7 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { baseQuery } from "./base.query";
-import { CreateVendorRequest, CreateVendorResponse, IVendor } from "@/app/types/vendor.type";
-import { ApiResponse } from "@/app/types/base.type";
+import { CreateVendorRequest, CreateVendorResponse, IVendor } from "@/types/vendor.type";
+import { ApiResponse } from "@/types/base.type";
 
 export enum VendorTags {
     USER = "Vendor",
