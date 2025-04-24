@@ -11,11 +11,11 @@ export const Header = () => {
   const user = useAppSelector((state) => state.auth.user);
   return (
     <>
-      <header className="w-full bg-white px-4 md:px-8 py-4 flex items-center justify-between shadow  sticky top-0 z-50">
+      <header className="w-full bg-gradient-to-r from-gray-100 bg-white px-4 md:px-8 py-4 flex items-center justify-between shadow  sticky top-0 z-50">
         <Link href="/" className="flex items-center gap-2 text-primary font-bold text-xl md:text-2xl">
           <Image src="/logo.png" alt="GreenBasket Logo" width={32} height={32} />
-          <p className="inline-block tracking-tighter">
-            Green<span className="font-extrabold text-2xl">Basket</span>
+          <p className="inline-block  tracking-tighter">
+            Green<strong>Basket</strong>
           </p>
         </Link>
 

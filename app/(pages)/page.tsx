@@ -1,56 +1,35 @@
-import Image from "next/image";
-import Link from "next/link";
+import Image from 'next/image';
+import Link from 'next/link';
 
 export default function Home() {
   return (
-    <main className=" bg-gradient-to-b from-green-50 to-white text-gray-900">
-      
+    <main className="">
       {/* Hero Section */}
       <section className="w-full px-4 py-16 md:py-24 text-center">
-        <h1 className="text-4xl md:text-5xl font-bold leading-tight">
-          Fresh From the Farm to Your Doorstep
-        </h1>
-        <p className="mt-4 text-lg md:text-xl text-gray-600 max-w-xl mx-auto">
-          Shop a variety of fruits and vegetables from trusted local vendors.
-        </p>
+        <h1 className="text-4xl md:text-5xl font-bold leading-tight">Fresh From the Farm to Your Doorstep</h1>
+        <p className="mt-4 text-lg md:text-xl text-gray-600 max-w-xl mx-auto">Shop a variety of fruits and vegetables from trusted local vendors.</p>
         <div className="mt-6 flex justify-center gap-4">
-          <Link
-            href="/marketplace"
-            className="bg-green-600 text-white px-6 py-3 rounded-full shadow hover:bg-green-700 transition"
-          >
+          <Link href="/marketplace" className="bg-green-600 text-white px-6 py-3 rounded-full shadow hover:bg-green-700 transition">
             Shop Now
           </Link>
-          <Link
-            href="/vendors"
-            className="border border-green-600 text-green-600 px-6 py-3 rounded-full hover:bg-green-50 transition"
-          >
+          <Link href="/vendors" className="border border-green-600 text-green-600 px-6 py-3 rounded-full hover:bg-green-50 transition">
             Become a Vendor
           </Link>
         </div>
       </section>
-
 
       {/* Category Highlights */}
       <section className="px-4 py-12 bg-white">
         <h2 className="text-2xl font-semibold text-center mb-8">Shop by Category</h2>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6 max-w-5xl mx-auto">
           {[
-            { name: "Fresh Fruits", image: "/images/fruits.png" },
-            { name: "Organic Veggies", image: "/images/veggies.png" },
-            { name: "Leafy Greens", image: "/images/leafy.png" },
-            { name: "Seasonal Picks", image: "/images/seasonal.png" },
+            { name: 'Fresh Fruits', image: '/images/fruits.png' },
+            { name: 'Organic Veggies', image: '/images/veggies.png' },
+            { name: 'Leafy Greens', image: '/images/leafy.png' },
+            { name: 'Seasonal Picks', image: '/images/seasonal.png' },
           ].map((cat) => (
-            <div
-              key={cat.name}
-              className="rounded-lg overflow-hidden shadow hover:shadow-lg transition"
-            >
-              <Image
-                src={cat.image}
-                alt={cat.name}
-                width={400}
-                height={300}
-                className="w-full h-40 object-cover"
-              />
+            <div key={cat.name} className="rounded-lg overflow-hidden shadow hover:shadow-lg transition">
+              <Image src={cat.image} alt={cat.name} width={400} height={300} className="w-full h-40 object-cover" />
               <div className="p-4 text-center font-medium">{cat.name}</div>
             </div>
           ))}
@@ -62,9 +41,9 @@ export default function Home() {
         <h2 className="text-2xl font-semibold mb-6">Why Choose Us?</h2>
         <div className="grid sm:grid-cols-3 gap-6 max-w-5xl mx-auto">
           {[
-            { title: "Farm Fresh", desc: "We source directly from local farms for peak freshness." },
-            { title: "Multiple Vendors", desc: "Buy from various trusted sellers all in one place." },
-            { title: "Fast Delivery", desc: "Get your orders delivered the same day in select areas." },
+            { title: 'Farm Fresh', desc: 'We source directly from local farms for peak freshness.' },
+            { title: 'Multiple Vendors', desc: 'Buy from various trusted sellers all in one place.' },
+            { title: 'Fast Delivery', desc: 'Get your orders delivered the same day in select areas.' },
           ].map((item) => (
             <div key={item.title} className="p-6 bg-white rounded-lg shadow">
               <h3 className="text-xl font-semibold">{item.title}</h3>
