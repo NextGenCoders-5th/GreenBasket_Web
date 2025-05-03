@@ -64,7 +64,7 @@ const vendors = [
 
 export default function VendorsPage() {
   return (
-    <div className="max-w-7xl mx-auto px-4">
+    <div className="max-w-7xl mx-auto px-4 py-4">
       {/* Heading */}
       <div className="text-center my-12">
         <h1 className="text-3xl md:text-4xl font-bold text-green-700">Our Trusted Vendors</h1>
@@ -98,8 +98,8 @@ export default function VendorsPage() {
       <div className="mt-16 bg-green-600 text-white rounded-lg py-12 px-6 text-center">
         <h2 className="text-2xl md:text-3xl font-semibold">Become a GreenBasket Vendor</h2>
         <p className="mt-2 text-sm md:text-base">Sell your fresh produce online and reach more customers easily.</p>
-        <Link href="/signup" className="mt-6 inline-block bg-white text-green-700 font-semibold px-6 py-3 rounded-full hover:bg-gray-100 transition">
-          Register Now
+        <Link href="/vendors/add" className="mt-6 inline-block bg-white text-green-700 font-semibold px-6 py-3 rounded-full hover:bg-gray-100 transition">
+          Register yout business as a vendor
         </Link>
       </div>
     </div>

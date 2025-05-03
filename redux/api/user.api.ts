@@ -2,6 +2,7 @@ import { createApi } from '@reduxjs/toolkit/query/react';
 import { baseQuery } from './base.query';
 import { CreateUserRequest, CreateUserResponse, IUser } from '@/types/user.type';
 import { ApiResponse } from '@/types/base.type';
+import { UserFormData } from '@/schema/user.schema';
 
 export enum UserTags {
   USER = 'User',
@@ -13,7 +14,7 @@ export const userApi = createApi({
   baseQuery: baseQuery,
   tagTypes: Object.values(UserTags),
   endpoints: (builder) => ({
-    createUser: builder.mutation<CreateUserResponse, CreateUserRequest>({
+    createUser: builder.mutation<CreateUserResponse, UserFormData>({
       query: (userData) => ({
         url: 'users',
         method: 'POST',
@@ -53,8 +54,16 @@ export const userApi = createApi({
       },
       providesTags: [UserTags.USERS],
     }),
+    currentUser: builder.query<CreateUserResponse, void>({
+      query: () => ({
+        url: 'users/account/current-user',
+        method: 'GET',
+      }),
+      
+      providesTags: (result, error) => [{ type: UserTags.USER, id: result?.data.data.id }, UserTags.USERS], 
+    }),
   }),
 });
 
-export const { useCreateUserMutation, useUpdateUserMutation, useDeleteUserMutation, useGetUserQuery, useGetUsersQuery } = userApi;
+export const { useCreateUserMutation,useCurrentUserQuery, useUpdateUserMutation, useDeleteUserMutation, useGetUserQuery, useGetUsersQuery } = userApi;
 

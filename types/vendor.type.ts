@@ -1,10 +1,16 @@
 import { ApiResponse, ITimeStamp } from "./base.type";
 
-interface CreateVendorRequest {
-    business_name: string,
-    business_email: string,
-    phone_number: string,
-    logo_url: string
+
+  interface Vendor {
+    business_name: string;
+    business_email: string;
+    phone_number: string;
+    logo: File | null;
+    userId: string;
+  }
+  
+interface CreateVendorRequest extends Vendor {
+   
   }
 
 interface CreateVendorResponse extends ApiResponse<IVendor> {}

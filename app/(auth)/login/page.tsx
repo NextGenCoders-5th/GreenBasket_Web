@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, {  useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { loginSchema } from '@/schema/auth.schema';
@@ -9,11 +9,26 @@ import { useLoginMutation } from '@/redux/api/auth.api';
 import { toast } from 'sonner';
 import { useDispatch } from 'react-redux';
 import { setCredentials } from '@/redux/slices/auth.slice';
-import { useRouter } from 'next/navigation';
+import {  useRouter } from 'next/navigation';
+import { SessionEnum } from '@/enums/session.enum';
+import { useAppSelector } from '@/redux/store';
 
 export default function LoginPage() {
+
+  const user = useAppSelector(state => state.auth.user);
+
+  console.log(user)
+
+  // Getting dispacher from redux
   const dispatch = useDispatch();
+
+  // Getting router instance
   const router = useRouter();
+
+  // Getting redirect url from session storage
+  const redirect = sessionStorage.getItem(SessionEnum.REDIRECT_URL)
+
+  // Getting the login form handler instance and setting up the form validation
   const {
     register,
     handleSubmit,
@@ -22,9 +37,11 @@ export default function LoginPage() {
     resolver: zodResolver(loginSchema),
   });
 
+  // Using the login mutation from the auth api slice
   const [login, { isLoading, error }] = useLoginMutation();
   const onSubmit = (data: ILoginRequest) => {
-    login(data)
+    const toastId = toast.loading('Logging in...');
+     login(data)
       .unwrap()
       .then((response) => {
         console.log('Login successful:', response);
@@ -35,16 +52,44 @@ export default function LoginPage() {
             refreshToken: response.data.data.refreshToken,
           }),
         );
-        toast.success('Login successful!');
-        router.push('/marketplace'); // Redirect to the home page or any other page
-      })
-      .catch((error) => {
-        if (error.status === 'UNKOWN_ERROR') {
-          toast.error('Login failed. Please try again.');
+        toast.success('Login successful', {
+          id: toastId,
+        });
+
+        console.log(redirect)
+
+        if (redirect && redirect !== '/login' && typeof redirect === 'string') {
+          sessionStorage.removeItem(SessionEnum.REDIRECT_URL);
+          router.push(redirect);
+          return;
         }
-        console.error('Login failed:', error);
+        router.push('/marketplace'); // Redirect to the home page or any other page
+      }).catch((err) => {
+        console.log('Login failed:', err);
+        if (err.status === 'UNKOWN_ERROR') {
+          toast.error('Login failed. Please try again.', {
+            id: toastId,
+          });
+        }
+        else{
+          toast.dismiss(toastId);
+        }
+
       });
+
   };
+
+  // useEffect to show redirect reason
+  useEffect(() => {
+    if(redirect) {
+      const message  = sessionStorage.getItem(SessionEnum.REDIRECT_MESSAGE)
+      if(message) {
+        toast.error(message);
+        sessionStorage.removeItem(SessionEnum.REDIRECT_MESSAGE);
+      }
+    }
+  }
+  , [redirect]);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
@@ -74,14 +119,22 @@ export default function LoginPage() {
             {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>}
           </div>
 
-          <button type="submit" className="w-full cursor-pointer   bg-green-400/95 hover:bg-green-400 text-white py-2 px-4 rounded-md">
+          <button 
+          disabled={isLoading} 
+          type="submit" 
+          className="w-full cursor-pointer   bg-accent-500/95 hover:bg-green-500 text-white py-2 px-4 rounded-md disabled:bg-accent-500/50 disabled:cursor-not-allowed transition duration-200 ease-in-out"
+          >
             Log In
           </button>
         </form>
         <div className="mt-4 text-center">
           <p className="text-sm text-gray-600">
             Don't have an account?{' '}
-            <Link href="/signup" className="text-blue-500 hover:underline">
+            <Link onClick={()=>{
+              if(redirect) {
+                sessionStorage.removeItem(SessionEnum.REDIRECT_MESSAGE);
+              }
+            }} href={`/signup`} className="text-blue-500 hover:underline">
               Sign Up
             </Link>
           </p>

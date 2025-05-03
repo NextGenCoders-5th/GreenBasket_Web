@@ -49,11 +49,18 @@ const authApi = createApi({
       }),
       invalidatesTags: [AuthTags.Register],
     }),
-    refreshToken: builder.mutation({
-      query: () => ({
-        url: 'auth/refresh',
-        method: 'POST',
-      }),
+    refreshToken: builder.mutation<any, void>({
+      query: () => {
+        // Get the refresh token from cookies 
+        const refreshToken = document.cookie
+          .split('; ')
+          .find((row) => row.startsWith('refreshToken='))
+        return {
+          url: 'auth/refresh-token',
+          method: 'POST',
+          body: { refreshToken },
+        };
+      },
       invalidatesTags: [AuthTags.Refresh],
     }),
     verifyEmail: builder.mutation({

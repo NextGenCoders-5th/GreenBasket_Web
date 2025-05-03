@@ -14,7 +14,7 @@ const products = [
 
 export default function Marketplace() {
   return (
-    <div className="max-w-7xl mx-auto">
+    <div className="max-w-7xl mx-auto py-4">
       <div className="text-center mb-10">
         <h1 className="text-3xl md:text-4xl font-bold text-green-700">Explore the Marketplace</h1>
         <p className="mt-2 text-gray-600">Handpicked fruits and vegetables from trusted local vendors.</p>

@@ -1,5 +1,6 @@
 import { IUser } from '@/types/user.type';
 import { createSlice } from '@reduxjs/toolkit';
+import { toast } from 'sonner';
 
 interface AuthState {
   user: IUser | null;
@@ -15,9 +16,11 @@ const authSlice = createSlice({
   },
   reducers: {
     setCredentials: (state, action) => {
-      state.user = action.payload.user;
-      state.token = action.payload.token;
-      state.refreshToken = action.payload.refreshToken;
+      if(action.payload.user ) {
+        state.user = action.payload.user;
+      };
+      if(action.payload.token ) state.token = action.payload.token;
+      if (action.payload.refreshToken ) state.refreshToken = action.payload.refreshToken;
     },
     logOut: (state) => {
       state.user = null;

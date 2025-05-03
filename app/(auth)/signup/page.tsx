@@ -8,6 +8,9 @@ import { useSignUpMutation } from '@/redux/api/auth.api';
 import { toast } from 'sonner';
 
 export default function SignupPage() {
+
+  // Create a form instance using react-hook-form
+  // and validate it using zod
   const {
     register,
     handleSubmit,
@@ -16,17 +19,19 @@ export default function SignupPage() {
     resolver: zodResolver(signupSchema),
   });
 
+  // Getting router instance
   const router = useRouter();
+  
+
+  // Sign up mutation
   const [signUp, { isLoading, error }] = useSignUpMutation();
   const onSubmit = async (data: SignupSchemaType) => {
     console.log('Submitted Data:', data);
     try {
       await signUp(data)
         .unwrap()
-        .then((response) => {
-          console.log('Login successful:', response);
-          toast.success('Login successful!');
-          router.push('/login');
+        .then(() => {
+          router.push(`/login`);
         })
         .catch((error) => {
           if (error.status === 'UNKOWN_ERROR') {

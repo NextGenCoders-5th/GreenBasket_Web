@@ -1,3 +1,4 @@
+import { Loader2 } from "lucide-react";
 
 
 const LoadingPage = () => {
@@ -6,10 +7,11 @@ const LoadingPage = () => {
       <div className="text-center">
         {/* Loading Indicator */}
         <div className="mb-6">
-          <div className="w-16 h-16 border-4 border-t-4 border-blue-500 rounded-full animate-spin"></div>
+          <Loader2 className="w-16 h-16  text-accent-500 animate-spin" />
+          {/* <div className="w-16 h-16  border-t-2 border-accent-500 rounded-full animate-spin"></div> */}
         </div>
         {/* Loading Text */}
-        <p className="text-xl font-semibold text-gray-700">Loading...</p>
+        {/* <p className="text-xl font-semibold text-gray-700">Loading...</p> */}
       </div>
     </div>
   );

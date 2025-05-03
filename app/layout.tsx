@@ -1,8 +1,8 @@
-import ReduxProvider from '@/providers/redux.provider';
-import { ThemeProvider } from '@/providers/theme-provider';
+import Provider from '@/providers/redux.provider';
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
+import Head from 'next/head';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -16,6 +16,9 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: 'multi-vendor',
+  icons: {
+    icon: '/logo.png',
+  }
 };
 
 export default function RootLayout({
@@ -25,12 +28,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+       <Head>
+        <link rel="icon" href="/logo.png" />
+      </Head>
       <body className={`${geistSans.variable} scrollbar-custom min-h-screen max-h-screen overflow-y-scroll  ${geistMono.variable} antialiased`}>
-        <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
-          <ReduxProvider>
+          <Provider>
             <main className="text-sm">{children}</main>
-          </ReduxProvider>
-        </ThemeProvider>
+          </Provider>
       </body>
     </html>
   );
