@@ -36,28 +36,23 @@ const data = {
   navMain: [
     {
       title: 'Dashboard',
-      url: '#',
+      url: '/admin/dashboard',
       icon: IconDashboard,
     },
     {
-      title: 'Lifecycle',
-      url: '#',
+      title: 'Users',
+      url: '/admin/users',
       icon: IconListDetails,
     },
     {
-      title: 'Analytics',
-      url: '#',
+      title: 'Vendors',
+      url: '/admin/vendors',
       icon: IconChartBar,
     },
     {
-      title: 'Projects',
-      url: '#',
+      title: 'Orders',
+      url: '/admin/orders',
       icon: IconFolder,
-    },
-    {
-      title: 'Team',
-      url: '#',
-      icon: IconUsers,
     },
   ],
   navClouds: [
@@ -153,7 +148,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             <SidebarMenuButton asChild className="data-[slot=sidebar-menu-button]:!p-1.5">
               <Link href="/">
                 <Image src="/logo.png" alt="GreenBasket Logo" width={32} height={32} />
-                <span className="text-base font-semibold">
+                <span className="text-base text-accent-600 font-semibold">
                   Green<strong>Basket</strong>
                 </span>
               </Link>

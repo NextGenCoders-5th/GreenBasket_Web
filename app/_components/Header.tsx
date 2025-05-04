@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 import { useAppSelector } from '../../redux/store';
+import { IUser } from '@/types/user.type';
 
 export const Header = () => {
   const [menuOpen, setMenuOpen] = React.useState(false);
@@ -28,9 +29,14 @@ export const Header = () => {
             Vendors
           </Link>
           {user ? (
-            <div className="flex">
-              <span className="px-3 py-2 rounded-full bg-green-400 text-white">U</span>
-            </div>
+            <>
+              <Link href={`/${(user as IUser).role.toLowerCase()}/dashboard`} className="hover:text-green-600 transition">
+                Dashboard
+              </Link>
+              <div className="flex">
+                <span className="px-3 py-2 rounded-full bg-green-400 text-white">U</span>
+              </div>
+            </>
           ) : (
             <Button asChild>
               <Link href="/signup">Sign Up</Link>

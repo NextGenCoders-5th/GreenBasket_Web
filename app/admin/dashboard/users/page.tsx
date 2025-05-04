@@ -3,8 +3,8 @@
 import React from 'react';
 import Image from 'next/image';
 import { useGetUsersQuery } from '@/redux/api/user.api';
-import LoadingPage from '../_components/Loading';
 import { UserStatus } from '@/types/user.type';
+import LoadingPage from '@/components/loading.page';
 
 const UsersPage = () => {
   const { data, isLoading: loading } = useGetUsersQuery('');
