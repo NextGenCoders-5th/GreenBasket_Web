@@ -1,13 +1,20 @@
-import React from 'react'
+import { Loader2 } from "lucide-react";
+
 
 const LoadingPage = () => {
   return (
-    <div className="flex relative items-center justify-center h-screen">
-      <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-accent-400">
-      <p className=" absolute text-lg text-accent-400">Loading...</p>
+    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+      <div className="text-center">
+        {/* Loading Indicator */}
+        <div className="mb-6">
+          <Loader2 className="w-16 h-16  text-accent-500 animate-spin" />
+          {/* <div className="w-16 h-16  border-t-2 border-accent-500 rounded-full animate-spin"></div> */}
+        </div>
+        {/* Loading Text */}
+        {/* <p className="text-xl font-semibold text-gray-700">Loading...</p> */}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default LoadingPage
+export default LoadingPage;

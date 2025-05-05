@@ -27,7 +27,7 @@ export default function SortDropdown() {
   }
 
   return (
-    <div className="w-60">
+    <div className="flex items-center">
       <Select onValueChange={handleChange} value={sort}>
         <SelectTrigger>
           <SelectValue placeholder="Sort by" />

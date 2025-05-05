@@ -6,6 +6,9 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { ArrowUpDown } from 'lucide-react'
 import SortDropdown from '@/app/_components/Dropdown'
+import { useGetUsersQuery } from '@/redux/api/user.api'
+import LoadingPage from '@/components/loading.page'
+import Link from 'next/link'
 
 const users = [
   {
@@ -67,17 +70,22 @@ export default function UsersPage() {
   const [sortBy, setSortBy] = useState<'name' | 'email'>('name')
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc')
 
-  
+  // Fetch users from the API
+  const { data, isLoading: loading } = useGetUsersQuery('');
+  const users = data?.data || [];
+
+
+  if (loading) return <LoadingPage />;  
 
   return (
     <div className="p-6">
       <h1 className="text-2xl font-bold mb-4">Users</h1>
-      <div className="flex items-center justify-between  mb-4">
+      <div className="flex items-center justify-between w-full mb-4">
         <Input
           placeholder="Search by name or email..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="w-full max-w-md"
+          className="w-full max-w-md focus:ring-1 focus:ring-accent-100/50 focus:border-accent-100/50"
         />
         <SortDropdown />
       </div>
@@ -96,11 +104,12 @@ export default function UsersPage() {
               <th className="px-6 py-3">Role</th>
               <th className="px-6 py-3">Status</th>
               <th className="px-6 py-3">Onboarding</th>
+              <th className="px-6 py-3">Actions </th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200 text-sm">
-            {users.map(user => (
-              <tr key={user.id}>
+            {users?.map(user => (
+              <tr key={user.id} className='hover:bg-accent-100/60 cursor-pointer'>
                 <td className="px-6 py-1">
                   <Image
                     src={user.profile_picture || 'https://res.cloudinary.com/dvp1mjhd9/image/upload/v1714690850/default_profile_image.png'}
@@ -125,6 +134,11 @@ export default function UsersPage() {
                   ) : (
                     <span className="text-gray-400 text-xs">No</span>
                   )}
+                </td>
+                <td className="px-6 py-1">
+                  <Link href={'/admin/users/'+user.id}  className="text-xs">
+                    View
+                  </Link>
                 </td>
               </tr>
             ))}

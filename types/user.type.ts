@@ -27,6 +27,9 @@ interface IUser extends CreateUserRequest, ITimeStamp {
   is_verified: boolean;
   is_onboarding: boolean;
   need_reset_password: boolean;
+  first_name: string;
+  last_name: string;
+  phone_number: string;
 }
 
 export type { IUser, CreateUserRequest, CreateUserResponse };

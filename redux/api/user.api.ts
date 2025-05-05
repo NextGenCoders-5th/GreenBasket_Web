@@ -1,5 +1,5 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
-import { baseQuery } from './base.query';
+import { baseQuery, baseQueryWithReauth } from './base.query';
 import { CreateUserRequest, CreateUserResponse, IUser } from '@/types/user.type';
 import { ApiResponse } from '@/types/base.type';
 import { UserFormData } from '@/schema/user.schema';
@@ -11,7 +11,7 @@ export enum UserTags {
 
 export const userApi = createApi({
   reducerPath: 'userApi',
-  baseQuery: baseQuery,
+  baseQuery: baseQueryWithReauth,
   tagTypes: Object.values(UserTags),
   endpoints: (builder) => ({
     createUser: builder.mutation<CreateUserResponse, UserFormData>({
@@ -37,7 +37,7 @@ export const userApi = createApi({
       }),
       invalidatesTags: (_, error, userId) => [{ type: UserTags.USER, id: userId }, UserTags.USERS],
     }),
-    getUser: builder.query<CreateUserResponse, string>({
+    getUser: builder.query<ApiResponse<{data: IUser}>, string>({
       query: (userId) => ({
         url: `users/${userId}`,
         method: 'GET',
@@ -60,7 +60,7 @@ export const userApi = createApi({
         method: 'GET',
       }),
       
-      providesTags: (result, error) => [{ type: UserTags.USER, id: result?.data.data.id }, UserTags.USERS], 
+      providesTags: (result, error) => [{ type: UserTags.USER, id: result?.data.id }, UserTags.USERS], 
     }),
   }),
 });

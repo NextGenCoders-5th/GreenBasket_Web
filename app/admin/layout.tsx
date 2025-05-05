@@ -5,6 +5,15 @@ import {
 } from "@/components/ui/sidebar"
 import { Role } from "@/enums/role.enum"
 import PermissionProvider from "@/providers/permission.provider"
+import { Metadata } from "next"
+
+export const metadata: Metadata = {
+  title: "Dashboard",
+  description: "Dashboard",
+  icons: {
+    icon: "/logo.png",
+  },
+}
 
 interface DashboardLayoutProps {
   children: React.ReactNode
