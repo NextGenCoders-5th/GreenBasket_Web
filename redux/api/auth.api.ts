@@ -34,10 +34,10 @@ const authApi = createApi({
       },
       invalidatesTags: [AuthTags.Login],
     }),
-    logout: builder.mutation({
+    logout: builder.mutation<any, void>({
       query: () => ({
         url: 'auth/logout',
-        method: 'POST',
+        method: 'PATCH',
       }),
       invalidatesTags: [AuthTags.Logout],
     }),
@@ -51,10 +51,8 @@ const authApi = createApi({
     }),
     refreshToken: builder.mutation<any, void>({
       query: () => {
-        // Get the refresh token from cookies 
-        const refreshToken = document.cookie
-          .split('; ')
-          .find((row) => row.startsWith('refreshToken='))
+        // Get the refresh token from cookies
+        const refreshToken = document.cookie.split('; ').find((row) => row.startsWith('refreshToken='));
         return {
           url: 'auth/refresh-token',
           method: 'POST',

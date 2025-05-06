@@ -7,6 +7,7 @@ import { UserFormData } from '@/schema/user.schema';
 export enum UserTags {
   USER = 'User',
   USERS = 'Users',
+  CURRENT_USER = 'Current_User',
 }
 
 export const userApi = createApi({
@@ -37,7 +38,7 @@ export const userApi = createApi({
       }),
       invalidatesTags: (_, error, userId) => [{ type: UserTags.USER, id: userId }, UserTags.USERS],
     }),
-    getUser: builder.query<ApiResponse<{data: IUser}>, string>({
+    getUser: builder.query<ApiResponse<{ data: IUser }>, string>({
       query: (userId) => ({
         url: `users/${userId}`,
         method: 'GET',
@@ -54,16 +55,14 @@ export const userApi = createApi({
       },
       providesTags: [UserTags.USERS],
     }),
-    currentUser: builder.query<CreateUserResponse, void>({
+    currentUser: builder.query<ApiResponse<{ data: IUser }>, void>({
       query: () => ({
         url: 'users/account/current-user',
         method: 'GET',
       }),
-      
-      providesTags: (result, error) => [{ type: UserTags.USER, id: result?.data.id }, UserTags.USERS], 
+      providesTags: [UserTags.CURRENT_USER],
     }),
   }),
 });
 
-export const { useCreateUserMutation,useCurrentUserQuery, useUpdateUserMutation, useDeleteUserMutation, useGetUserQuery, useGetUsersQuery } = userApi;
-
+export const { useCreateUserMutation, useCurrentUserQuery, useUpdateUserMutation, useDeleteUserMutation, useGetUserQuery, useGetUsersQuery } = userApi;

@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   title: 'multi-vendor',
   icons: {
     icon: '/logo.png',
-  }
+  },
 };
 
 export default function RootLayout({
@@ -28,13 +28,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-       <Head>
+      <Head>
         <link rel="icon" href="/logo.png" />
       </Head>
       <body className={`${geistSans.variable} scrollbar-custom min-h-screen max-h-screen overflow-y-scroll  ${geistMono.variable} antialiased`}>
-          <Provider>
-            <main className="text-sm">{children}</main>
-          </Provider>
+        <Provider>
+          <main className="text-sm">{children}</main>
+        </Provider>
       </body>
     </html>
   );

@@ -1,4 +1,4 @@
-import { IUser } from "./user.type";
+import { IUser } from './user.type';
 
 interface ISignUpRequest {
   email: string;
@@ -12,7 +12,7 @@ interface SignUpResponse {
     message: string;
     timestamp: string; // ISO date string
     data: {
-      user : IUser;
+      user: IUser;
       accessToken: string;
       refreshToken: string;
     };

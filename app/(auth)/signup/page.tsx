@@ -8,7 +8,6 @@ import { useSignUpMutation } from '@/redux/api/auth.api';
 import { toast } from 'sonner';
 
 export default function SignupPage() {
-
   // Create a form instance using react-hook-form
   // and validate it using zod
   const {
@@ -21,7 +20,6 @@ export default function SignupPage() {
 
   // Getting router instance
   const router = useRouter();
-  
 
   // Sign up mutation
   const [signUp, { isLoading, error }] = useSignUpMutation();
