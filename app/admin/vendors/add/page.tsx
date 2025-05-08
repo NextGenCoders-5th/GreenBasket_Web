@@ -52,6 +52,7 @@ export default function VendorRegisterPage() {
                 toast.success('Vendor registered successfully', {
                     id: toastId,
                 });
+                reset();
                 router.push('/admin/vendors');
             })
             .catch((error) => {
@@ -61,7 +62,6 @@ export default function VendorRegisterPage() {
                     toast.dismiss(toastId);
                 }
             });
-        reset();
         setLogoPreview(null);
     };
 

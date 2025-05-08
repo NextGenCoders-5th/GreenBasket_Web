@@ -1,5 +1,5 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
-import { baseQuery, baseQueryWithReauth } from './base.query';
+import {  baseQueryWithReauth } from './base.query';
 import { CreateUserRequest, CreateUserResponse, IUser } from '@/types/user.type';
 import { ApiResponse } from '@/types/base.type';
 import { UserFormData } from '@/schema/user.schema';

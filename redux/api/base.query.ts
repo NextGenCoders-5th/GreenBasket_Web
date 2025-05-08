@@ -1,6 +1,6 @@
 import { BaseQueryApi, FetchArgs, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { toast } from 'sonner';
-
+import { ErrorEnum } from '@/enums/error.enum';
 export const BASE_URL = 'http://localhost:5000/api/v1/'; // Replace with your actual base URL
 export const baseQuery = fetchBaseQuery({
   baseUrl: BASE_URL,
@@ -37,15 +37,15 @@ export const baseQueryWithReauth = async (args: string | FetchArgs, api: BaseQue
   } else if (result.error && result.error.status === 403) {
     console.log('Forbidden: ', result.error);
     !isSilent && toast.error('You do not have permission to access this resource.');
-    return { error: { status: 'FORBIDDEN', message: 'Forbidden' } };
+    return { error: { status: ErrorEnum.FORBIDDEN, message: 'Forbidden' } };
   } else if (result.error && result.error.status === 404) {
     console.log('Not Found: ', result.error);
     !isSilent && toast.error('The requested resource was not found.');
-    return { error: { status: 'NOT_FOUND', message: 'Not Found' } };
+    return { error: { status: ErrorEnum.NOT_FOUND, message: 'Not Found' } };
   } else if (result.error && result.error.status === 500) {
     console.log('Server Error: ', result.error);
     !isSilent && toast.error('An internal server error occurred.');
-    return { error: { status: 'SERVER_ERROR', message: 'Server Error' } };
+    return { error: { status: ErrorEnum.SERVER_ERROR, message: 'Server Error' } };
   } else if (result.error && result.error.status === 400) {
     console.log('Bad Request: ', result.error);
     if (result.error.data && typeof result.error.data === 'string' && !isSilent) {
@@ -53,18 +53,18 @@ export const baseQueryWithReauth = async (args: string | FetchArgs, api: BaseQue
     } else if (!isSilent && result.error.data && typeof result.error.data === 'object' && 'message' in result.error.data) {
       toast.error(result.error.data.message as string);
     } else {
-      return { error: { status: 'UNKOWN_ERROR', message: 'Bad Request' } };
+      return { error: { status: ErrorEnum.UNKOWN_ERROR, message: 'Bad Request' } };
     }
-    return { error: { status: 'BAD_REQUEST', message: 'Bad Request' } };
-  } else if (result.error?.status === 'FETCH_ERROR') {
+    return { error: { status: ErrorEnum.BAD_REQUEST, message: 'Bad Request' } };
+  } else if (result.error?.status === ErrorEnum.FETCH_ERROR) {
     console.log('Network error: ', result.error);
     !isSilent && toast.error('Network error. Please check your internet connection.');
-    return { error: { status: 'NETWORK_ERROR', message: 'Network error' } };
+    return { error: { status: ErrorEnum.NETWORK_ERROR, message: 'Network error' } };
   } else if (result.error && typeof result.error.data === 'string') {
     !isSilent && toast.error(result.error.data as string);
-    return { error: { status: 'BAD_REQUEST', message: result.error.data as string } };
+    return { error: { status: ErrorEnum.BAD_REQUEST, message: result.error.data as string } };
   } else if (result.error) {
-    return { error: { status: 'UNKOWN_ERROR', data: result.error.data, message: 'Unexpected error' } };
+    return { error: { status: ErrorEnum.UNKOWN_ERROR, data: result.error.data, message: 'Unexpected error' } };
   }
 
   return result;

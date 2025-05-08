@@ -1,3 +1,4 @@
+import { ErrorEnum } from '@/enums/error.enum';
 import { IUser } from '@/types/user.type';
 import { createSlice } from '@reduxjs/toolkit';
 
@@ -6,6 +7,7 @@ interface AuthState {
   token: string | null;
   refreshToken: string | null;
   isAuthChecked: boolean;
+  error: ErrorEnum | null;
 }
 const authSlice = createSlice({
   name: 'auth',
@@ -14,6 +16,7 @@ const authSlice = createSlice({
     token: null,
     refreshToken: null,
     isAuthChecked: false,
+    error: null,
   },
   reducers: {
     setCredentials: (state, action) => {
@@ -29,9 +32,12 @@ const authSlice = createSlice({
       state.token = null;
       state.refreshToken = null;
     },
+    setError: (state, action) => {
+      state.error = action.payload;
+    },
   },
 });
-export const { setCredentials, logOut } = authSlice.actions;
+export const { setCredentials, logOut, setError } = authSlice.actions;
 export default authSlice.reducer;
 export const selectCurrentUser = (state: { auth: AuthState }) => state.auth.user;
 export const selectCurrentToken = (state: { auth: AuthState }) => state.auth.token;

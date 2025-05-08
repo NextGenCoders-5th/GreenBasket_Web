@@ -6,6 +6,7 @@ import Link from 'next/link';
 import React from 'react';
 import { useAppSelector } from '../../redux/store';
 import { IUser } from '@/types/user.type';
+import ProfileDropdown from './ProfileCard';
 
 export const Header = () => {
   const [menuOpen, setMenuOpen] = React.useState(false);
@@ -34,7 +35,7 @@ export const Header = () => {
                 Dashboard
               </Link>
               <div className="flex">
-                <span className="px-3 py-2 rounded-full bg-green-400 text-white">U</span>
+                <ProfileDropdown />
               </div>
             </>
           ) : (

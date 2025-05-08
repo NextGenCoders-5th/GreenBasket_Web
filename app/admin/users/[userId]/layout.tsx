@@ -1,54 +1,69 @@
-import { ArrowLeft } from "lucide-react"
+'use client';
+
+import DeleteFeature, { FeatureDeleteActionType } from '@/components/modals/DeleteFetureDialog';
+import { ClassName } from '@/enums/classnames.enum';
+import { useDeleteUserMutation } from '@/redux/api/user.api';
+import { ArrowLeft, Pencil, Trash, KeyRound, Mail, Activity, ShieldCheck } from 'lucide-react';
+import { useParams, useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 interface LayoutProps {
-    children: React.ReactNode
+  children: React.ReactNode;
 }
 
 const AdminUserLayout = ({ children }: LayoutProps) => {
+  // Getting router instance
+  const router = useRouter();
+  // State to delete user
+  const { userId } = useParams();
 
-    return (
-        <div className="min-h-screen  w-full flex flex-col bg-gray-100 p-6 gap-4 items-center justify-start">
-            <div className="bg-white shadow-md rounded-lg p-6 w-full ">
-                <div className="flex items-center justify-between mb-4">
-                    <div className="flex items-center justify-start gap-1.5">
-                        <button className="flex items-center gap-1 bg-gray-200 text-gray-700 px-4 py-2 rounded-md">
-                            <ArrowLeft className="w-4 h-4" />
-                            <span>Back</span>
-                        </button>
-                        <h1 className="text-2xl font-bold mb-4">User Details</h1>
-                    </div>
+  return (
+    <div className="min-h-screen w-full flex flex-col bg-gray-100 p-4 sm:p-6 gap-4 items-center justify-start">
+      <div className="bg-white shadow-md rounded-lg p-4 sm:p-6 w-full">
+        {/* Header */}
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 gap-2 sm:gap-4">
+          <div className="flex items-center gap-2 flex-wrap">
+            <button className="flex cursor-pointer items-center gap-1 bg-gray-200 text-gray-700 px-3 py-1.5 rounded-md" title="Back" onClick={() => router.back()}>
+              <ArrowLeft className="w-4 h-4" />
+              <span className="hidden sm:inline">Back</span>
+            </button>
+            <h1 className="text-xl sm:text-2xl font-bold">User Details</h1>
+          </div>
 
-                    <p className="text-sm text-gray-500 mb-4">
-                        View and manage user details here.
-                    </p>
-                </div>
-
-                <div className="flex  w-full gap-2 items-center justify-end mb-4">
-                    <button className="bg-blue-500 text-white px-4 py-2 rounded-md">
-                        Edit User
-                    </button>
-                    <button className="bg-red-500 text-white px-4 py-2 rounded-md">
-                        Delete User
-                    </button>
-                    <button className="bg-green-500 text-white px-4 py-2 rounded-md">
-                        Reset Password
-                    </button>
-                    <button className="bg-yellow-500 text-white px-4 py-2 rounded-md">
-                        Send Onboarding Email
-                    </button>
-                    <button className="bg-purple-500 text-white px-4 py-2 rounded-md">
-                        View Activity Log
-                    </button>
-                    <button className="bg-gray-500 text-white px-4 py-2 rounded-md">
-                        View Permissions
-                    </button>
-                </div>
-            </div>
-            <div className="bg-white flex-1 rounded-lg p-6 w-full ">
-                {children}
-            </div>
+          <p className="text-sm text-gray-500">View and manage user details here.</p>
         </div>
-    )
-}
 
-export default AdminUserLayout
+        {/* Action Buttons */}
+        <div className="flex flex-wrap gap-2 items-center justify-end mb-4">
+          <button className={` ${ClassName.BUTTON} bg-blue-500/90 hover:bg-blue-500`} title="Edit User">
+            <Pencil className="w-4 h-4" />
+            <span className="hidden sm:inline">Edit User</span>
+          </button>
+          <DeleteFeature feature="user" useDelete={useDeleteUserMutation as FeatureDeleteActionType} redirectUrl="/admin/users" featureId={userId as string} />
+
+          <button className={` ${ClassName.BUTTON} bg-accent-500/90 hover:bg-accent-500`} title="Reset Password">
+            <KeyRound className="w-4 h-4" />
+            <span className="hidden sm:inline">Reset Password</span>
+          </button>
+          <button className={` ${ClassName.BUTTON} bg-yellow-500/90 hover:bg-yellow-500`} title="Send Onboarding Email">
+            <Mail className="w-4 h-4" />
+            <span className="hidden sm:inline">Send Onboarding Email</span>
+          </button>
+          <button className={` ${ClassName.BUTTON} bg-gray-700/90 hover:bg-gray-700`} title="View Activity Log">
+            <Activity className="w-4 h-4" />
+            <span className="hidden sm:inline">View Activity Log</span>
+          </button>
+          <button className={` ${ClassName.BUTTON} bg-gray-500/90 hover:bg-gray-500`} title="View Permissions">
+            <ShieldCheck className="w-4 h-4" />
+            <span className="hidden sm:inline">View Permissions</span>
+          </button>
+        </div>
+      </div>
+
+      {/* Content */}
+      <div className="bg-white flex-1 rounded-lg p-4 sm:p-6 w-full">{children}</div>
+    </div>
+  );
+};
+
+export default AdminUserLayout;

@@ -7,6 +7,9 @@ import Link from 'next/link';
 import { useDeleteVendorMutation, useGetVendorsQuery } from '@/redux/api/vendor.api';
 import LoadingPage from '@/components/loading.page';
 import DeleteFeature, { FeatureDeleteActionType } from '@/components/modals/DeleteFetureDialog';
+import UpdateVendorStatusModal from './_compnents/UpdateVendorStatus';
+import { VendorStatus } from '@/enums/status.enum';
+import EditVendorModal from './_compnents/EditVendor';
 
 const vendors = [
   {
@@ -68,6 +71,10 @@ export default function VendorsPage() {
           {vendors.map((vendor) => (
             <div key={vendor.id} className="bg-white  relative rounded-xl shadow-md p-6 hover:shadow-lg transition">
               <div className="flex absolute items-center top-2 right-2 gap-2">
+                <UpdateVendorStatusModal
+                  currentStatus={vendor.status as VendorStatus}
+                  vendorId={vendor.id}
+                />
                 <DeleteFeature
                   featureId={vendor.id}
                   feature="Vendor"
@@ -75,12 +82,12 @@ export default function VendorsPage() {
                   redirectUrl='/admin/vendors'
                   iconOnly
                 />
-                <button className={` ${ClassName.BUTTON} bg-blue-500/90 hover:bg-blue-500`} title="Edit User">
-                  <Pencil className="w-4 h-4" />
-                </button>
+                <EditVendorModal
+                vendor={vendor}
+                />
 
               </div>
-              <img src={`${vendor.logo_url.includes("uploads") && process.env.NEXT_APP_BASE_URL}${vendor.logo_url}`} alt={`${vendor.business_name} Logo`} className="w-20 h-20 object-contain mx-auto mb-4" />
+              <img src={vendor.logo_url} alt={`${vendor.business_name} Logo`} className="w-20 h-20 object-contain mx-auto mb-4" />
               <h2 className="text-lg font-semibold text-gray-900 text-center">{vendor.business_name}</h2>
               <p className="text-sm text-gray-600 text-center">{vendor.business_email}</p>
               <p className="text-sm text-gray-600 text-center">{vendor.phone_number}</p>

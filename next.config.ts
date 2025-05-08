@@ -1,9 +1,11 @@
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  experimental: {},
+  experimental: {
+    
+  },
   images: {
-    domains: ['res.cloudinary.com'],
+    domains: ['res.cloudinary.com', 'multi-vendor-marketplace-backend-6pue.onrender.com'],
   },
 };
 

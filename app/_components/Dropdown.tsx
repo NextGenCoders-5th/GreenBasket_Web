@@ -1,30 +1,29 @@
-'use client'
+'use client';
 
-import { useRouter, useSearchParams } from 'next/navigation'
-import {  useState } from 'react'
-import {
-  Select,
-  SelectTrigger,
-  SelectValue,
-  SelectContent,
-  SelectItem,
-} from '@/components/ui/select'
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useState } from 'react';
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
+import { SortOption } from '@/types/general.types';
 
-export default function SortDropdown() {
-  const router = useRouter()
-  const searchParams = useSearchParams()
-  const [sort, setSort] = useState<string>(searchParams.get('sort') || 'none')
+interface SortDropdownProps {
+  options: SortOption[];
+}
+
+export default function SortDropdown({ options }: SortDropdownProps) {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const [sort, setSort] = useState<string>(searchParams.get('sort') || 'none');
 
   const handleChange = (value: string) => {
-    setSort(value)
-    const params = new URLSearchParams(searchParams.toString())
+    setSort(value);
+    const params = new URLSearchParams(searchParams.toString());
     if (value === 'none') {
-      params.delete('sort')
+      params.delete('sort');
     } else {
-      params.set('sort', value)
+      params.set('sort', value);
     }
-    router.push(`?${params.toString()}`)
-  }
+    router.push(`?${params.toString()}`);
+  };
 
   return (
     <div className="flex items-center">
@@ -34,11 +33,13 @@ export default function SortDropdown() {
         </SelectTrigger>
         <SelectContent>
           <SelectItem value="none">None</SelectItem>
-          <SelectItem value="first_name">First Name</SelectItem>
-          <SelectItem value="createdAt">Created At</SelectItem>
-          <SelectItem value="role">Role</SelectItem>
+          {options.map((option) => (
+            <SelectItem key={option.value} value={option.value}>
+              {option.label}
+            </SelectItem>
+          ))}
         </SelectContent>
       </Select>
     </div>
-  )
+  );
 }
