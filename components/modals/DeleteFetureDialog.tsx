@@ -55,7 +55,7 @@ export default function DeleteFeature({ useDelete, feature, featureId, redirectU
         <DialogHeader>
           <DialogTitle>Confirm Deletion</DialogTitle>
         </DialogHeader>
-        <p className="text-gray-600">Are you sure you want to delete this hotel? This action cannot be undone.</p>
+        <p className="text-gray-600">Are you sure you want to delete this {feature}? This action cannot be undone.</p>
         <DialogFooter className="flex flex-col md:flex-row gap-2">
           <button disabled={isLoading} onClick={() => setIsOpen(false)} className="px-4 py-2 disabled:cursor-not-allowed bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300">
             Cancel

@@ -1,6 +1,8 @@
 'use client';
+
 import { useState } from 'react';
-import { Pencil, Plus } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Eye, Plus } from 'lucide-react';
 import SortDropdown from '@/app/_components/Dropdown';
 import { ClassName } from '@/enums/classnames.enum';
 import Link from 'next/link';
@@ -10,23 +12,10 @@ import DeleteFeature, { FeatureDeleteActionType } from '@/components/modals/Dele
 import UpdateVendorStatusModal from './_compnents/UpdateVendorStatus';
 import { VendorStatus } from '@/enums/status.enum';
 import EditVendorModal from './_compnents/EditVendor';
-
-const vendors = [
-  {
-    id: '1a59c18a-0915-49d0-ac99-805c4591b402',
-    business_name: 'Test Business',
-    business_email: 'busines@test.com',
-    phone_number: '+251908005802',
-    logo_url: 'https://res.cloudinary.com/dvp1mjhd9/image/upload/v1744938281/ysmaqbtkrwaftn40j6i2.png',
-    status: 'APPROVED',
-  },
-  // Add more vendors if needed
-];
+import VendorRegisterDialog from './_compnents/AddVendor';
 
 export default function VendorsPage() {
   const [search, setSearch] = useState('');
-
-  // Fetch users from the API
   const { data, isLoading: loading } = useGetVendorsQuery('');
 
   if (loading) return <LoadingPage />;
@@ -34,10 +23,10 @@ export default function VendorsPage() {
   const vendors = data?.data.data;
 
   return (
-    <div className="min-h-screen bg-gray-50 p-4 sm:p-6">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-4 sm:p-6">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-4">
-        <h1 className="text-2xl sm:text-3xl font-bold text-gray-800">Vendors</h1>
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8 gap-4">
+        <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-800">Vendors</h1>
 
         <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
           <input
@@ -45,7 +34,7 @@ export default function VendorsPage() {
             placeholder="Search vendors..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className={`${ClassName.INPUT} w-full sm:w-64 px-4 py-2 border rounded-md shadow-sm `}
+            className={`${ClassName.INPUT} w-full sm:w-64 px-4 py-2 border rounded-lg shadow-sm focus:ring-2 focus:ring-accent-400 transition`}
           />
           <SortDropdown
             options={[
@@ -55,50 +44,75 @@ export default function VendorsPage() {
               { label: 'Email (Z-A)', value: 'email_desc' },
             ]}
           />
-          <Link
-            className="inline-flex items-center justify-center px-4 py-0 gap-1 bg-accent-600/85 text-white font-medium rounded-md hover:bg-accent-600 transition"
-            href={'/admin/vendors/add'}
-          >
-            <Plus className="w-4 h-4 " />
-            <span className='hidden sm:inline'>Add </span>
-          </Link>
+          <VendorRegisterDialog/>
         </div>
       </div>
 
       {/* Vendor Cards */}
       {!!vendors?.length ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {vendors.map((vendor) => (
-            <div key={vendor.id} className="bg-white  relative rounded-xl shadow-md p-6 hover:shadow-lg transition">
-              <div className="flex absolute items-center top-2 right-2 gap-2">
-                <UpdateVendorStatusModal
-                  currentStatus={vendor.status as VendorStatus}
-                  vendorId={vendor.id}
+        <AnimatePresence>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {vendors.map((vendor) => (
+              <motion.div
+                key={vendor.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 20 }}
+                transition={{ duration: 0.4, ease: 'easeOut' }}
+                className="bg-white flex flex-col   justify-between   rounded-2xl shadow-md p-6 hover:shadow-xl transition-transform transform hover:-translate-y-1"
+              > 
+                <div className="w-full justify-end items-center flex gap-2">
+                  <UpdateVendorStatusModal
+                    currentStatus={vendor.status as VendorStatus}
+                    vendorId={vendor.id}
+                  />
+                  <DeleteFeature
+                    featureId={vendor.id}
+                    feature="Vendor"
+                    useDelete={useDeleteVendorMutation as FeatureDeleteActionType}
+                    redirectUrl="/admin/vendors"
+                    iconOnly
+                  />
+                  <EditVendorModal vendor={vendor} />
+                  <Link
+                    href={`/admin/vendors/${vendor.id}`}
+                    className={`${ClassName.BUTTON} bg-accent-600 text-white rounded-lg hover:bg-accent-700 transition`}
+                  >
+                    <Eye className="w-4 h-4" />
+                  </Link>
+                </div>
+            
+                 
+                <div className="flex items-center justify-self-start gap-10 p-5  w-full py-3">
+                 <motion.img
+                  src={vendor.logo_url}
+                  alt={`${vendor.business_name} Logo`}
+                  className="w-24 h-24 object-contain  mb-4 rounded-full shadow"
+                  whileHover={{ scale: 1.1 }}
+                  transition={{ duration: 0.3 }}
                 />
-                <DeleteFeature
-                  featureId={vendor.id}
-                  feature="Vendor"
-                  useDelete={useDeleteVendorMutation as FeatureDeleteActionType}
-                  redirectUrl='/admin/vendors'
-                  iconOnly
-                />
-                <EditVendorModal
-                vendor={vendor}
-                />
+                <div className="flex flex-col items-center ">
+                  <h2 className="text-lg sm:text-xl font-semibold text-gray-900 text-center">{vendor.business_name}</h2>
+                  <p className="text-sm text-gray-600 text-center">{vendor.business_email}</p>
+                  <p className="text-sm text-gray-600 text-center">{vendor.phone_number}</p>
+                  <div className="flex justify-center mt-4">
+                    <span
+                      className={`px-3 py-1 text-sm rounded-full font-medium ${vendor.status === 'APPROVED'
+                          ? 'bg-green-100 text-green-800'
+                          : 'bg-yellow-100 text-yellow-800'
+                        }`}
+                    >
+                      {vendor.status}
+                    </span>
+                  </div>
+                </div>
+                 </div>
+                
 
-              </div>
-              <img src={vendor.logo_url} alt={`${vendor.business_name} Logo`} className="w-20 h-20 object-contain mx-auto mb-4" />
-              <h2 className="text-lg font-semibold text-gray-900 text-center">{vendor.business_name}</h2>
-              <p className="text-sm text-gray-600 text-center">{vendor.business_email}</p>
-              <p className="text-sm text-gray-600 text-center">{vendor.phone_number}</p>
-              <div className="flex justify-center mt-4">
-                <span className={`px-3 py-1 text-sm rounded-full font-medium ${vendor.status === 'APPROVED' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}`}>
-                  {vendor.status}
-                </span>
-              </div>
-            </div>
-          ))}
-        </div>
+              </motion.div>
+            ))}
+          </div>
+        </AnimatePresence>
       ) : (
         <p className="text-gray-500 text-center mt-10">No vendors found.</p>
       )}

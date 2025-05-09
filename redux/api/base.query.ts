@@ -2,6 +2,7 @@ import { BaseQueryApi, FetchArgs, fetchBaseQuery } from '@reduxjs/toolkit/query/
 import { toast } from 'sonner';
 import { ErrorEnum } from '@/enums/error.enum';
 export const BASE_URL = 'http://localhost:5000/api/v1/'; // Replace with your actual base URL
+export const API_URL = 'https://multi-vendor-marketplace-backend-6pue.onrender.com/api/v1/'; // Replace with your actual base URL
 export const baseQuery = fetchBaseQuery({
   baseUrl: BASE_URL,
   credentials: 'include',

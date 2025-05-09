@@ -33,7 +33,7 @@ export default function EditVendorModal({ vendor }: Props) {
     register,
     handleSubmit,
     setValue,
-    formState: { errors },
+    formState: { isDirty,errors },
     reset,
   } = useForm<VendorFormData>({
     resolver: zodResolver(editVendorSchema),
@@ -79,8 +79,19 @@ export default function EditVendorModal({ vendor }: Props) {
         </button>
       </DialogTrigger>
       <DialogContent className="max-w-md w-full">
-        <DialogHeader>
+        <DialogHeader className='flex pt-2.5  flex-row items-center justify-between '>
           <DialogTitle>Update Vendor Status</DialogTitle>
+          {isDirty && <button
+            onClick={() => {
+              reset({
+                ...vendor
+              })
+            }}
+            className={` ${ClassName.BUTTON} py-0 text-sm bg-red-500/90 hover:bg-red-500`}
+          >
+            Discard Changes
+          </button>
+          }
         </DialogHeader>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div>
@@ -125,8 +136,8 @@ export default function EditVendorModal({ vendor }: Props) {
             )}
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-3">
-            <Button
+          <div className="flex flex-col items-center justify-end sm:flex-row gap-3">
+          <Button
               type="button"
               onClick={handleCancel}
               variant="outline"

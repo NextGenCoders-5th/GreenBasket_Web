@@ -26,7 +26,9 @@ const vendorApi = createApi({
       query: ({ vendorId, vendorData }) => ({
         url: `vendors/${vendorId}`,
         method: 'PATCH',
-        body: vendorData,
+        body: {
+          ...vendorData
+        },
       }),
       invalidatesTags: (_, error, { vendorId }) => [{ type: VendorTags.VENDOR, id: vendorId }, VendorTags.VENDORS],
     }),
@@ -37,7 +39,7 @@ const vendorApi = createApi({
       }),
       invalidatesTags: (_, error, vendorId) => [{ type: VendorTags.VENDOR, id: vendorId }, VendorTags.VENDORS],
     }),
-    getVendor: builder.query<CreateVendorResponse, string>({
+    getVendor: builder.query<{data: {data: IVendor}}, string>({
       query: (vendorId) => ({
         url: `vendors/${vendorId}`,
         method: 'GET',

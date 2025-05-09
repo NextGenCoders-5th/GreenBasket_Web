@@ -3,9 +3,9 @@
 import DeleteFeature, { FeatureDeleteActionType } from '@/components/modals/DeleteFetureDialog';
 import { ClassName } from '@/enums/classnames.enum';
 import { useDeleteUserMutation } from '@/redux/api/user.api';
-import { ArrowLeft, Pencil, Trash, KeyRound, Mail, Activity, ShieldCheck } from 'lucide-react';
+import { ArrowLeft, KeyRound, Mail, Activity, ShieldCheck } from 'lucide-react';
 import { useParams, useRouter } from 'next/navigation';
-import { useState } from 'react';
+import EditUserDialog from '../_compnents/EditUser';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -35,10 +35,7 @@ const AdminUserLayout = ({ children }: LayoutProps) => {
 
         {/* Action Buttons */}
         <div className="flex flex-wrap gap-2 items-center justify-end mb-4">
-          <button className={` ${ClassName.BUTTON} bg-blue-500/90 hover:bg-blue-500`} title="Edit User">
-            <Pencil className="w-4 h-4" />
-            <span className="hidden sm:inline">Edit User</span>
-          </button>
+         <EditUserDialog />
           <DeleteFeature feature="user" useDelete={useDeleteUserMutation as FeatureDeleteActionType} redirectUrl="/admin/users" featureId={userId as string} />
 
           <button className={` ${ClassName.BUTTON} bg-accent-500/90 hover:bg-accent-500`} title="Reset Password">

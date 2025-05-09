@@ -1,62 +1,14 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState } from 'react';
 import Image from 'next/image';
 import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { ArrowUpDown, Plus } from 'lucide-react';
 import SortDropdown from '@/app/_components/Dropdown';
 import { useGetUsersQuery } from '@/redux/api/user.api';
 import LoadingPage from '@/components/loading.page';
 import Link from 'next/link';
-import { ClassName } from '@/enums/classnames.enum';
+import AddUserDialog from './_compnents/AddUser';
 
-const users = [
-  {
-    id: 'cccb579f-e3ce-4a1d-9c44-f02bcdf0f510',
-    first_name: 'Edmealem',
-    last_name: 'Kassahun',
-    email: 'admin@test.com',
-    phone_number: '+251908005801',
-    profile_picture: 'https://res.cloudinary.com/dvp1mjhd9/image/upload/v1714690850/default_profile_image.png',
-    role: 'ADMIN',
-    status: 'ACTIVE',
-    is_onboarding: false,
-  },
-  {
-    id: '4aa07551-9dd9-4169-8277-323eaa780dd2',
-    first_name: 'Abebe',
-    last_name: 'Kebede',
-    email: 'test@test.com',
-    phone_number: '+251948006129',
-    profile_picture: 'https://res.cloudinary.com/dvp1mjhd9/image/upload/v1714690850/default_profile_image.png',
-    role: 'CUSTOMER',
-    status: 'ACTIVE',
-    is_onboarding: false,
-  },
-  {
-    id: '16693821-9088-44bc-a851-7fd5edef498b',
-    first_name: 'VAbebe',
-    last_name: 'Kebede',
-    email: 'vendor@test.com',
-    phone_number: '+251908005802',
-    profile_picture: 'https://res.cloudinary.com/dvp1mjhd9/image/upload/v1714690850/default_profile_image.png',
-    role: 'VENDOR',
-    status: 'ACTIVE',
-    is_onboarding: false,
-  },
-  {
-    id: 'b25c8290-b38b-4b98-b2b4-3381634be9a4',
-    first_name: null,
-    last_name: null,
-    email: 'ezratgab@gmail.com',
-    phone_number: '+251 97 701 8300',
-    profile_picture: null,
-    role: 'CUSTOMER',
-    status: 'ACTIVE',
-    is_onboarding: true,
-  },
-];
 
 const getRoleColor = (role: string) => {
   switch (role) {
@@ -96,10 +48,7 @@ export default function UsersPage() {
               { label: 'Email', value: 'email' },
             ]}
           />
-          <Link href={'/admin/users/add'} className={`${ClassName.BUTTON} bg-accent-600/90 text-white hover:bg-accent-600`}>
-            {' '}
-            <Plus size={20} /> Add{' '}
-          </Link>
+          <AddUserDialog/>
         </div>
       </div>
       <div className="overflow-x-auto">

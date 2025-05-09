@@ -1,3 +1,4 @@
+import { Role } from '@/enums/role.enum';
 import { z } from 'zod';
 
 const UserSchema = z.object({
@@ -5,7 +6,7 @@ const UserSchema = z.object({
   lastName: z.string().min(1, 'Last name is required'),
   email: z.string().email('Invalid email'),
   phoneNumber: z.string().min(10, 'Phone number is required'),
-  role: z.enum(['CUSTOMER', 'VENDOR', 'ADMIN']),
+  role: z.enum(Object.values(Role) as [string, ...string[]]),
 });
 export type UserFormData = z.infer<typeof UserSchema>;
 export const userSchema = UserSchema;
