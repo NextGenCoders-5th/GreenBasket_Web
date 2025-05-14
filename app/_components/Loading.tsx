@@ -4,13 +4,9 @@ const LoadingPage = () => {
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="text-center">
-        {/* Loading Indicator */}
         <div className="mb-6">
-          <Loader2 className="w-16 h-16  text-accent-500 animate-spin" />
-          {/* <div className="w-16 h-16  border-t-2 border-accent-500 rounded-full animate-spin"></div> */}
+          <Loader2 strokeWidth={1} className="w-16 h-16  text-accent-500 animate-spin" />
         </div>
-        {/* Loading Text */}
-        {/* <p className="text-xl font-semibold text-gray-700">Loading...</p> */}
       </div>
     </div>
   );
