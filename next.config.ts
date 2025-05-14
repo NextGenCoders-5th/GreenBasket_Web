@@ -4,8 +4,30 @@ const nextConfig: NextConfig = {
   experimental: {
     
   },
+  
+  
   images: {
-    domains: ['res.cloudinary.com', 'multi-vendor-marketplace-backend-6pue.onrender.com'],
+    remotePatterns: [
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '5000',
+        pathname: '/uploads/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'multi-vendor-marketplace-backend-6pue.onrender.com',
+        port: '',
+        pathname: '/uploads/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'res.cloudinary.com',
+        port: '',
+        pathname: '/**',
+      }
+    ],
+    domains: ['res.cloudinary.com', 'localhost:5000/','multi-vendor-marketplace-backend-6pue.onrender.com'],
   },
 };
 
