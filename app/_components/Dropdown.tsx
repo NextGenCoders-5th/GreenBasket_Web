@@ -3,10 +3,10 @@
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
-import { SortOption } from '@/types/general.types';
+import { DropDownProps } from '@/types/general.types';
 
 interface SortDropdownProps {
-  options: SortOption[];
+  options: DropDownProps[];
 }
 
 export default function SortDropdown({ options }: SortDropdownProps) {

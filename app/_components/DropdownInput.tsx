@@ -1,9 +1,9 @@
 'use client';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
-import { SortOption } from '@/types/general.types';
+import { DropDownProps } from '@/types/general.types';
 
 interface DropDownInputProps {
-  options: SortOption[];
+  options: DropDownProps[];
   setValue: (value: any) => void;
   placeholder: string;
   [key: string] : any
