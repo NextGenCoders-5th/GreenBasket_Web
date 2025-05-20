@@ -15,7 +15,7 @@ import {
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from '@/components/ui/sidebar';
 import { IUser } from '@/types/user.type';
 import { useLogoutMutation } from '@/redux/api/auth.api';
-import { toast } from 'sonner';
+import { useToast } from '@/providers/toast.provider';
 import { useRouter } from 'next/navigation';
 
 export function NavUser({

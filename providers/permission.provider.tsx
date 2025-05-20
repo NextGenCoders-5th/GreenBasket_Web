@@ -3,7 +3,7 @@ import { Role } from '@/enums/role.enum';
 import { useAppSelector } from '@/redux/store';
 import { IUser } from '@/types/user.type';
 import { useRouter } from 'next/navigation';
-import { toast } from 'sonner';
+import { useToast } from '@/providers/toast.provider';
 
 interface PermissionProviderProps {
   children: React.ReactNode;

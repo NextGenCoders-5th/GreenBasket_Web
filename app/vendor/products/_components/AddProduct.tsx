@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label";
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ProductFormData, productSchema } from '@/schema/product.schema';
 import { useCreateProductMutation } from '@/redux/api/product.api';
-import { toast } from 'sonner';
+import { useToast } from '@/providers/toast.provider';
 import { ErrorEnum } from '@/enums/error.enum';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useGetCategoriesQuery } from '@/redux/api/category.api';

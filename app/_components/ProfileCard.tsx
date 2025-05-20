@@ -6,11 +6,13 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { LogOut, User, KeyRound } from 'lucide-react';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { useLogoutMutation } from '@/redux/api/auth.api';
-import { toast } from 'sonner';
+import { useToast } from '@/providers/toast.provider';
 import { useAppSelector } from '@/redux/store';
 import { IUser } from '@/types/user.type';
 
 export default function ProfileDropdown() {
+  // TOAST: toast instance to toast messages
+  const toast = useToast();
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   const router = useRouter();
@@ -38,28 +40,28 @@ export default function ProfileDropdown() {
         router.push('/login');
       })
       .catch((error) => {
-        if(error.status === "UNKNOWN_ERROR") {
         console.error('Logout failed:', error);
-        toast.error('Logout failed. Please try again.');
+        if (error.status === "UNKNOWN_ERROR") {
+          toast.error('Logout failed. Please try again.', { id: toastId });
         }
         else {
-            toast.dismiss(toastId);
+          toast.error(error.message || 'Logout failed. Please try again.' ,{ id: toastId });
         }
       });
   };
 
-  
+
   return (
     <div className="relative" ref={ref}>
       <Avatar onClick={() => setOpen(!open)} className="cursor-pointer border">
         {
-           ( user?.profile_picture) ? (
-                <AvatarImage src={(user ).profile_picture} alt="User" />            
-            ) : (
-                <AvatarFallback>
-                {user?.first_name?.charAt(0).toUpperCase() + (user?.lastName?.charAt(0).toUpperCase() || 'U')}
-                </AvatarFallback>
-            )
+          (user?.profile_picture) ? (
+            <AvatarImage src={(user).profile_picture} alt="User" />
+          ) : (
+            <AvatarFallback>
+              {user?.first_name?.charAt(0).toUpperCase() + (user?.lastName?.charAt(0).toUpperCase() || 'U')}
+            </AvatarFallback>
+          )
         }
         <AvatarFallback>JD</AvatarFallback>
       </Avatar>

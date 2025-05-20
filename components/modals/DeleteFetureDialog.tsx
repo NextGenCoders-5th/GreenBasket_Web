@@ -3,7 +3,8 @@ import { ClassName } from '@/enums/classnames.enum';
 import { Trash } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { toast } from 'sonner';
+import { TooltipWrapper } from '../tooltip.wrapper';
+import { useToast } from '@/providers/toast.provider';
 
 export type FeatureDeleteActionType = () => [unknown, { isLoading: boolean }];
 interface Props {
@@ -13,7 +14,8 @@ interface Props {
   redirectUrl: string;
   iconOnly?: boolean;
 }
-export default function DeleteFeature({ useDelete, feature, featureId, redirectUrl, iconOnly=false }: Props) {
+export default function DeleteFeature({ useDelete, feature, featureId, redirectUrl, iconOnly = false }: Props) {
+  const  toast = useToast();
   const [deleteFeature, { isLoading }] = useDelete() as [(id: string) => Promise<unknown>, { isLoading: boolean }];
   const [isOpen, setIsOpen] = useState(false);
 
@@ -35,7 +37,9 @@ export default function DeleteFeature({ useDelete, feature, featureId, redirectU
           if (err.status === 'UNKNOWN_ERROR') {
             toast.error(`Failed to delete ${feature}`);
           } else {
-            toast.dismiss(toastId);
+            toast.error(err.message || `Failed to delete ${feature}`, {
+              id: toastId,
+            });
           }
         });
     } catch (error) {
@@ -45,12 +49,19 @@ export default function DeleteFeature({ useDelete, feature, featureId, redirectU
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
+        <TooltipWrapper 
+        title={`Delete ${feature}`}
+        className="bg-red-600"
+        arroClassName='bg-red-600 fill-red-600'
+        >
       <DialogTrigger asChild>
-        <button className={` ${ClassName.BUTTON} bg-red-500/90 hover:bg-red-500`} title={`Delete ${feature}`}>
-          <Trash className="w-4 h-4" />
-          {!iconOnly && <span className="hidden sm:inline">Delete {feature}</span>}
-        </button>
+          <button className={` ${ClassName.BUTTON} bg-red-500/90 hover:bg-red-500`}>
+            <Trash className="w-4 h-4" />
+            {!iconOnly && <span className="hidden sm:inline">Delete {feature}</span>}
+          </button>
+
       </DialogTrigger>
+        </TooltipWrapper>
       <DialogContent className="max-w-sm bg-slate-200">
         <DialogHeader>
           <DialogTitle>Confirm Deletion</DialogTitle>

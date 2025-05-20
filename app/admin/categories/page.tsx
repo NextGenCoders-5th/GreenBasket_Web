@@ -7,7 +7,7 @@ import AddCategory from './_categories/AddCategory';
 import { useDeleteCategoryMutation, useGetCategoriesQuery } from '@/redux/api/category.api';
 import EditCategory from './_categories/EditCategory';
 import DeleteFeature, { FeatureDeleteActionType } from '@/components/modals/DeleteFetureDialog';
-
+import Image from 'next/image';
 
 export default function CategoriesPage() {
 
@@ -15,8 +15,8 @@ export default function CategoriesPage() {
   const categories = data?.data.data || []
 
   return (
-    <div className="p-4 max-w-7xl mx-auto">
-      <div className="flex items-center shadow-lg p-2 shadow-green-300/25 justify-between mb-6">
+    <div className="p-4 w-full max-w-7xl mx-auto">
+      <div className="flex w-full items-center shadow-lg p-2 shadow-green-300/25 justify-between mb-6">
         <h1 className="text-2xl font-bold text-gray-800">Categories</h1>
         <AddCategory />
       </div>
@@ -37,15 +37,17 @@ export default function CategoriesPage() {
               transition={{ delay: index * 0.1 }}
               className='min-w-[300px]'
             >
-              <Card className="hover:shadow-lg pt-0 transition duration-300">
-                <CardHeader className='bg-green-500 py-3 rounded-t-xl text-white'>
+              <Card className="hover:shadow-lg space-y-0 pt-0 transition duration-300">
+                <CardContent className='min-w-[300px] p-0 m-0'>
+                <CardHeader className='bg-green-500 py-3 m-0 rounded-t-xl text-white'>
                   <CardTitle className="text-center">{category.name}</CardTitle>
                 </CardHeader>
-                <CardContent>
-                  <img
-                    src={category.image as unknown as string}
+                  <Image
+                    width={300}
+                    height={200}
+                    src={category.image_url}
                     alt={category.name}
-                    className="w-full h-40 object-cover rounded-lg"
+                    className="min-w-[300px] h-40 object-cover"
                   />
                 </CardContent>
                 <CardFooter className='flex justify-end gap-2.5 items-center rounded-b-xl '>

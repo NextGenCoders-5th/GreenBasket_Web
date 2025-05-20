@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { userSchema, UserFormData } from '@/schema/user.schema';
 import { useCreateUserMutation } from '@/redux/api/user.api';
-import { toast } from 'sonner';
+import { useToast } from '@/providers/toast.provider';
 import { Loader2, UserCircle2 } from 'lucide-react';
 import { ClassName } from '@/enums/classnames.enum';
 import { useRouter } from 'next/navigation';
@@ -11,6 +11,7 @@ import { useRouter } from 'next/navigation';
 export default function AddUserPage() {
   // Getting router instance
   const router = useRouter();
+  const toast = useToast()
 
   // Getting form handler
   const {

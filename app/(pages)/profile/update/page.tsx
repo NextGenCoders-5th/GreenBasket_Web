@@ -4,9 +4,11 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { userSchema, UserFormData } from '@/schema/user.schema';
 import { useCreateUserMutation } from '@/redux/api/user.api';
-import { toast } from 'sonner';
+import { useToast } from '@/providers/toast.provider';
 
 export default function ProfilePage() {
+  // TOAST: toast instance to toast messages
+  const toast = useToast();
   const {
     register,
     handleSubmit,
@@ -26,10 +28,10 @@ export default function ProfilePage() {
 
   const [updateProfile, { isLoading, error }] = useCreateUserMutation();
   const onSubmit = async (data: UserFormData) => {
+    const toastId = toast.loading('Updating profile...');
     try {
       console.log('Submitted:', data);
 
-      const toastId = toast.loading('Updating profile...');
       await updateProfile(data)
         .unwrap()
         .then(() => {
@@ -39,15 +41,16 @@ export default function ProfilePage() {
         })
         .catch((error) => {
           if (error.status === 'UNKOWN_ERROR') {
-            toast.error('Profile update failed. Please try again.');
+            toast.error('Profile update failed. Please try again.', { id: toastId });
           } else {
-            toast.dismiss(toastId);
+            toast.error(error.message || 'Profile update failed. Please try again.', { id: toastId });
           }
         });
       // await updateProfile(data); // your API call here
       setSuccess(true);
     } catch (error) {
       console.error('Profile update failed:', error);
+      toast.error('Profile update failed. Please try again.', { id: toastId });
     }
   };
 

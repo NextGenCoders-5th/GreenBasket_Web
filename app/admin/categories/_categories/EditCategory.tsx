@@ -14,7 +14,7 @@ import { Input } from '@/components/ui/input';
 import { Loader2, Pencil } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { useEffect, useState } from 'react';
-import { toast } from 'sonner';
+import { useToast } from '@/providers/toast.provider';
 import { useUpdateCategoryMutation } from '@/redux/api/category.api';
 import { ErrorEnum } from '@/enums/error.enum';
 import { ICategory } from '@/types/category.type';
@@ -27,6 +27,8 @@ interface Props {
 
 export default function EditCategory({ categoryId, category }: Props) {
 
+  // TOAST: toast instance to toast message
+  const toast = useToast()
 
   // State to mange dialog open and close
   const [open, setOpen] = useState(false)
@@ -66,14 +68,13 @@ export default function EditCategory({ categoryId, category }: Props) {
         reset();
       }).catch((error) => {
         if (error.status === ErrorEnum.UNKOWN_ERROR) {
-          toast.error('Failed to edit category', { id: toastId })
+          toast.error('Failed to save category', { id: toastId })
         } else {
-          toast.dismiss(toastId)
+          toast.error(error.message || 'Failed to save category', { id: toastId })
         }
       })
     } catch (error) {
-      toast.dismiss(toastId)
-      toast.error('Failed to edit category');
+      toast.error('Failed to save category', {id: toastId});
     }
   };
 

@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Eye, Plus } from 'lucide-react';
+import { Eye } from 'lucide-react';
 import SortDropdown from '@/app/_components/Dropdown';
 import { ClassName } from '@/enums/classnames.enum';
 import Link from 'next/link';
@@ -13,6 +13,8 @@ import UpdateVendorStatusModal from './_compnents/UpdateVendorStatus';
 import { VendorStatus } from '@/enums/status.enum';
 import EditVendorModal from './_compnents/EditVendor';
 import VendorRegisterDialog from './_compnents/AddVendor';
+import Image from 'next/image';
+import { TooltipWrapper } from '@/components/tooltip.wrapper';
 
 export default function VendorsPage() {
   const [search, setSearch] = useState('');
@@ -26,9 +28,9 @@ export default function VendorsPage() {
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-4 sm:p-6">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8 gap-4">
-        <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-800">Vendors</h1>
+        <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-gray-800">Vendors</h1>
 
-        <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
+        <div className="flex flex-col items-center sm:flex-row gap-3 w-full sm:w-auto">
           <input
             type="text"
             placeholder="Search vendors..."
@@ -44,7 +46,7 @@ export default function VendorsPage() {
               { label: 'Email (Z-A)', value: 'email_desc' },
             ]}
           />
-          <VendorRegisterDialog/>
+          <VendorRegisterDialog />
         </div>
       </div>
 
@@ -59,9 +61,10 @@ export default function VendorsPage() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 20 }}
                 transition={{ duration: 0.4, ease: 'easeOut' }}
-                className="bg-white flex flex-col   justify-between   rounded-2xl shadow-md p-6 hover:shadow-xl transition-transform transform hover:-translate-y-1"
-              > 
-                <div className="w-full justify-end items-center flex gap-2">
+                className="bg-white flex flex-col justify-between rounded-2xl shadow-md p-5 hover:shadow-xl transition-transform transform hover:-translate-y-1"
+              >
+                {/* Action Buttons */}
+                <div className="w-full flex flex-wrap justify-end items-center gap-2 mb-4">
                   <UpdateVendorStatusModal
                     currentStatus={vendor.status as VendorStatus}
                     vendorId={vendor.id}
@@ -74,41 +77,49 @@ export default function VendorsPage() {
                     iconOnly
                   />
                   <EditVendorModal vendor={vendor} />
-                  <Link
-                    href={`/admin/vendors/${vendor.id}`}
-                    className={`${ClassName.BUTTON} bg-accent-600 text-white rounded-lg hover:bg-accent-700 transition`}
+                  <TooltipWrapper
+                    title='View Vendor'
+
+                    className="bg-green-600"
+                    arroClassName='bg-green-600 fill-green-600'
                   >
-                    <Eye className="w-4 h-4" />
-                  </Link>
+
+                    <Link
+                      href={`/admin/vendors/${vendor.id}`}
+                      className={`${ClassName.BUTTON} bg-accent-600 text-white rounded-lg hover:bg-accent-700 transition`}
+                    >
+                      <Eye className="w-4 h-4" />
+                    </Link>
+                  </TooltipWrapper>
                 </div>
-            
-                 
-                <div className="flex items-center justify-self-start gap-10 p-5  w-full py-3">
-                 <motion.img
-                  src={vendor.logo_url}
-                  alt={`${vendor.business_name} Logo`}
-                  className="w-24 h-24 object-contain  mb-4 rounded-full shadow"
-                  whileHover={{ scale: 1.1 }}
-                  transition={{ duration: 0.3 }}
-                />
-                <div className="flex flex-col items-center ">
-                  <h2 className="text-lg sm:text-xl font-semibold text-gray-900 text-center">{vendor.business_name}</h2>
-                  <p className="text-sm text-gray-600 text-center">{vendor.business_email}</p>
-                  <p className="text-sm text-gray-600 text-center">{vendor.phone_number}</p>
-                  <div className="flex justify-center mt-4">
-                    <span
-                      className={`px-3 py-1 text-sm rounded-full font-medium ${vendor.status === 'APPROVED'
+
+                {/* Vendor Info */}
+                <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6 p-2 sm:p-4">
+                  <Image
+                    src={vendor.logo_url}
+                    width={100}
+                    height={100}
+                    alt={`${vendor.business_name} Logo`}
+                    className="w-24 h-24 object-contain rounded-full shadow"
+                  />
+                  <div className="flex flex-col items-center sm:items-start text-center sm:text-left w-full overflow-hidden">
+                    <h2 className="text-lg sm:text-xl font-semibold text-gray-900 truncate">
+                      {vendor.business_name}
+                    </h2>
+                    <p className="text-sm text-gray-600 truncate">{vendor.business_email}</p>
+                    <p className="text-sm text-gray-600 truncate">{vendor.phone_number}</p>
+                    <div className="flex justify-center sm:justify-start mt-3">
+                      <span
+                        className={`px-3 py-1 text-sm rounded-full font-medium ${vendor.status === 'APPROVED'
                           ? 'bg-green-100 text-green-800'
                           : 'bg-yellow-100 text-yellow-800'
-                        }`}
-                    >
-                      {vendor.status}
-                    </span>
+                          }`}
+                      >
+                        {vendor.status}
+                      </span>
+                    </div>
                   </div>
                 </div>
-                 </div>
-                
-
               </motion.div>
             ))}
           </div>

@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { userSchema, UserFormData } from '@/schema/user.schema';
 import { useCreateUserMutation } from '@/redux/api/user.api';
-import { toast } from 'sonner';
+import { useToast } from '@/providers/toast.provider';
 import { Loader2, Plus, UserCircle2 } from 'lucide-react';
 import { ClassName } from '@/enums/classnames.enum';
 import { useRouter } from 'next/navigation';
@@ -18,6 +18,8 @@ import { Button } from '@/components/ui/button';
 import { useState } from 'react';
 
 export default function AddUserDialog() {
+  // TOAST: toast instance to toast messages
+  const toast = useToast();
   const [open, setOpen] = useState(false)
   const router = useRouter();
 
@@ -40,8 +42,8 @@ export default function AddUserDialog() {
   const [updateProfile, { isLoading }] = useCreateUserMutation();
 
   const onSubmit = async (data: UserFormData) => {
+    const toastId = toast.loading('Adding new user...');
     try {
-      const toastId = toast.loading('Adding new user...');
       if (!data.phoneNumber.includes('+')) {
         data.phoneNumber = '+251' + data.phoneNumber.slice(1);
       }
@@ -57,11 +59,13 @@ export default function AddUserDialog() {
           if (error.status === 'UNKOWN_ERROR')
             toast.error('New user add failed, please try again.', { id: toastId });
           else {
-            toast.dismiss(toastId);
+            toast.error(error.message || 'New user add failed, please try again.', { id: toastId });
           }
         });
     } catch (error) {
       console.error('New user add failed:', error);
+      toast.error('New user add failed, please try again.', { id: toastId });
+
     }
   };
 

@@ -5,9 +5,12 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
 import { signupSchema, SignupSchemaType } from '@/schema/auth.schema';
 import { useSignUpMutation } from '@/redux/api/auth.api';
-import { toast } from 'sonner';
+import { useToast } from '@/providers/toast.provider';
+import { ErrorEnum } from '@/enums/error.enum';
 
 export default function SignupPage() {
+  // TOAST: toast instance to toast messages
+  const toast = useToast();
   // Create a form instance using react-hook-form
   // and validate it using zod
   const {
@@ -25,20 +28,25 @@ export default function SignupPage() {
   const [signUp, { isLoading, error }] = useSignUpMutation();
   const onSubmit = async (data: SignupSchemaType) => {
     console.log('Submitted Data:', data);
+    const toastId = toast.loading("Signing up ")
     try {
       await signUp(data)
         .unwrap()
         .then(() => {
+          toast.dismiss(toastId);
           router.push(`/login`);
         })
         .catch((error) => {
-          if (error.status === 'UNKOWN_ERROR') {
-            toast.error('Login failed. Please try again.');
+          if (error.status === ErrorEnum.UNKOWN_ERROR) {
+            toast.error('Signup failed. Please try again.', {id: toastId});
           }
-          console.error('Login failed:', error);
+          else{
+            toast.info(error.message || "Signup failed. Please try again",{id: toastId})
+          }
         });
     } catch (error) {
       console.error('Error:', error);
+      toast.info( "Signup failed. Please try again",{id: toastId})
     }
   };
 

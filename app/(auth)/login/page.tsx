@@ -6,7 +6,7 @@ import { loginSchema } from '@/schema/auth.schema';
 import { ILoginRequest } from '@/types/auth.type';
 import Link from 'next/link';
 import { useLoginMutation } from '@/redux/api/auth.api';
-import { toast } from 'sonner';
+import { useToast } from '@/providers/toast.provider';
 import { useDispatch } from 'react-redux';
 import { setCredentials } from '@/redux/slices/auth.slice';
 import { useRouter } from 'next/navigation';
@@ -14,6 +14,8 @@ import { SessionEnum } from '@/enums/session.enum';
 import { useAppSelector } from '@/redux/store';
 
 export default function LoginPage() {
+    // TOAST: toast instance to toast messages
+    const toast = useToast();
   const user = useAppSelector((state) => state.auth.user);
 
   console.log(user);
@@ -70,7 +72,7 @@ export default function LoginPage() {
             id: toastId,
           });
         } else {
-          toast.dismiss(toastId);
+          toast.error(err.message || "Login failed. Please try again", {id: toastId})
         }
       });
   };

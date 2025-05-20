@@ -8,7 +8,6 @@ import {
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { useUpdateVendorMutation } from '@/redux/api/vendor.api';
-import { toast } from 'sonner';
 import DropDownInput from '@/app/_components/DropdownInput';
 import { useForm } from 'react-hook-form';
 import { ClassName } from '@/enums/classnames.enum';
@@ -18,12 +17,16 @@ import { useRouter } from 'next/navigation';
 import { useGetUsersQuery } from '@/redux/api/user.api';
 import { IVendor } from '@/types/vendor.type';
 import { Pencil } from 'lucide-react';
+import { TooltipWrapper } from '@/components/tooltip.wrapper';
+import { useToast } from '@/providers/toast.provider';
+import { ErrorEnum } from '@/enums/error.enum';
 
 interface Props {
   vendor: IVendor;
 }
 
 export default function EditVendorModal({ vendor }: Props) {
+  const toast = useToast();
   const [open, setOpen] = useState(false);
   const [editVendor, { isLoading }] = useUpdateVendorMutation();
   const router = useRouter();
@@ -33,7 +36,7 @@ export default function EditVendorModal({ vendor }: Props) {
     register,
     handleSubmit,
     setValue,
-    formState: { isDirty,errors },
+    formState: { isDirty, errors },
     reset,
   } = useForm<VendorFormData>({
     resolver: zodResolver(editVendorSchema),
@@ -54,10 +57,12 @@ export default function EditVendorModal({ vendor }: Props) {
         setOpen(false);
       })
       .catch((error) => {
-        if (error.status === 'UNKOWN_ERROR') {
+        if (error.status === ErrorEnum.UNKOWN_ERROR) {
           toast.error('Updating failed. Please try again.');
         } else {
-          toast.dismiss(toastId);
+          toast.error(error.message || 'An error occurred', {
+            id: toastId,
+          });
         }
       });
   };
@@ -70,14 +75,21 @@ export default function EditVendorModal({ vendor }: Props) {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <button
-          className={`${ClassName.BUTTON} bg-blue-500/90 hover:bg-blue-500`}
-          title="Edit User"
-        >
-          <Pencil className="w-4 h-4" />
-        </button>
-      </DialogTrigger>
+      <TooltipWrapper
+        title="Edit Vendor"
+        className="bg-blue-600"
+        arroClassName='bg-blue-600 fill-blue-600'
+      >
+        <DialogTrigger asChild>
+
+          <button
+            className={`${ClassName.BUTTON} bg-blue-500/90 hover:bg-blue-500`}
+            title="Edit Vendor"
+          >
+            <Pencil className="w-4 h-4" />
+          </button>
+        </DialogTrigger>
+      </TooltipWrapper>
       <DialogContent className="max-w-md w-full">
         <DialogHeader className='flex pt-2.5  flex-row items-center justify-between '>
           <DialogTitle>Update Vendor Status</DialogTitle>
@@ -137,7 +149,7 @@ export default function EditVendorModal({ vendor }: Props) {
           </div>
 
           <div className="flex flex-col items-center justify-end sm:flex-row gap-3">
-          <Button
+            <Button
               type="button"
               onClick={handleCancel}
               variant="outline"

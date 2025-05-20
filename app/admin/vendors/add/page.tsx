@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { vendorSchema, VendorFormData } from '@/schema/vendor.schema';
 import { useState } from 'react';
-import { toast } from 'sonner';
+import { useToast } from '@/providers/toast.provider';
 import { useRouter } from 'next/navigation';
 import { useCreateVendorMutation } from '@/redux/api/vendor.api';
 import { useGetUsersQuery } from '@/redux/api/user.api';
@@ -11,6 +11,8 @@ import DropDownInput from '@/app/_components/DropdownInput';
 import { ClassName } from '@/enums/classnames.enum';
 
 export default function VendorRegisterPage() {
+    // TOAST: toast instance to toast message
+    const toast = useToast();
     // Getting router instance
     const router = useRouter();
 
@@ -57,9 +59,9 @@ export default function VendorRegisterPage() {
             })
             .catch((error) => {
                 if (error.status === 'UNKOWN_ERROR') {
-                    toast.error('Registration failed. Please try again.');
+                    toast.error('Registration failed. Please try again.', {id: toastId});
                 } else {
-                    toast.dismiss(toastId);
+                    toast.error(error.message || 'Registration failed. Please try again.', {id: toastId});
                 }
             });
         setLogoPreview(null);

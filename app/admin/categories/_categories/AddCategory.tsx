@@ -15,7 +15,7 @@ import { Loader2 } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
-import { toast } from 'sonner';
+import { useToast } from '@/providers/toast.provider';
 import { CategoryFormData, categorySchema } from '@/schema/category.schema';
 import { useCreateCategoryMutation } from '@/redux/api/category.api';
 import { ErrorEnum } from '@/enums/error.enum';
@@ -23,6 +23,8 @@ import { ErrorEnum } from '@/enums/error.enum';
 
 export default function AddCategory() {
 
+  // TOAST: toast to toast message
+  const toast = useToast();
 
   // State to mange dialog open and close
   const [open, setOpen] = useState(false)
@@ -57,12 +59,11 @@ export default function AddCategory() {
         if(error.status === ErrorEnum.UNKOWN_ERROR){
           toast.error('Failed to create category', {id: toastId})
         } else {
-          toast.dismiss(toastId)
+          toast.error(error.message || 'Failed to create category', {id: toastId})
         }
       })
     } catch (error) {
-      toast.dismiss(toastId)
-      toast.error('Failed to create category');
+      toast.error( 'Failed to create category', {id: toastId})
     } 
   };
 

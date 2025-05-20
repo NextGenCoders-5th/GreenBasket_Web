@@ -8,9 +8,11 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { toast } from 'sonner';
+import { useToast } from '@/providers/toast.provider';
 
 export default function VendorRegisterPage() {
+    // TOAST: toast instance to toast messages
+    const toast = useToast();
   // Getting router instance
   const router = useRouter();
 

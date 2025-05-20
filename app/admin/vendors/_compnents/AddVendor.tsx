@@ -7,14 +7,17 @@ import { vendorSchema, VendorFormData } from '@/schema/vendor.schema';
 import { useCreateVendorMutation } from '@/redux/api/vendor.api';
 import { useGetUsersQuery } from '@/redux/api/user.api';
 import { useRouter } from 'next/navigation';
-import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import DropDownInput from '@/app/_components/DropdownInput';
 import { ClassName } from '@/enums/classnames.enum';
 import { Plus } from 'lucide-react';
+import { TooltipWrapper } from '@/components/tooltip.wrapper';
+import { useToast } from '@/providers/toast.provider';
+import { ErrorEnum } from '@/enums/error.enum';
 
 export default function VendorRegisterDialog() {
+    const toast = useToast();
     const router = useRouter();
     const { data } = useGetUsersQuery('');
     const [open, setOpen] = useState(false);
@@ -55,8 +58,14 @@ export default function VendorRegisterDialog() {
                 setOpen(false);
                 router.push('/admin/vendors');
             })
-            .catch(() => {
-                toast.error('Registration failed. Please try again.', { id: toastId });
+            .catch((error) => {
+                if (error.status === ErrorEnum.UNKOWN_ERROR)
+                    toast.error('Registration failed. Please try again.', { id: toastId });
+                else {
+                    toast.error(error.message || 'An error occurred', {
+                        id: toastId,
+                    });
+                }
             });
     };
 
@@ -71,14 +80,22 @@ export default function VendorRegisterDialog() {
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
-            <DialogTrigger asChild>
-                <button
-                    className="inline-flex items-center justify-center px-4 py-0 gap-2 bg-accent-600 text-white font-semibold rounded-lg hover:bg-accent-700 transition"
-                >
-                    <Plus className="w-5 h-5" />
-                    <span className="hidden sm:inline">Add Vendor</span>
-                </button>           
-             </DialogTrigger>
+            <TooltipWrapper
+                title="Add Vendor"
+                className="bg-green-600"
+                arroClassName='bg-green-600 fill-green-600'
+            >
+
+                <DialogTrigger asChild>
+                    <button
+                        className="inline-flex py-2 items-center text-sm justify-center px-4  gap-2 bg-green-500 text-white  rounded-lg hover:bg-green-600 duration-100 transition"
+                    >
+                        <Plus className="w-4 h-4" />
+                        <span className="hidden sm:inline">Add</span>
+                        <span className='hidden md:inline'>Vendor</span>
+                    </button>
+                </DialogTrigger>
+            </TooltipWrapper>
             <DialogContent className="max-w-lg w-full p-6 rounded-2xl">
                 <DialogHeader>
                     <DialogTitle className="text-green-600">Register Vendor</DialogTitle>
@@ -138,7 +155,7 @@ export default function VendorRegisterDialog() {
 
                     <Button
                         type="submit"
-                        className="w-full bg-accent-600 hover:bg-accent-700 text-white"
+                        className="w-full bg-green-500 hover:bg-green-600 transition duration-100 text-white"
                         disabled={isLoading}
                     >
                         {isLoading ? 'Registering...' : 'Register Vendor'}

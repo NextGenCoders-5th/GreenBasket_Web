@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { userSchema, UserFormData } from '@/schema/user.schema';
 import { useGetUserQuery, useUpdateUserMutation } from '@/redux/api/user.api';
-import { toast } from 'sonner';
+import { useToast } from '@/providers/toast.provider';
 import { Loader2, Pencil, Plus, UserCircle2 } from 'lucide-react';
 import { ClassName } from '@/enums/classnames.enum';
 import { useParams, useRouter } from 'next/navigation';
@@ -21,6 +21,9 @@ import { IUser } from '@/types/user.type';
 
 
 export default function EditUserDialog() {
+  // TOAST:- toast instance to toast message
+
+  const toast = useToast();
   const [open, setOpen] = useState(false)
   const router = useRouter();
 
@@ -60,8 +63,8 @@ export default function EditUserDialog() {
   const [updateUser, { isLoading }] = useUpdateUserMutation();
 
   const onSubmit = async (data: UserFormData) => {
+    const toastId = toast.loading('Saving  user...');
     try {
-      const toastId = toast.loading('Editing  user...');
       if (!data.phoneNumber.includes('+')) {
         data.phoneNumber = '+251' + data.phoneNumber.slice(1);
       }
@@ -71,20 +74,21 @@ export default function EditUserDialog() {
       })
         .unwrap()
         .then(() => {
-          toast.success('User updated successfully', { id: toastId });
+          toast.success('User saved successfully', { id: toastId });
           reset();
           setOpen(false)
           router.push('/admin/users');
         })
         .catch((error) => {
           if (error.status === 'UNKOWN_ERROR')
-            toast.error(' Updating user failed, please try again.', { id: toastId });
+            toast.error(' Saving user failed, please try again.', { id: toastId });
           else {
-            toast.dismiss(toastId);
+            toast.error(error.message || ' Saving user failed, please try again.', { id: toastId });
           }
         });
     } catch (error) {
-      console.error('User updating failed:', error);
+      console.error('User saving failed:', error);
+      toast.error(' Saving user failed, please try again.', { id: toastId });
     }
   };
 
@@ -185,7 +189,7 @@ export default function EditUserDialog() {
                     className="w-full sm:w-auto bg-accent-600 text-white hover:bg-accent-700"
                     disabled={isLoading}
                   >
-                    {isLoading ? 'Editing...' : 'Edit User'}
+                    {isLoading ? 'Saving...' : 'Save'}
                   </Button>
                 </div>
               </form>
