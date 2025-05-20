@@ -15,7 +15,7 @@ interface Props {
   iconOnly?: boolean;
 }
 export default function DeleteFeature({ useDelete, feature, featureId, redirectUrl, iconOnly = false }: Props) {
-  const  toast = useToast();
+  const toast = useToast();
   const [deleteFeature, { isLoading }] = useDelete() as [(id: string) => Promise<unknown>, { isLoading: boolean }];
   const [isOpen, setIsOpen] = useState(false);
 
@@ -49,19 +49,19 @@ export default function DeleteFeature({ useDelete, feature, featureId, redirectU
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <TooltipWrapper 
+      <TooltipWrapper
         title={`Delete ${feature}`}
         className="bg-red-600"
         arroClassName='bg-red-600 fill-red-600'
-        >
-      <DialogTrigger asChild>
+      >
+        <DialogTrigger asChild>
           <button className={` ${ClassName.BUTTON} bg-red-500/90 hover:bg-red-500`}>
             <Trash className="w-4 h-4" />
             {!iconOnly && <span className="hidden sm:inline">Delete {feature}</span>}
           </button>
 
-      </DialogTrigger>
-        </TooltipWrapper>
+        </DialogTrigger>
+      </TooltipWrapper>
       <DialogContent className="max-w-sm bg-slate-200">
         <DialogHeader>
           <DialogTitle>Confirm Deletion</DialogTitle>
@@ -77,7 +77,7 @@ export default function DeleteFeature({ useDelete, feature, featureId, redirectU
               onConfirm();
               setIsOpen(false);
             }}
-            className="px-4 py-2 disabled:cursor-not-allowed  bg-red-500 text-white rounded-md hover:bg-red-600"
+            className="px-3 py-2 text-sm disabled:cursor-not-allowed  bg-red-500 text-white rounded-md hover:bg-red-600"
           >
             Delete
           </button>

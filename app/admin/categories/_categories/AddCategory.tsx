@@ -11,7 +11,7 @@ import {
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Loader2 } from 'lucide-react';
+import { Loader2, Plus } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
@@ -19,6 +19,7 @@ import { useToast } from '@/providers/toast.provider';
 import { CategoryFormData, categorySchema } from '@/schema/category.schema';
 import { useCreateCategoryMutation } from '@/redux/api/category.api';
 import { ErrorEnum } from '@/enums/error.enum';
+import { TooltipWrapper } from '@/components/tooltip.wrapper';
 
 
 export default function AddCategory() {
@@ -69,9 +70,16 @@ export default function AddCategory() {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
+      <TooltipWrapper 
+        title={`Add Category`}
+        className="bg-green-600"
+        arroClassName='bg-green-600 fill-green-600'
+        >
+          
       <DialogTrigger asChild>
-        <Button>Add Category</Button>
+        <Button> <Plus/> Add </Button>
       </DialogTrigger>
+        </TooltipWrapper>
 
       <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>

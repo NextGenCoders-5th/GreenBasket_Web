@@ -19,6 +19,7 @@ import { useUpdateCategoryMutation } from '@/redux/api/category.api';
 import { ErrorEnum } from '@/enums/error.enum';
 import { ICategory } from '@/types/category.type';
 import { ClassName } from '@/enums/classnames.enum';
+import { TooltipWrapper } from '@/components/tooltip.wrapper';
 
 interface Props {
   categoryId: string;
@@ -41,7 +42,7 @@ export default function EditCategory({ categoryId, category }: Props) {
     formState: { errors },
     reset,
   } = useForm<{ name: string }>({
-    defaultValues:{
+    defaultValues: {
       name: category.name,
     }
   });
@@ -53,10 +54,7 @@ export default function EditCategory({ categoryId, category }: Props) {
       name: category.name,
     })
   }, [category])
-  // }, [category])
 
-
-  
   const onSubmit = async (data: { name: string }) => {
 
     const toastId = toast.loading('Saving category...');
@@ -74,18 +72,24 @@ export default function EditCategory({ categoryId, category }: Props) {
         }
       })
     } catch (error) {
-      toast.error('Failed to save category', {id: toastId});
+      toast.error('Failed to save category', { id: toastId });
     }
   };
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <button className={` ${ClassName.BUTTON} px-2  py-0 bg-blue-500/90 hover:bg-blue-500`} title="Edit User">
-          <Pencil className="w-3 h-3" />
-          <span className="hidden sm:inline">Edit </span>
-        </button>
-      </DialogTrigger>
+      <TooltipWrapper
+        title={`Edit Category`}
+        className="bg-blue-600"
+        arroClassName='bg-blue-600 fill-blue-600'
+      >
+
+        <DialogTrigger asChild>
+          <button className={` ${ClassName.BUTTON}  bg-blue-600/90 hover:bg-blue-600`} title="Edit User">
+            <Pencil className="w-4 h-4" />
+          </button>
+        </DialogTrigger>
+      </TooltipWrapper>
 
       <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
