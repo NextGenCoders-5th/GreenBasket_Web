@@ -27,12 +27,12 @@ export default function SortDropdown({ options }: SortDropdownProps) {
 
   return (
     <div className="flex items-center">
-      <Select onValueChange={handleChange} value={sort}>
-        <SelectTrigger>
+      <Select  onValueChange={handleChange} value={sort}>
+        <SelectTrigger className='py-1.5'>
           <SelectValue placeholder="Sort by" />
         </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="none">None</SelectItem>
+        <SelectContent className='py-1.5'>
+          <SelectItem className='py-1.5 border border-red-700' value="none">None</SelectItem>
           {options.map((option) => (
             <SelectItem key={option.value} value={option.value}>
               {option.label}

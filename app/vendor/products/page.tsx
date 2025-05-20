@@ -4,6 +4,7 @@ import React from 'react';
 import AddProductDialog from './_components/AddProduct';
 import SearchInput from '@/app/_components/SearchInput';
 import ProductList from './ProductList';
+import DropDownInput from '@/app/_components/DropdownInput';
 
 const ProductPage = () => {
   return (
@@ -15,12 +16,16 @@ const ProductPage = () => {
 
       <div className="flex justify-between items-center mb-4">
         <SearchInput/>
-        <select
-          className="ml-4 p-3 border-2 border-green-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-        >
-          <option value="name">Sort by Name</option>
-          <option value="price">Sort by Price</option>
-        </select>
+      <DropDownInput
+        options={[
+          { label: 'Sort by Name', value: 'name' },
+          { label: 'Sort by Price', value: 'price' },
+          { label: 'Sort by Date', value: 'date' },
+        ]}
+        placeholder="Sort by"
+        className="w-44 rounded-md"
+        setValue={(value) => console.log(value)} // Handle sort change
+      />
       </div>
 
       <div className="overflow-x-auto rounded-lg shadow-lg bg-white">

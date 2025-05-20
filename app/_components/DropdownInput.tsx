@@ -6,19 +6,20 @@ interface DropDownInputProps {
   options: DropDownProps[];
   setValue: (value: any) => void;
   placeholder: string;
+  className?: string;
   [key: string] : any
 }
 
-export default function DropDownInput({ options,  setValue, placeholder, ...leftProps }: DropDownInputProps) {
+export default function DropDownInput({ options,  setValue, placeholder, className,...leftProps }: DropDownInputProps) {
   return (
-    <div className="flex items-center  justify-stretch  h-16 w-full object-cover  ">
+    <div className={` flex items-center border border-accent-400 justify-stretch   object-cover ${className} `}>
       <Select  onValueChange={setValue} {...leftProps}>
         <SelectTrigger className='w-full'>
           <SelectValue placeholder={placeholder} />
         </SelectTrigger>
-        <SelectContent>
+        <SelectContent className='border border-accent-400'>
           {options.map((option) => (
-            <SelectItem key={option.value} value={option.value}>
+            <SelectItem key={option.value} className='' value={option.value}>
               {option.label}
             </SelectItem>
           ))}

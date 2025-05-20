@@ -12,8 +12,6 @@ import { useToast } from '@/providers/toast.provider';
 import { ErrorEnum } from '@/enums/error.enum';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useGetCategoriesQuery } from '@/redux/api/category.api';
-import DropDownInput from '@/app/_components/DropdownInput';
-import { product_units } from './data';
 
 export default function AddProductDialog() {
     const [open, setOpen] = useState(false);
@@ -127,12 +125,7 @@ export default function AddProductDialog() {
 
                         <div className='space-y-1'>
                             <Label htmlFor="unit">Unit *</Label>
-                            <DropDownInput
-                                options={product_units}
-                                setValue={(value) => setValue("unit", value)}
-                                placeholder="Select unit"
-                                className="w-full"
-                            />
+                            <Input  id="unit" {...register("unit")} />
                             {errors.unit && <p className="text-red-500 text-sm">{errors.unit.message}</p>}
                         </div>
 
