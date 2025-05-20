@@ -1,3 +1,4 @@
+import { log } from 'console';
 import { z } from 'zod';
 
 export const vendorSchema = z.object({
@@ -14,6 +15,8 @@ export const editVendorSchema = z.object({
   business_email: z.string().email('Invalid email'),
   phone_number: z.string().min(10, 'Phone number is required'),
   userId: z.string().uuid('Invalid user ID'),
+  logo: z.any().optional(),
+  logo_url: z.string().optional(),
 });
 
 export type VendorFormData = z.infer<typeof vendorSchema>;

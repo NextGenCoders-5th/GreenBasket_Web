@@ -9,9 +9,9 @@ import { useDispatch } from 'react-redux';
 
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   // Getting router isntance
-
   // Getting logged in user
   const user = useAppSelector((state) => state.auth.user);
+  // const refreshToken = typeof window !== 'undefined' ? localStorage.getItem('refreshToken') : null;
 
   // Getting disptacher instance
 
@@ -19,7 +19,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   // Getting current user data;
   const { data, isLoading, error } = useCurrentUserQuery(undefined, {
-    skip: !!user,
+    skip: !!user 
   });
   useEffect(() => {
     if (data) {
@@ -38,7 +38,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }, [error]);
   if (isLoading) return <LoadingPage />;
 
-  if (error) {
+  if (error ) {
     return (
       <NetworkErrorSection/>
     );

@@ -1,8 +1,7 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
-import {  baseQueryWithReauth } from './base.query';
-import { CreateVendorRequest, CreateVendorResponse, IVendor } from '@/types/vendor.type';
+import { baseQueryWithReauth } from './base.query';
+import {  CreateVendorResponse, IVendor } from '@/types/vendor.type';
 import { ApiResponse } from '@/types/base.type';
-import { VendorStatus } from '@/enums/status.enum';
 
 export enum VendorTags {
   VENDOR = 'Vendor',
@@ -22,13 +21,11 @@ const vendorApi = createApi({
       }),
       invalidatesTags: [VendorTags.VENDORS],
     }),
-    updateVendor: builder.mutation<CreateVendorResponse, { vendorId: string; vendorData: Partial<CreateVendorRequest & {status: VendorStatus}> }>({
+    updateVendor: builder.mutation<CreateVendorResponse, { vendorId: string; vendorData: FormData }>({
       query: ({ vendorId, vendorData }) => ({
         url: `vendors/${vendorId}`,
         method: 'PATCH',
-        body: {
-          ...vendorData
-        },
+        body: vendorData,
       }),
       invalidatesTags: (_, error, { vendorId }) => [{ type: VendorTags.VENDOR, id: vendorId }, VendorTags.VENDORS],
     }),
@@ -39,7 +36,7 @@ const vendorApi = createApi({
       }),
       invalidatesTags: (_, error, vendorId) => [{ type: VendorTags.VENDOR, id: vendorId }, VendorTags.VENDORS],
     }),
-    getVendor: builder.query<{data: {data: IVendor}}, string>({
+    getVendor: builder.query<{ data: { data: IVendor } }, string>({
       query: (vendorId) => ({
         url: `vendors/${vendorId}`,
         method: 'GET',

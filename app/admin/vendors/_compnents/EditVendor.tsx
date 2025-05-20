@@ -28,6 +28,7 @@ interface Props {
 export default function EditVendorModal({ vendor }: Props) {
   const toast = useToast();
   const [open, setOpen] = useState(false);
+  const [logo, setLogo] = useState<File | null>(null);
   const [editVendor, { isLoading }] = useUpdateVendorMutation();
   const router = useRouter();
   const { data } = useGetUsersQuery('');
@@ -44,11 +45,23 @@ export default function EditVendorModal({ vendor }: Props) {
   });
 
   const onSubmit = async (data: VendorFormData) => {
+    const formData = new FormData();
     if (!data.phone_number.includes('+251')) {
-      data.phone_number = '+251' + data.phone_number.slice(1);
+        data.phone_number = '+251' + data.phone_number.slice(1);
     }
+    if (logo) formData.append('logo', logo);
+    formData.append('userId', data.userId);
+    formData.append('business_email', data.business_email); 
+    formData.append('business_name', data.business_name);
+    formData.append('phone_number', data.phone_number);
     const toastId = toast.loading('Updating vendor...');
-    await editVendor({ vendorId: vendor.id, vendorData: data })
+    console.log(data)
+    console.log('Raw form data:');
+    for (const [key, value] of formData.entries()) {
+      console.log(`${key}:`, value);
+    }
+
+    await editVendor({ vendorId: vendor.id, vendorData: formData })
       .unwrap()
       .then(() => {
         toast.success('Vendor updated successfully', { id: toastId });
@@ -145,6 +158,30 @@ export default function EditVendorModal({ vendor }: Props) {
             />
             {errors.userId && (
               <p className="text-sm text-red-600">{errors.userId.message}</p>
+            )}
+          </div>
+          <div>
+            Label logo
+            <input
+             type='file'
+             accept='image/*'
+             className={`${ClassName.INPUT} mt-1`}
+             onChange={e=>{
+              const file = e.target.files?.[0]
+              if(file){
+                setLogo(file)
+              }
+             }}
+             />
+            {errors.logo && (
+              <p className="text-sm text-red-600">{errors.logo.message as string}</p>
+            )}
+            {(logo || vendor.logo_url) && (
+              <img
+                src={logo ? URL.createObjectURL(logo) : vendor.logo_url}
+                alt="Logo Preview"
+                className="mt-2 h-16 w-16 object-cover rounded-md border"
+              />
             )}
           </div>
 
