@@ -22,12 +22,22 @@ export default function AddProductDialog() {
 
     console.log(categories)
 
+    const toast = useToast();
     // Getting redux api instance to create product
     const [createProduct, { isLoading }] = useCreateProductMutation();
 
     // Integrating Zod with React Hook Form
     const { register, handleSubmit, setValue, watch, formState: { errors }, reset } = useForm<ProductFormData>({
         resolver: zodResolver(productSchema),
+        defaultValues:{
+            name: "",
+            description: "No description",
+            price: 0,
+            discount_price: 0,
+            unit: "",
+            stock: 0,
+            categories: ""
+        }
     });
 
     const selectedCategories = watch('categories', "") as string; // Watch the selected categories
@@ -56,7 +66,7 @@ export default function AddProductDialog() {
         formData.append('stock', data.stock.toString());
         formData.append('image', data.image[0]);
         const categories = data.categories?.split(",")|| [];
-        formData.append('categories', JSON.stringify(categories));
+        data.categories && formData.append('categories', JSON.stringify(categories.filter(Boolean))); 
 
         try {
             createProduct(formData)
@@ -81,6 +91,7 @@ export default function AddProductDialog() {
         }
     };
 
+    console.log(errors)
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>

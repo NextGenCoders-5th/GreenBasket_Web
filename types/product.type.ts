@@ -9,6 +9,7 @@ interface Product {
   stock: number;
   image: File | string | null; 
   categories?: string;
+  image_url?: string;
 }
 
 interface CreateProductRequest extends Product {}
