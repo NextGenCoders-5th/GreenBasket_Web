@@ -12,6 +12,7 @@ import { setCredentials } from '@/redux/slices/auth.slice';
 import { useRouter } from 'next/navigation';
 import { SessionEnum } from '@/enums/session.enum';
 import { useAppSelector } from '@/redux/store';
+import PasswordInput from '@/app/_components/PasswordInput';
 
 export default function LoginPage() {
     // TOAST: toast instance to toast messages
@@ -91,7 +92,6 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
       <div className=" bg-white p-6 rounded-lg shadow-md w-full max-w-sm space-y-4">
-        <pre>{error && JSON.stringify(error, null, 2)}</pre>
         <form onSubmit={handleSubmit(onSubmit)} className="w-full space-y-4">
           <h2 className="text-2xl font-semibold text-center">Login</h2>
 
@@ -107,12 +107,13 @@ export default function LoginPage() {
 
           <div>
             <label className="block text-sm font-medium mb-1">Password</label>
-            <input
-              {...register('password')}
-              type="password"
-              className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-green-500"
+            <PasswordInput
+              register={register}
+              name="password"
               placeholder="Enter your password"
+              className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-green-500"
             />
+           
             {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>}
           </div>
 

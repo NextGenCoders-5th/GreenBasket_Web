@@ -7,6 +7,7 @@ import { signupSchema, SignupSchemaType } from '@/schema/auth.schema';
 import { useSignUpMutation } from '@/redux/api/auth.api';
 import { useToast } from '@/providers/toast.provider';
 import { ErrorEnum } from '@/enums/error.enum';
+import PasswordInput from '@/app/_components/PasswordInput';
 
 export default function SignupPage() {
   // TOAST: toast instance to toast messages
@@ -41,7 +42,7 @@ export default function SignupPage() {
             toast.error('Signup failed. Please try again.', {id: toastId});
           }
           else{
-            toast.info(error.message || "Signup failed. Please try again",{id: toastId})
+            toast.error(error.message || "Signup failed. Please try again",{id: toastId})
           }
         });
     } catch (error) {
@@ -80,22 +81,22 @@ export default function SignupPage() {
 
           <div>
             <label className="block text-sm font-medium text-gray-700">Password</label>
-            <input
-              type="password"
-              {...register('password')}
-              className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-green-400"
+            <PasswordInput
+              register={register}
+              name="password"
               placeholder="********"
+              className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-green-400"
             />
             {errors.password && <p className="text-sm text-red-500">{errors.password.message}</p>}
           </div>
 
           <div>
             <label className="block text-sm font-medium text-gray-700">Confirm Password</label>
-            <input
-              type="password"
-              {...register('passwordConfirm')}
-              className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-green-400"
+            <PasswordInput
+              register={register}
+              name="passwordConfirm"
               placeholder="********"
+              className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-green-400"
             />
             {errors.passwordConfirm && <p className="text-sm text-red-500">{errors.passwordConfirm.message}</p>}
           </div>
