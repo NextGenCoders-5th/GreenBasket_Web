@@ -1,4 +1,5 @@
 import { ApiResponse, ITimeStamp } from './base.type';
+import { ICategory } from './category.type';
 
 interface Product {
   name: string;
@@ -7,8 +8,8 @@ interface Product {
   discount_price: number;
   unit: string;
   stock: number;
-  image: File | string | null; 
-  categories?: string;
+  image: FileList | string | null; 
+  categories?: (string | ICategory)[];
   image_url?: string;
 }
 

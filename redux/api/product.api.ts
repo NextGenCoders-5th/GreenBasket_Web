@@ -13,7 +13,7 @@ const productApi = createApi({
   baseQuery: baseQueryWithReauth,
   tagTypes: Object.values(ProductTags),
   endpoints: (builder) => ({
-    createProduct: builder.mutation<CreateProductResponse, FormData>({
+    createProduct: builder.mutation<CreateProductResponse, any>({
       query: (productData) => ({
         url: 'products',
         method: 'POST',
@@ -21,13 +21,11 @@ const productApi = createApi({
       }),
       invalidatesTags: [ProductTags.PRODUCTS],
     }),
-    updateProduct: builder.mutation<CreateProductResponse, { productId: string; productData: Partial<CreateProductRequest > }>({
+    updateProduct: builder.mutation<CreateProductResponse, any>({
       query: ({ productId, productData }) => ({
         url: `products/${productId}`,
         method: 'PATCH',
-        body: {
-          ...productData
-        },
+        body: productData,
       }),
       invalidatesTags: (_, error, { productId }) => [{ type: ProductTags.PRODUCT, id: productId }, ProductTags.PRODUCTS],
     }),

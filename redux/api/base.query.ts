@@ -45,7 +45,7 @@ export const baseQueryWithReauth = async (args: string | FetchArgs, api: BaseQue
   } else if (result.error && result.error.status === 404) {
     console.log('Not Found: ', result.error);
     // !isSilent && toast.error('The requested resource was not found.');
-    return { error: { status: ErrorEnum.NOT_FOUND, message:'The requested resource was not found.'} };
+    return { error: { status: ErrorEnum.NOT_FOUND, message:(result.error as unknown as {data: {message: string}})?.data?.message || 'The requested resource was not found.'} };
   } else if (result.error && result.error.status === 500) {
     console.log('Server Error: ', result.error);
     // !isSilent && toast.error('An internal server error occurred.');

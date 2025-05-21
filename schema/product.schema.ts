@@ -7,7 +7,9 @@ const productSchema = z.object({
   discount_price: z.number().optional().refine((val) => val === 0 || val && val > 0, "Discount price must be greater than or equal to 0"),
   unit: z.string().min(1, "Unit is required"),
   stock: z.number().min(1),
-  image: z.instanceof(FileList).refine((file) => file.length > 0, "Image is required"),
+  image: z
+  .any()
+  .optional(),
   categories: z.string().optional(),
 });
 
