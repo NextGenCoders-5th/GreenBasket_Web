@@ -3,7 +3,10 @@
 import { useSearchParams, usePathname, useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 
-const SearchInput = () => {
+interface Props{
+  className?: string;
+}
+const SearchInput = ({className}:Props) => {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const router = useRouter();
@@ -34,7 +37,7 @@ const SearchInput = () => {
   return (
     <input
       type="text"
-      className="w-full max-w-xs p-3 py-2 border-1 border-green-300 rounded-md focus:outline-none focus:ring-1 focus:ring-green-500"
+      className={` max-w-xs p-3 py-2 border-1 border-green-300 rounded-md focus:outline-none focus:ring-1 focus:ring-green-500 ${className}`}
       placeholder="Search by product name"
       value={searchQuery}
       onChange={handleSearch}

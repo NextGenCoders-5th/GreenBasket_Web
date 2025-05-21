@@ -13,8 +13,9 @@ interface Props {
   featureId?: string;
   redirectUrl: string;
   iconOnly?: boolean;
+  triggerContent?: React.ReactNode;
 }
-export default function DeleteFeature({ useDelete, feature, featureId, redirectUrl, iconOnly = false }: Props) {
+export default function DeleteFeature({ useDelete, feature, featureId, redirectUrl, triggerContent, iconOnly = false }: Props) {
   const toast = useToast();
   const [deleteFeature, { isLoading }] = useDelete() as [(id: string) => Promise<unknown>, { isLoading: boolean }];
   const [isOpen, setIsOpen] = useState(false);
@@ -55,10 +56,10 @@ export default function DeleteFeature({ useDelete, feature, featureId, redirectU
         arroClassName='bg-red-600 fill-red-600'
       >
         <DialogTrigger asChild>
-          <button className={` ${ClassName.BUTTON} bg-red-500/90 hover:bg-red-500`}>
+          {triggerContent || <button className={` ${ClassName.BUTTON} bg-red-500/90 hover:bg-red-500`}>
             <Trash className="w-4 h-4" />
             {!iconOnly && <span className="hidden sm:inline">Delete {feature}</span>}
-          </button>
+          </button>}
 
         </DialogTrigger>
       </TooltipWrapper>
@@ -68,7 +69,7 @@ export default function DeleteFeature({ useDelete, feature, featureId, redirectU
         </DialogHeader>
         <p className="text-gray-600">Are you sure you want to delete this {feature}? This action cannot be undone.</p>
         <DialogFooter className="flex flex-col md:flex-row gap-2">
-          <button disabled={isLoading} onClick={() => setIsOpen(false)} className="px-4 py-2 disabled:cursor-not-allowed bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300">
+          <button disabled={isLoading} onClick={() => setIsOpen(false)} className="px-4 py-1 cursor-pointer disabled:cursor-not-allowed bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300">
             Cancel
           </button>
           <button
@@ -77,7 +78,7 @@ export default function DeleteFeature({ useDelete, feature, featureId, redirectU
               onConfirm();
               setIsOpen(false);
             }}
-            className="px-3 py-2 text-sm disabled:cursor-not-allowed  bg-red-500 text-white rounded-md hover:bg-red-600"
+            className="px-3 py-1  cursor-pointer text-sm disabled:cursor-not-allowed  bg-red-500 text-white rounded-md hover:bg-red-600"
           >
             Delete
           </button>

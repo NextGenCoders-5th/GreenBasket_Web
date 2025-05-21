@@ -1,4 +1,5 @@
 import { AppSidebar } from '@/components/app-sidebar';
+import { SiteHeader } from '@/components/site-header';
 import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
 import { Role } from '@/enums/role.enum';
 import PermissionProvider from '@/providers/permission.provider';
@@ -29,7 +30,10 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
           }
         >
           <AppSidebar variant="inset" />
-          <SidebarInset>{children}</SidebarInset>
+          <SidebarInset className='overflow-hidden'>
+          <SiteHeader />
+            {children}
+            </SidebarInset>
         </SidebarProvider>
       </PermissionProvider>
     </ProtectedProvider>

@@ -15,18 +15,22 @@ export function CustomToast({
     success: {
       icon: <CheckCircle className="text-green-600 w-5 h-5" />,
       bg: "bg-green-100 text-green-800 border-l-4 border-l-green-600",
+      xColor: "text-green-600",
     },
     error: {
       icon: <XCircle className="text-red-600 w-5 h-5" />,
       bg: "bg-red-100  text-red-800 border-l-4 border-l-red-600",
+      xColor: "text-red-600",
     },
     info: {
       icon: <Info className="text-blue-600 w-5 h-5" />,
       bg: "bg-blue-100 text-blue-800 border-l-4 border-l-blue-600",
+      xColor: "text-blue-600",
     },
     loading: {
       icon: <Loader2 className="animate-spin text-blue-600 w-5 h-5" />,
       bg: "bg-blue-100  text-blue-800 border-l-4 border-l-blue-600",
+      xColor: "text-blue-600",
     },
   };
 
@@ -35,7 +39,7 @@ export function CustomToast({
   return (
     <div
       className={cn(
-        "flex items-center justify-between gap-3 p-4   shadow-md min-w-[15rem] w-[20rem] max-w-sm",
+        "flex items-center justify-between gap-3 p-4 py-2.5  shadow-md min-w-[15rem] w-[20rem] max-w-sm",
         style.bg
       )}
     >
@@ -47,7 +51,10 @@ export function CustomToast({
         type !== "loading" && (
           <button
             onClick={() => toast.dismiss(toastId)}
-            className="text-gray-500 hover:text-gray-700 cursor-pointer"
+            className={cn(
+              "p-1 cursor-pointer",
+              style.xColor
+            )}
           >
             <X className="w-5 h-5" />
           </button>
