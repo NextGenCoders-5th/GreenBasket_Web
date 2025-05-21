@@ -8,6 +8,7 @@ import {
   IconDatabase,
   IconFileAi,
   IconFileDescription,
+  IconFileDollar,
   IconFileWord,
   IconFolder,
   IconHelp,
@@ -164,7 +165,7 @@ const VendorSideBarData = {
     {
       title: 'Payments',
       url: '/vendor/payments',
-      icon: IconFolder,
+      icon: IconFileDollar,
     },
   ],
   navClouds: [
@@ -265,8 +266,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             <SidebarMenuButton asChild className="data-[slot=sidebar-menu-button]:!p-1.5">
               <Link href="/">
                 <Logo/>
-                <span className="text-base text-accent-600 font-semibold">
-                  Green<strong>Basket</strong>
+                <span className="text-xl text-accent-600 font-semibold">
+                ምርጥ<strong>ገበያ</strong>
                 </span>
               </Link>
             </SidebarMenuButton>

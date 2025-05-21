@@ -83,7 +83,7 @@ const ProductList = () => {
                     useDelete={useDeleteProductMutation as FeatureDeleteActionType}
                     redirectUrl="/vendor/products"
                     triggerContent={
-                      <span className="px-3 py-1.5 border border-red-600 hover:bg-red-500/90 bg-white text-red-500 hover:text-white transition-colors duration-75 rounded-md text-sm flex items-center gap-1">
+                      <span className="px-3 py-1.5 border border-red-600 hover:bg-red-500/90 bg-red-100/70 text-red-500 hover:text-white transition-colors duration-75 rounded-md text-sm flex items-center gap-1">
                         <Trash2 className="w-4 h-4" />
                       </span>
                     }

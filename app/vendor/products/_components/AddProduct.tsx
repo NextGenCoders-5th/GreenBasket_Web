@@ -147,13 +147,13 @@ export default function AddProductDialog({ product }: Props) {
                 <DialogTrigger asChild>
                     {
                         editMode ? (
-                            <button className='text-blue-600 text-sm sm:text-base border border-blue-600  flex items-center gap-1 cursor-pointer hover:text-white py-2 px-3 rounded-md hover:bg-blue-700 transition-colors duration-300'>
+                            <span className='text-blue-600 text-sm sm:text-base border border-blue-600 bg-blue-500/10  flex items-center gap-1 cursor-pointer hover:text-white py-2 px-3 rounded-md hover:bg-blue-700 transition-colors duration-300'>
                                 <Pencil size={14}  /> 
-                            </button>
+                            </span>
                         ) : (
-                            <button className='bg-green-600 text-sm sm:text-base flex items-center gap-1 cursor-pointer text-white py-2 px-3 rounded-md hover:bg-green-700 transition-colors duration-300'>
+                            <span className='bg-green-600 text-sm sm:text-base flex items-center gap-1 cursor-pointer text-white py-2 px-3 rounded-md hover:bg-green-700 transition-colors duration-300'>
                                 <Plus size={18} />  Product
-                            </button>
+                            </span>
                         )
                     }
                 </DialogTrigger>
@@ -189,6 +189,7 @@ export default function AddProductDialog({ product }: Props) {
                                 setValue={(value) => setValue('unit', value)}
                                 placeholder='Select unit'
                                 className='w-full'
+                                defaultValue={product?.unit}
                             />
                             {errors.unit && <p className='text-red-500 text-sm'>{errors.unit.message}</p>}
                         </div>
@@ -233,12 +234,12 @@ export default function AddProductDialog({ product }: Props) {
                         <div className='space-y-2 mt-1.5'>
                             <Label htmlFor='image'>Select Categories</Label>
                             <div className='flex items-center gap-1.5'>
-                                {categories.map((category) => (
+                                {categories?.map((category) => (
                                     <div key={category.id} className='flex items-center space-x-2'>
                                         <Checkbox
                                             id={category.id}
                                             value={category.id}
-                                            checked={selectedCategories.includes(category.id)}
+                                            checked={selectedCategories.includes(category.id) || product?.categories?.some((cat) => (typeof cat === 'string' ? cat : cat.id) === category.id)}
                                             onCheckedChange={() => handleCheckboxChange(category.id)}
                                             {...register('categories')}
                                         />
