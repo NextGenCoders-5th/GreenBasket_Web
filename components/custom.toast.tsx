@@ -18,7 +18,7 @@ export function CustomToast({
       xColor: "text-green-600",
     },
     error: {
-      icon: <XCircle className="text-red-600 w-5 h-5" />,
+      icon: <XCircle size={30} className="text-red-600 " />,
       bg: "bg-red-100  text-red-800 border-l-4 border-l-red-600",
       xColor: "text-red-600",
     },
