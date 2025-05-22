@@ -7,10 +7,15 @@ import React from 'react';
 import { useAppSelector } from '../../redux/store';
 import { IUser } from '@/types/user.type';
 import ProfileDropdown from './ProfileCard';
+import { Role } from '@/enums/role.enum';
 
 export const Header = () => {
   const [menuOpen, setMenuOpen] = React.useState(false);
   const user = useAppSelector((state) => state.auth.user);
+  const isVendor = user && (user as IUser).role === Role.VENDOR;
+  const isAdmin = user && (user as IUser).role === Role.ADMIN;
+  const isAdminOrVendor = isVendor || isAdmin;
+
   return (
     <>
       <header className="w-full bg-gradient-to-r from-gray-100 bg-white px-4 md:px-8 py-4 flex items-center justify-between shadow  sticky top-0 z-50">
@@ -31,8 +36,12 @@ export const Header = () => {
           </Link>
           {user ? (
             <>
-              <Link href={`/${(user as IUser).role.toLowerCase()}/dashboard`} className="hover:text-green-600 transition">
-                Dashboard
+              <Link href={ isAdminOrVendor ? `/${(user as IUser ).role.toLowerCase()}/dashboard` :`/user/profile`} className="hover:text-green-600 transition">
+                {
+                  isAdminOrVendor
+                    ? 'Dashboard'
+                    : 'Profile'
+                }
               </Link>
               <div className="flex">
                 <ProfileDropdown />
