@@ -8,6 +8,7 @@ import { useSignUpMutation } from '@/redux/api/auth.api';
 import { useToast } from '@/providers/toast.provider';
 import { ErrorEnum } from '@/enums/error.enum';
 import PasswordInput from '@/app/_components/PasswordInput';
+import { getPasswordStrength } from '@/util/password-strength';
 
 export default function SignupPage() {
   // TOAST: toast instance to toast messages
@@ -17,6 +18,7 @@ export default function SignupPage() {
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm<SignupSchemaType>({
     resolver: zodResolver(signupSchema),
@@ -24,6 +26,12 @@ export default function SignupPage() {
 
   // Getting router instance
   const router = useRouter();
+
+
+  const newPassword = watch("password");
+
+  const strengthBarStyles = getPasswordStrength(newPassword || "");
+
 
   // Sign up mutation
   const [signUp, { isLoading, error }] = useSignUpMutation();
@@ -88,6 +96,18 @@ export default function SignupPage() {
               className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-green-400"
             />
             {errors.password && <p className="text-sm text-red-500">{errors.password.message}</p>}
+           { newPassword && <div className="mt-2">
+            <div className="w-full h-2 dark:bg-gray-700 bg-gray-200 rounded-full overflow-hidden">
+            
+              <div
+                className={`h-full ${strengthBarStyles.className} transition-all duration-300`}
+                style={{ width: strengthBarStyles.width }}
+              ></div>
+            </div>
+          </div>}
+            <p className='text-sm py-0.5  text-gray-500'>
+              Password should contain at least 8 characters, including uppercase, lowercase, numbers, and special characters.
+            </p>
           </div>
 
           <div>
