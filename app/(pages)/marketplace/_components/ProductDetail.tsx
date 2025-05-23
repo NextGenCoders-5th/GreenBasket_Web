@@ -14,20 +14,24 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { IProduct } from '@/types/product.type';
 import { ClassName } from '@/enums/classnames.enum';
 import { ShoppingCart } from 'lucide-react';
+import { DialogEnum, useDialog } from '@/contexts/dialog.context';
 
 interface ProductDetailDrawerProps {
     products: IProduct[];
     initialIndex: number;
-    onClose?: () => void;
 }
 
-export default function ProductDetailDrawer({ products, initialIndex, onClose }: ProductDetailDrawerProps) {
-    const [currentIndex, setCurrentIndex] = useState(initialIndex);
-    const [direction, setDirection] = useState(0); // -1 for left, 1 for right
+export default function ProductDetailDrawer({ products, initialIndex, }: ProductDetailDrawerProps) {
 
-    const currentProduct: IProduct = products[currentIndex];
+
+    const [currentIndex, setCurrentIndex] = useState(initialIndex);
+    
     const prevProduct: IProduct | null = products[currentIndex - 1];
     const nextProduct: IProduct | null = products[currentIndex + 1];
+    const currentProduct: IProduct = products[currentIndex];
+    const { open: openOrderProduct } = useDialog(`${DialogEnum.ORDER_PRODUCT}-${currentProduct.id}`);
+    const { isOpen, close, open: openProductDetail } = useDialog(`${DialogEnum.PRODUCT_DETAIL}-${currentProduct.id}`);
+    const [direction, setDirection] = useState(0); // -1 for left, 1 for right
 
     const navigate = (dir: 'prev' | 'next') => {
         setDirection(dir === 'prev' ? -1 : 1);
@@ -35,11 +39,11 @@ export default function ProductDetailDrawer({ products, initialIndex, onClose }:
     };
 
     return (
-        <Drawer onOpenChange={onClose} defaultOpen>
+        <Drawer open={isOpen} onClose={close} >
             <DrawerTrigger asChild>
-                <Button className={`${ClassName.BUTTON} bg-transparent   underline hover:text-white text-accent-600 transition-colors duration-300`}>
-                    View Details
-                </Button>
+                <button onClick={openProductDetail} className={`${ClassName.BUTTON} z-20 text-sm bg-green-600 text-white rounded-full px-2.5 py-2 hover:bg-green-700 transition`}>
+                    Order Now
+                </button>
             </DrawerTrigger>
 
             <DrawerContent className="max-w-8xl pb-3 mx-auto">
@@ -149,14 +153,15 @@ export default function ProductDetailDrawer({ products, initialIndex, onClose }:
                                                 variant="secondary"
                                                 className=" py-0 text-xs cursor-pointer bg-yellow-500 text-white rounded hover:bg-yellow-600 transition"
                                             >
-                                               <ShoppingCart/>  Add to Cart
+                                                <ShoppingCart />  Add to Cart
                                             </Button>
-                                            <Button
-                                                variant="secondary"
-                                                className="bg-green-600/90 cursor-pointer py-0 text-xs text-white hover:bg-green-600 transition"
-                                            >
-                                                Order now
-                                            </Button>
+                                            <button onClick={() => {
+                                                close();
+                                                openOrderProduct();
+
+                                            }} className={`${ClassName.BUTTON} z-20 text-sm bg-green-600 text-white rounded-full px-2.5 py-2 hover:bg-green-700 transition`}>
+                                                Order Now
+                                            </button>
                                         </div>
                                         <div className="flex items-center gap-3">
                                             <Image
