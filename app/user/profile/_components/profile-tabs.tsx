@@ -1,6 +1,13 @@
 "use client"
-import { UserIcon, PencilIcon} from "lucide-react"
+import { UserIcon, PencilIcon, Plus} from "lucide-react"
 
+
+export enum TabsValueEnum{
+  ABOUT ="about",
+  EDIT  = "edit",
+  CHANGE_PASSWORD = "changepassword",
+  ADD_ADDRESS = "add_address"
+}
 interface ProfileTabsProps {
   activeTab: string
   setActiveTab: (tab: string) => void
@@ -8,13 +15,14 @@ interface ProfileTabsProps {
 
 export default function ProfileTabs({ activeTab, setActiveTab }: ProfileTabsProps) {
   const tabs = [
-    { id: "about", label: "About", icon: UserIcon },
-    { id: "edit", label: "Edit Profile", icon: PencilIcon },
-    { id: "changepassword", label: "Change Password", icon: PencilIcon },
+    { id: TabsValueEnum.ABOUT, label: "About", icon: UserIcon },
+    { id: TabsValueEnum.EDIT, label: "Edit Profile", icon: PencilIcon },
+    {id: TabsValueEnum.ADD_ADDRESS, label: "Add Address", icon:Plus},
+    { id: TabsValueEnum.CHANGE_PASSWORD, label: "Change Password", icon: PencilIcon }
   ]
 
   return (
-    <div className="flex gap-3 p-6 w-full  ">
+    <div className="flex gap-3 p-6 pt-2 w-full  ">
       {tabs.map((tab) => (
         <button
           key={tab.id}
