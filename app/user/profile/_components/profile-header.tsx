@@ -1,11 +1,13 @@
 'use client'
 import { useAppSelector } from "@/redux/store"
 import { IUser } from "@/types/user.type"
-import { Building2, CircleDollarSign, LocateIcon, MapPinHouse, ShoppingCart, SquareCheckBig } from "lucide-react"
-import type { ReactNode } from "react"
+import { CircleDollarSign, ShoppingCart, SquareCheckBig } from "lucide-react"
+import { type ReactNode } from "react"
+import UserAddress from "./user-address"
 
 export default function ProfileHeader() {
-  const user = useAppSelector((state) => state.auth.user) as unknown as IUser | null
+  const user = useAppSelector((state) => state.auth.user) as unknown as IUser | null;
+
   return (
     <div className="p-2">
       <div className="rounded-lg  dark:bg-gray-800 bg-white shadow-md">
@@ -26,28 +28,18 @@ export default function ProfileHeader() {
         <div className="pt-14 px-6 pb-6">
           <h1 className="text-xl text-slate-600 font-bold dark:text-white ">{`${user?.last_name}`} {user?.last_name}</h1>
           {/* User address  */}
-          <div className="flex py-2 gap-4  text-lg text-slate-500 ">
-            {/* City */}
-            <div className="flex items-center gap-1">
-              <Building2 size={16} />
-              <span>Bahir Dar</span>
-            </div>
-            <div className="flex  items-center gap-1">
-              <MapPinHouse size={16} />
-              <span>Amhara</span>
-            </div>
-          </div>
+          <UserAddress />
 
           {/* User statisitcs */}
           <div className="grid gap-2 bg-pu w-[70%]  grid-rows-1 grid-cols-[1fr_1fr_1fr]  items-center">
             <ProfileStat
-              icon={<SquareCheckBig  className="text-purple-700 font-bold" size={24}/>}
+              icon={<SquareCheckBig className="text-purple-700 font-bold" size={24} />}
               value="234"
               label="Sales"
-              iconBgColor="bg-purple-600/10"              
+              iconBgColor="bg-purple-600/10"
             />
             <ProfileStat
-              icon={<ShoppingCart  className="text-orange-700 font-bold" size={24}/>}
+              icon={<ShoppingCart className="text-orange-700 font-bold" size={24} />}
               value="1.2k"
               label="Orders"
               iconBgColor="bg-orange-600/10"
@@ -59,7 +51,7 @@ export default function ProfileHeader() {
               iconBgColor="bg-accent-600/10"
             />
           </div>
-          
+
         </div>
       </div>
     </div>
