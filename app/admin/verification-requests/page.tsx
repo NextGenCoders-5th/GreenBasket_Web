@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
-import { Eye, Mail, Phone, Calendar, User, CheckCircle } from "lucide-react"
+import { Eye, Mail, Phone, Calendar, User, CheckCircle, Users, Clock, Store } from "lucide-react"
 import { VerifyUserDialog } from "./_components/VerifiyUserDialog"
 import { useGetAllVerificationsQuery } from "@/redux/api/user.api"
 import LoadingPage from "@/app/_components/Loading"
@@ -14,10 +14,6 @@ import NetworkErrorSection from "@/components/network-error"
 import { ResponseError } from "@/types/general.types"
 import NotFound from "@/app/_components/NotFound"
 import { IUser } from "@/types/user.type"
-
-
-
-
 
 function getStatusBadgeVariant(status: string) {
   switch (status) {
@@ -71,7 +67,7 @@ export default function VerificationRequestsPage() {
   const [selectedUser, setSelectedUser] = useState<IUser | null>(null)
   const [isVerifyDialogOpen, setIsVerifyDialogOpen] = useState(false)
 
-  const {data, error, isLoading} = useGetAllVerificationsQuery()
+  const { data, error, isLoading } = useGetAllVerificationsQuery()
   const handleVerifyUser = (user: IUser) => {
     setSelectedUser(user)
     setIsVerifyDialogOpen(true)
@@ -83,13 +79,13 @@ export default function VerificationRequestsPage() {
     console.log("Verification updated successfully")
   }
 
-  if(isLoading){
+  if (isLoading) {
     return (
-      <LoadingPage/>
+      <LoadingPage />
     )
   }
 
-  if(error){
+  if (error) {
     return (
       <NetworkErrorSection error={error as ResponseError} />
     )
@@ -106,13 +102,67 @@ export default function VerificationRequestsPage() {
   return (
     <div className="container mx-auto py-8 px-4">
       <Card>
-        <CardHeader>
-          <CardTitle className="text-2xl font-bold">Verification Requests</CardTitle>
-          <CardDescription>
-            Manage and review user verification requests. Total requests: {verificationRequests.length}
-          </CardDescription>
+        <CardHeader className="flex gap-4 text-center">
+          <div className="flex flex-col items-start">
+            <CardTitle className="text-2xl font-bold">Verification Requests</CardTitle>
+            <CardDescription>
+              Manage and review user verification requests. Total requests: {verificationRequests.length}
+            </CardDescription>
+          </div>
+          <div className=" flex-grow grid  grid-cols-1 md:grid-cols-4 gap-2">
+            <Card className="p-1">
+              <CardContent className="p-4 py-2">
+                <div className="flex items-center gap-2">
+                  <Users className="h-5 w-5 text-blue-600" />
+                  <div className="flex flex-col flex-1 items-end">
+                    <div className="text-2xl font-bold">{verificationRequests.length}</div>
+                    <p className="text-xs text-muted-foreground">Total Requests</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+            <Card className="p-1">
+              <CardContent className="p-4 py-2">
+                <div className="flex items-center gap-2">
+                  <Clock className="h-5 w-5 text-orange-600" />
+                  <div className="flex flex-col flex-1 items-end">
+                    <div className="text-2xl font-bold text-orange-600">
+                      {verificationRequests.filter((r) => r.verify_status === "REQUESTED").length}
+                    </div>
+                    <p className="text-xs text-muted-foreground">Pending</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+            <Card className="p-1">
+              <CardContent className="p-4 py-2">
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="h-5 w-5 text-green-600" />
+                  <div className="flex flex-col flex-1 items-end">
+                    <div className="text-2xl font-bold text-green-600">
+                      {verificationRequests.filter((r) => r.verify_status === "VERIFIED").length}
+                    </div>
+                    <p className="text-xs text-muted-foreground">Verified</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+            <Card className="p-1">
+              <CardContent className="p-4 py-2">
+                <div className="flex items-center gap-2">
+                  <Store className="h-5 w-5 text-purple-600" />
+                  <div className="flex flex-col flex-1 items-end">
+                    <div className="text-2xl font-bold text-purple-600">
+                      {verificationRequests.filter((r) => r.role === "VENDOR").length}
+                    </div>
+                    <p className="text-xs text-muted-foreground">Vendors</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
         </CardHeader>
-        <CardContent>
+        <CardContent className="max-h-[75vh] overflow-auto">
           <div className="rounded-md border">
             <Table>
               <TableHeader>
@@ -137,7 +187,7 @@ export default function VerificationRequestsPage() {
                           alt={`${request.first_name} ${request.last_name}`}
                         />
                         <AvatarFallback className="bg-primary/10 text-primary font-medium">
-                          {getInitials(request.first_name, request.last_name)}
+                          {getInitials(request?.first_name || "", request?.last_name || "")}
                         </AvatarFallback>
                       </Avatar>
                     </TableCell>
@@ -208,40 +258,6 @@ export default function VerificationRequestsPage() {
                 ))}
               </TableBody>
             </Table>
-          </div>
-
-          {/* Summary Stats */}
-          <div className="mt-6 grid grid-cols-1 md:grid-cols-4 gap-4">
-            <Card>
-              <CardContent className="p-4">
-                <div className="text-2xl font-bold">{verificationRequests.length}</div>
-                <p className="text-xs text-muted-foreground">Total Requests</p>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardContent className="p-4">
-                <div className="text-2xl font-bold text-orange-600">
-                  {verificationRequests.filter((r) => r.verify_status === "REQUESTED").length}
-                </div>
-                <p className="text-xs text-muted-foreground">Pending</p>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardContent className="p-4">
-                <div className="text-2xl font-bold text-green-600">
-                  {verificationRequests.filter((r) => r.verify_status === "VERIFIED").length}
-                </div>
-                <p className="text-xs text-muted-foreground">Verified</p>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardContent className="p-4">
-                <div className="text-2xl font-bold text-purple-600">
-                  {verificationRequests.filter((r) => r.role === "VENDOR").length}
-                </div>
-                <p className="text-xs text-muted-foreground">Vendors</p>
-              </CardContent>
-            </Card>
           </div>
         </CardContent>
       </Card>
