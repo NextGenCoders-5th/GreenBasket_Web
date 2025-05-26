@@ -1,6 +1,6 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import { baseQueryWithReauth } from './base.query';
-import {  CreateVendorResponse, IVendor } from '@/types/vendor.type';
+import { CreateVendorResponse, IVendor } from '@/types/vendor.type';
 import { ApiResponse } from '@/types/base.type';
 
 export enum VendorTags {
@@ -53,9 +53,16 @@ const vendorApi = createApi({
       },
       providesTags: [VendorTags.VENDORS],
     }),
+    getVendorBalance: builder.query<{ data: { data: any } }, string | undefined>({
+      query: (vendorId) => ({
+        url: `vendors/balance${vendorId ? `?vendorId=${vendorId}` : ''}`,
+        method: 'GET',
+      }),
+      providesTags: (result, error, vendorId) => [{ type: VendorTags.VENDOR, id: vendorId }, VendorTags.VENDORS],
+    }),
   }),
 });
 
-export const { useCreateVendorMutation, useUpdateVendorMutation, useDeleteVendorMutation, useGetVendorQuery, useGetVendorsQuery } = vendorApi;
+export const { useCreateVendorMutation, useUpdateVendorMutation, useDeleteVendorMutation, useGetVendorQuery, useGetVendorsQuery, useGetVendorBalanceQuery } = vendorApi;
 
 export default vendorApi;
