@@ -16,6 +16,7 @@ interface IVendor extends CreateVendorRequest, ITimeStamp {
   id: string;
   logo_url: string;
   status: string;
+  have_bank_details?: boolean;
 }
 
 interface AddBankAccountRequest {
