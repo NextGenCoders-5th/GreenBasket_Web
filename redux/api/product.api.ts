@@ -1,6 +1,6 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import {  baseQueryWithReauth } from './base.query';
-import { CreateProductRequest, CreateProductResponse, IProduct } from '@/types/product.type';
+import {  CreateProductResponse, IProduct } from '@/types/product.type';
 import { ApiResponse } from '@/types/base.type';
 
 export enum ProductTags {
@@ -35,6 +35,13 @@ const productApi = createApi({
         method: 'DELETE',
       }),
       invalidatesTags: (_, error, productId) => [{ type: ProductTags.PRODUCT, id: productId }, ProductTags.PRODUCTS],
+    }),
+    getProductByCatedory:  builder.query<{data: {data: IProduct}}, string>({
+      query: (categoryId) => ({
+        url: `products/category/${categoryId}`,
+        method: 'GET',
+      }),
+      providesTags: (result, error, productId) => [{ type: ProductTags.PRODUCT, id: productId }, ProductTags.PRODUCTS],
     }),
     getProduct: builder.query<{data: {data: IProduct}}, string>({
       query: (productId) => ({
