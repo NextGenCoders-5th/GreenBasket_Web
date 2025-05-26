@@ -1,5 +1,6 @@
 import { ApiResponse, ITimeStamp } from './base.type';
 import { ICategory } from './category.type';
+import { IVendor } from './vendor.type';
 
 interface Product {
   name: string;
@@ -21,6 +22,27 @@ interface IProduct extends CreateProductRequest, ITimeStamp {
   id: string;
   logo_url: string;
   status: string;
+  is_featured: boolean;
+  Vendor: IVendor
 }
 
-export type { IProduct, CreateProductRequest, CreateProductResponse };
+enum ProductStatusEnum {
+  ACTIVE = 'Active',
+  INACTIVE= 'Inactive',
+  OUT_OF_STOCK = 'out_of_stock'
+}
+interface ProductSearchParams{
+  search: string,
+  minPrice: number,
+  maxPrice: number,
+  status: ProductStatusEnum,
+  vendorId: string,
+  categoryId: string,
+  isFeatured: string,
+  sortBy: string;
+  sortOrder: string;
+  limit: number; 
+  page: number
+}
+
+export type { IProduct, CreateProductRequest,ProductSearchParams, ProductStatusEnum, CreateProductResponse };
