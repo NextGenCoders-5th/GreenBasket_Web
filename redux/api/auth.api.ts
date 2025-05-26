@@ -1,6 +1,6 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { BASE_URL, baseQuery, baseQueryWithReauth } from './base.query';
-import { ILoginRequest, ISignUpRequest, SignUpResponse } from '@/types/auth.type';
+import { createApi } from '@reduxjs/toolkit/query/react';
+import { baseQueryWithReauth } from './base.query';
+import { ForgotPasswordRequest, ILoginRequest, ISignUpRequest, ResetPasswordRequest, SignUpResponse } from '@/types/auth.type';
 
 export enum AuthTags {
   Login = 'Login',
@@ -68,9 +68,17 @@ const authApi = createApi({
       }),
       invalidatesTags: [AuthTags.VerifyEmail],
     }),
-    resetPassword: builder.mutation({
+    resetPassword: builder.mutation<any, ResetPasswordRequest>({
+      query: ({resetToken, body}) => ({
+        url: `auth/reset-password/${resetToken}`,
+        method: 'POST',
+        body: body,
+      }),
+      invalidatesTags: [AuthTags.ResetPassword],
+    }),
+    fotgotPassword: builder.mutation<any, ForgotPasswordRequest>({
       query: (data) => ({
-        url: 'auth/reset-password',
+        url: 'auth/forgot-password',
         method: 'POST',
         body: data,
       }),
@@ -102,6 +110,7 @@ export const {
   useResetPasswordMutation,
   useChangePasswordMutation,
   useVerifyTokenMutation,
+  useFotgotPasswordMutation
 } = authApi;
 
 export { authApi };

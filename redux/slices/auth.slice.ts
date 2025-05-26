@@ -24,8 +24,13 @@ const authSlice = createSlice({
         state.user = action.payload.user;
         state.isAuthChecked = true;
       }
-      if (action.payload.token) state.token = action.payload.token;
-      if (action.payload.refreshToken) state.refreshToken = action.payload.refreshToken;
+      if (action.payload.token) {
+        state.token = action.payload.token;
+      }
+      if (action.payload.refreshToken) {
+        state.refreshToken = action.payload.refreshToken;
+        // Store refresh token in localStorage for persistence
+      }
     },
     logOut: (state) => {
       state.user = null;

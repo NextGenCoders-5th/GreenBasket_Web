@@ -32,4 +32,17 @@ interface LoginResponse {
   };
 }
 
-export { ISignUpRequest, SignUpResponse, ILoginRequest, LoginResponse };
+interface ForgotPasswordRequest{
+  email?: string;
+  phonumber?: string;
+}
+
+interface ResetPasswordRequest{
+  resetToken: string,
+  body: {
+    password: string,
+    passwordConfirm: string
+  }
+}
+
+export { ISignUpRequest, SignUpResponse, ILoginRequest, LoginResponse, ForgotPasswordRequest , ResetPasswordRequest};
