@@ -2,6 +2,7 @@ import { createApi } from '@reduxjs/toolkit/query/react';
 import { baseQueryWithReauth } from './base.query';
 import { CreateAddressRequest, CreateAddressResponse, IAddress } from '@/types/address.type';
 import { ApiResponse } from '@/types/base.type';
+import { useDeleteVendorMutation } from './vendor.api';
 
 export enum AddressTags {
   ADDRESS = 'Address',
@@ -118,7 +119,9 @@ export const {
   useGetAddressQuery,
   useGetAddressesQuery,
   useGetUserAddressQuery,
-  useGetVendorAddressQuery
+  useGetVendorAddressQuery,
+  useDeleteVendorAddressMutation,
+  
 } = addressApi;
 
 export default addressApi;
