@@ -1,11 +1,12 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import { baseQueryWithReauth } from './base.query';
-import { CreateVendorResponse, IVendor } from '@/types/vendor.type';
+import { AddBankAccountRequest, CreateVendorResponse, IVendor } from '@/types/vendor.type';
 import { ApiResponse } from '@/types/base.type';
 
 export enum VendorTags {
   VENDOR = 'Vendor',
   VENDORS = 'Vendors',
+  BANK_ACCOUNT = 'Bank_Account',
 }
 
 const vendorApi = createApi({
@@ -55,14 +56,67 @@ const vendorApi = createApi({
     }),
     getVendorBalance: builder.query<{ data: { data: any } }, string | undefined>({
       query: (vendorId) => ({
-        url: `vendors/balance${vendorId ? `?vendorId=${vendorId}` : ''}`,
+        url: `vendor/balance${vendorId ? `?vendorId=${vendorId}` : ''}`,
         method: 'GET',
       }),
       providesTags: (result, error, vendorId) => [{ type: VendorTags.VENDOR, id: vendorId }, VendorTags.VENDORS],
     }),
+    addBankAccount: builder.mutation<CreateVendorResponse, AddBankAccountRequest>({
+      query: (data) => ({
+        url: `vendor/bank-account`,
+        method: 'POST',
+        body: data,
+      }),
+      invalidatesTags: (_, error) => {
+        const token = localStorage.getItem('token') || '';
+        return [{ type: VendorTags.BANK_ACCOUNT, id: token }];
+      },
+    }),
+    updateBankAccount: builder.mutation<CreateVendorResponse, AddBankAccountRequest>({
+      query: (data) => ({
+        url: `vendor/bank-account`,
+        method: 'PATCH',
+        body: data,
+      }),
+      invalidatesTags: (_, error) => {
+        const token = localStorage.getItem('token') || '';
+        return [{ type: VendorTags.BANK_ACCOUNT, id: token }];
+      },
+    }),
+    requestWithDrawal: builder.mutation<CreateVendorResponse, void>({
+      query: () => ({
+        url: `vendor/withdrawal-request`,
+        method: 'POST',
+      }),
+    }),
+    getWithdrawalRequests: builder.query<{ data: { data: any } }, string | undefined>({
+      query: (vendorId) => ({
+        url: `vendor/withdrawal-request${vendorId ? `?vendorId=${vendorId}` : ''}`,
+        method: 'GET',
+      }),
+      providesTags: (result, error, vendorId) => [{ type: VendorTags.VENDOR, id: vendorId }, VendorTags.VENDORS],
+    }),
+    answerWithdrawalRequest: builder.mutation<CreateVendorResponse, string>({
+      query: (requestId) => ({
+        url: `vendor/withdrawal-request/${requestId}`,
+        method: 'PATCH',
+      }),
+    }),
   }),
 });
 
-export const { useCreateVendorMutation, useUpdateVendorMutation, useDeleteVendorMutation, useGetVendorQuery, useGetVendorsQuery, useGetVendorBalanceQuery } = vendorApi;
+export const {
+  useCreateVendorMutation,
+  useUpdateVendorMutation,
+  useDeleteVendorMutation,
+  useGetVendorQuery,
+  useGetVendorsQuery,
+  useGetVendorBalanceQuery,
+  useAddBankAccountMutation,
+  useAnswerWithdrawalRequestMutation,
+  useGetWithdrawalRequestsQuery,
+  useRequestWithDrawalMutation,
+  useUpdateBankAccountMutation,
+} = vendorApi;
 
 export default vendorApi;
