@@ -25,7 +25,19 @@ const nextConfig: NextConfig = {
         hostname: 'res.cloudinary.com',
         port: '',
         pathname: '/**',
-      }
+      },
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: '*.*',
+        port: '',
+        pathname: '/**',
+      },
     ],
     domains: ['res.cloudinary.com', 'localhost:5000/','multi-vendor-marketplace-backend-6pue.onrender.com'],
   },
