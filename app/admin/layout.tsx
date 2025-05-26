@@ -30,7 +30,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
           }
         >
           <AppSidebar variant="inset" />
-          <SidebarInset className='overflow-hidden'>
+          <SidebarInset className='overflow-hidden border border-e-red-500'>
           <SiteHeader />
             {children}
             </SidebarInset>
