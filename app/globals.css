@@ -175,8 +175,8 @@
 }
 
 .scrollbar-custom::-webkit-scrollbar {
-  width: 5px;
-  height: 5px;
+  width: 4px;
+  height: 4px;
 }
 
 .scrollbar-custom::-webkit-scrollbar-track {
