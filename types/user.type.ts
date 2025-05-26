@@ -1,4 +1,5 @@
 import { Role } from '../enums/role.enum';
+import { IAddress } from './address.type';
 import { ApiResponse, ITimeStamp } from './base.type';
 
 enum UserStatus {
@@ -30,7 +31,28 @@ interface IUser extends CreateUserRequest, ITimeStamp {
   first_name: string;
   last_name: string;
   phone_number: string;
+  address: IAddress
 }
 
-export type { IUser, CreateUserRequest, CreateUserResponse };
+interface UpdateProfileRquest {
+  firstName: string,
+  lastName: string,
+  email: string,
+  phoneNumber: string,
+  date_of_birth: string,
+  gender: string
+}
+
+interface UpdatePasswordRequest{
+  oldPassword: string,
+  password: string,
+  passwordConfirm: string
+} 
+
+interface VerifyUserRequest{
+  userId: string,
+  verifyStatus: string
+}
+
+export type { IUser, CreateUserRequest,UpdateProfileRquest,UpdatePasswordRequest,VerifyUserRequest, CreateUserResponse };
 export { UserStatus, AuthProvider };

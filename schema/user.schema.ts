@@ -10,3 +10,18 @@ const UserSchema = z.object({
 });
 export type UserFormData = z.infer<typeof UserSchema>;
 export const userSchema = UserSchema;
+
+interface CompleteOnboadrding{
+  first_name:string;
+  last_name: string;
+  date_of_birth: string;
+  gender: string;
+  profile_picture: string;
+  idPhoto_front: string;
+  idPhoto_back:string;
+}
+
+interface VerifyUser{
+  userId: string,
+  verify_status: string
+}
