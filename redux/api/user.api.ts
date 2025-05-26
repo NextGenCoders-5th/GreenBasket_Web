@@ -90,7 +90,7 @@ export const userApi = createApi({
       }),
       invalidatesTags: [UserTags.VERIFICATION_REQUESTS],
     }),
-    getAllVerifications: builder.query<any, void>({
+    getAllVerifications: builder.query<ApiResponse<{data:IUser[]}>, void>({
       query: () => ({
         url: 'users/account/verification-requests',
         method: 'GET',
