@@ -1,12 +1,12 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
-import {  baseQueryWithReauth } from './base.query';
+import { baseQueryWithReauth } from './base.query';
 import { CreateAddressRequest, CreateAddressResponse, IAddress } from '@/types/address.type';
 import { ApiResponse } from '@/types/base.type';
 
 export enum AddressTags {
   ADDRESS = 'Address',
   ADDRESSES = 'Addresses',
-  MY_ADDRESS = 'my-address'
+  MY_ADDRESS = 'my-address',
 }
 
 const addressApi = createApi({
@@ -14,35 +14,35 @@ const addressApi = createApi({
   baseQuery: baseQueryWithReauth,
   tagTypes: Object.values(AddressTags),
   endpoints: (builder) => ({
-    addMyAddress: builder.mutation<CreateAddressResponse, CreateAddressRequest>({
-      query: (addressData) => ({
-        url: 'addresses/user',
+    addAddress: builder.mutation<CreateAddressResponse, { type: string; data: CreateAddressRequest }>({
+      query: ({ type, data }) => ({
+        url: `addresses/${type}`,
         method: 'POST',
-        body: addressData,
+        body: data,
       }),
       invalidatesTags: [AddressTags.ADDRESSES],
     }),
 
-    updateMyAddress: builder.mutation<CreateAddressResponse, CreateAddressRequest>({
-      query: ( addressData ) => ({
+    updateUserAddress: builder.mutation<CreateAddressResponse,  CreateAddressRequest >({
+      query: ( data ) => ({
         url: `addresses/user`,
-        method: 'PATCH',
-        body: addressData,
+        method:'PATCH' ,
+        body: data,
       }),
-      invalidatesTags: (_, error) => {
-        const refreshToken = localStorage.getItem('rfreshToken') || "";
-        return [{type:AddressTags.MY_ADDRESS, id: refreshToken}]
-      },
+      invalidatesTags: [AddressTags.ADDRESSES],
     }),
 
-    updateAddress: builder.mutation<CreateAddressResponse, any>({
-      query: ({ addressId, addressData }) => ({
-        url: `addresses/${addressId}`,
-        method: 'PATCH',
-        body: addressData,
+    updateVendorAddress: builder.mutation<CreateAddressResponse,  {addressId: string, data: CreateAddressRequest} >({
+      query: ( {addressId,data} ) => ({
+        url: `addresses/vendor/${addressId}`,
+        method:'PATCH' ,
+        body: data,
       }),
-      invalidatesTags: (_, error, { addressId }) => [{ type: AddressTags.ADDRESS, id: addressId }, AddressTags.ADDRESSES],
+      invalidatesTags: [AddressTags.ADDRESSES],
     }),
+
+
+ 
     deleteAddress: builder.mutation<any, string>({
       query: (addressId) => ({
         url: `addresses/${addressId}`,
@@ -50,24 +50,53 @@ const addressApi = createApi({
       }),
       invalidatesTags: (_, error, addressId) => [{ type: AddressTags.ADDRESS, id: addressId }, AddressTags.ADDRESSES],
     }),
-    getAddress: builder.query<{data: {data: IAddress}}, string>({
+
+ 
+    deleteVendorAddress: builder.mutation<any, string>({
+      query: (addressId) => ({
+        url: `addresses/vendor/${addressId}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: (_, error, addressId) => [{ type: AddressTags.ADDRESS, id: addressId }, AddressTags.ADDRESSES],
+    }),
+    getAddress: builder.query<{ data: { data: IAddress } }, string>({
       query: (addressId) => ({
         url: `addresses/${addressId}`,
         method: 'GET',
       }),
       providesTags: (result, error, addressId) => [{ type: AddressTags.ADDRESS, id: addressId }, AddressTags.ADDRESSES],
     }),
-    getMyAddress: builder.query<{data: {data: IAddress}}, void>({
+
+    getUserAddress: builder.query<{ data: { data: IAddress } }, string | undefined>({
+      query: (userId) => ({
+        url: `addresses/user${userId ? `?userId=${userId}` : ''}`,
+        method: 'GET',
+      }),
+      providesTags: (result, error, addressId) => [{ type: AddressTags.ADDRESS, id: addressId }, AddressTags.ADDRESSES],
+    }),
+    getMyAddress: builder.query<{ data: { data: IAddress } }, void>({
       query: () => ({
         url: `addresses/user`,
         method: 'GET',
       }),
-      providesTags: () =>{
-        const refreshToken = localStorage.getItem('refreshToken')
-        return [{type: AddressTags.MY_ADDRESS, id:refreshToken || ""}]
+      providesTags: () => {
+        const refreshToken = localStorage.getItem('refreshToken');
+        return [{ type: AddressTags.MY_ADDRESS, id: refreshToken || '' }];
       },
     }),
-    getAddresses: builder.query<ApiResponse<{ data: IAddress[] }>, string>({
+    getVendorAddress: builder.query<{ data: { data: IAddress } }, string>({
+      query: (vendorId) => {
+        return ({
+          url: `addresses/vendor?vendorId=`+vendorId,
+          method: 'GET',
+        })
+      },
+      providesTags: () => {
+        const refreshToken = localStorage.getItem('refreshToken');
+        return [{ type: AddressTags.MY_ADDRESS, id: refreshToken || '' }];
+      },
+    }),
+    getAddresses: builder.query<ApiResponse<{ data: IAddress[] }>,string | undefined>({
       query: (params) => {
         const queryString = new URLSearchParams(params).toString();
         return {
@@ -80,6 +109,16 @@ const addressApi = createApi({
   }),
 });
 
-export const { useAddMyAddressMutation,useUpdateMyAddressMutation, useGetMyAddressQuery, useUpdateAddressMutation, useDeleteAddressMutation, useGetAddressQuery, useGetAddressesQuery } = addressApi;
+export const {
+  useAddAddressMutation,
+  useGetMyAddressQuery,
+  useUpdateUserAddressMutation,
+  useUpdateVendorAddressMutation,
+  useDeleteAddressMutation,
+  useGetAddressQuery,
+  useGetAddressesQuery,
+  useGetUserAddressQuery,
+  useGetVendorAddressQuery
+} = addressApi;
 
 export default addressApi;
