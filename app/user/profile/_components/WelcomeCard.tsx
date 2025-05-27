@@ -23,7 +23,7 @@ export default function WelcomeCard({ withBtn = true }: Props) {
           </p>
           {
             withBtn && <Link
-              href=""
+              href="/marketplace"
               className="flex items-center gap-1.5 text-sm px-4 py-2 rounded-lg bg-green-400/80 hover:bg-green-400 text-white transition duration-300 ease-in-out text-center shadow-sm hover:shadow dark:shadow-indigo-900/20"
             >
               Order now

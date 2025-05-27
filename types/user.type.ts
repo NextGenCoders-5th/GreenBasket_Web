@@ -61,7 +61,7 @@ interface UpdatePasswordRequest{
 
 interface VerifyUserRequest{
   userId: string,
-  verifyStatus: string
+  verify_status: string
 }
 interface VerificationRequest {
   id: string

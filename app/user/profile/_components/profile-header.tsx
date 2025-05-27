@@ -1,17 +1,21 @@
 'use client'
 import { useAppSelector } from "@/redux/store"
 import { IUser } from "@/types/user.type"
-import { CircleDollarSign, ShoppingCart, SquareCheckBig } from "lucide-react"
+import { CircleDollarSign, ShieldAlert, ShieldCheck, ShoppingCart, SquareCheckBig } from "lucide-react"
 import { type ReactNode } from "react"
 
 export default function ProfileHeader() {
   const user = useAppSelector((state) => state.auth.user) as unknown as IUser | null;
-
+  const isVerified = user?.verify_status === "VERIFIED";
   return (
     <div className="p-2 w-full">
       <div className="rounded-lg  dark:bg-gray-800 bg-white shadow-md">
         {/* Banner */}
         <div className="h-32 bg-green-500/80 rounded-lg  relative">
+          {/* Verification status */}
+          <div className="absolute top-2 right-2">
+            <SkillTag>{isVerified ? "Verified" : "Not Verified"}</SkillTag>
+          </div>
           <div className="absolute -bottom-12 left-6">
             <div className="rounded-full border-4 bg-accent-500 border-white dark:border-gray-800 w-24 h-24 overflow-hidden">
               <img
@@ -19,6 +23,19 @@ export default function ProfileHeader() {
                 alt="Profile"
                 className="w-full h-full object-cover"
               />
+              {/* Verification status icon */}
+              {isVerified ? (
+                <div className="absolute bottom-0 right-0 bg-blue-500 rounded-full p-1">
+                  <ShieldCheck className="text-white" size={16} />
+                </div>
+              )
+                : (
+                <div className="absolute bottom-0 right-0 bg-red-500 rounded-full p-1">
+                  <ShieldAlert className="text-white" size={16} />
+                </div>
+                  
+                )
+                  }
             </div>
           </div>
         </div>
