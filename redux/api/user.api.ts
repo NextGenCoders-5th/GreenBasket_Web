@@ -67,20 +67,14 @@ export const userApi = createApi({
         method: 'PATCH',
         body: data,
       }),
-      invalidatesTags: (_, error, {}) => {
-        const token = localStorage.getItem('token') || '';
-        return [{ type: UserTags.CURRENT_USER, id: token }];
-      },
+      invalidatesTags: [UserTags.CURRENT_USER, UserTags.VERIFICATION_REQUESTS, UserTags.USERS],
     }),
     requestAccountVerification: builder.mutation<CreateUserResponse, void>({
       query: () => ({
         url: `users/account/request-account-verification`,
         method: 'PATCH',
       }),
-      invalidatesTags: (_, error) => {
-        const token = localStorage.getItem('token') || '';
-        return [{ type: UserTags.CURRENT_USER, id: token }];
-      },
+      invalidatesTags: [UserTags.VERIFICATION_REQUESTS, UserTags.CURRENT_USER],
     }),
     verifyUser: builder.mutation<CreateUserResponse, VerifyUserRequest>({
       query: (data) => ({
@@ -147,4 +141,5 @@ export const {
   useGetAllVerificationsQuery,
   useGetUserQuery,
   useGetUsersQuery,
+  useRequestAccountVerificationMutation
 } = userApi;

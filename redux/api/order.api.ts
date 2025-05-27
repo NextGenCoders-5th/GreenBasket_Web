@@ -44,13 +44,6 @@ const orderApi = createApi({
       }),
       providesTags: (result, error, orderId) => [{ type: OrderTags.ORDER, id: orderId }, OrderTags.ORDERS],
     }),
-    getVendorOrders: builder.query<{ data: { data: IOrder } }, string>({
-      query: (vendorId) => ({
-        url: `orders/vendor/${vendorId}`,
-        method: 'GET',
-      }),
-      providesTags: (result, error, orderId) => [{ type: OrderTags.ORDER, id: orderId }, OrderTags.ORDERS],
-    }),
     getMyOrder: builder.query<{ data: { data: IOrder } }, string>({
       query: (orderId) => ({
         url: `orders/my-orders/${orderId}`,
@@ -73,6 +66,15 @@ const orderApi = createApi({
         const queryString = new URLSearchParams(params).toString();
         return {
           url: `orders?${queryString}`,
+          method: 'GET',
+        };
+      },
+      providesTags: [OrderTags.ORDERS],
+    }),
+    getVendorOrders: builder.query<ApiResponse<{ data: IOrder[] }>, string>({
+      query: (params) => {
+        return {
+          url: `orders/vendor/${params }`,
           method: 'GET',
         };
       },
