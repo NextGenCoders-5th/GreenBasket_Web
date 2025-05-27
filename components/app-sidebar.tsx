@@ -6,6 +6,7 @@ import {
   IconChartBar,
   IconDashboard,
   IconDatabase,
+  IconEyeQuestion,
   IconFileAi,
   IconFileDescription,
   IconFileDollar,
@@ -16,11 +17,10 @@ import {
   IconReport,
   IconSearch,
   IconSettings,
+  IconUserCircle
 } from '@tabler/icons-react';
 
-import { NavDocuments } from '@/components/nav-documents';
 import { NavMain } from '@/components/nav-main';
-import { NavSecondary } from '@/components/nav-secondary';
 import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import Link from 'next/link';
@@ -55,6 +55,11 @@ const data = {
       title: 'Categories',
       url: '/admin/categories',
       icon: IconFolder,
+    },
+    {
+      title: 'Verification requests',
+      url: '/admin/verification-requests',
+      icon: IconEyeQuestion,
     },
   ],
   navClouds: [
@@ -167,6 +172,11 @@ const VendorSideBarData = {
       url: '/vendor/payments',
       icon: IconFileDollar,
     },
+    {
+      title: 'Settings',
+      url: '/vendor/settings',
+      icon: IconSettings,
+    },
   ],
   navClouds: [
     {
@@ -252,12 +262,138 @@ const VendorSideBarData = {
   ],
 };
 
+const UserSideBarData = {
+  user: {
+    name: 'shadcn',
+    email: 'm@example.com',
+    avatar: '/avatars/shadcn.jpg',
+  },
+  navMain: [
+    {
+      title: 'Dashboard',
+      url: '/user/dashboard',
+      icon: IconDashboard,
+    },
+    {
+      title: 'Orders',
+      url: '/user/orders',
+      icon: IconChartBar,
+    },
+    {
+      title: 'Payments',
+      url: '/user/payments',
+      icon: IconFileDollar,
+    },
+
+    {
+      title: 'Profile',
+      url: '/user/profile',
+      icon: IconUserCircle,
+    },
+  ],
+  navClouds: [
+    {
+      title: 'Capture',
+      icon: IconCamera,
+      isActive: true,
+      url: '#',
+      items: [
+        {
+          title: 'Active Proposals',
+          url: '#',
+        },
+        {
+          title: 'Archived',
+          url: '#',
+        },
+      ],
+    },
+    {
+      title: 'Proposal',
+      icon: IconFileDescription,
+      url: '#',
+      items: [
+        {
+          title: 'Active Proposals',
+          url: '#',
+        },
+        {
+          title: 'Archived',
+          url: '#',
+        },
+      ],
+    },
+    {
+      title: 'Prompts',
+      icon: IconFileAi,
+      url: '#',
+      items: [
+        {
+          title: 'Active Proposals',
+          url: '#',
+        },
+        {
+          title: 'Archived',
+          url: '#',
+        },
+      ],
+    },
+  ],
+  navSecondary: [
+    {
+      title: 'Settings',
+      url: '#',
+      icon: IconSettings,
+    },
+    {
+      title: 'Get Help',
+      url: '#',
+      icon: IconHelp,
+    },
+    {
+      title: 'Search',
+      url: '#',
+      icon: IconSearch,
+    },
+  ],
+  documents: [
+    {
+      name: 'Data Library',
+      url: '#',
+      icon: IconDatabase,
+    },
+    {
+      name: 'Reports',
+      url: '#',
+      icon: IconReport,
+    },
+    {
+      name: 'Word Assistant',
+      url: '#',
+      icon: IconFileWord,
+    },
+  ],
+};
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 
   const user = useAppSelector((state) => state.auth.user) as unknown as IUser | null;
 
+  if (!user) {
+    return null;
+  }
   const isVendor = user?.role === Role.VENDOR;
-  const sidebarData = isVendor ? VendorSideBarData : data;
+  const isUser = user?.role === Role.CUSTOMER;
+  const isAdmin = user?.role === Role.ADMIN;
+
+  const sidebarData = isVendor ? VendorSideBarData : isUser ? UserSideBarData : isAdmin ? data : null;
+  if (!sidebarData) {
+    return null;
+  }
+  sidebarData.user = {
+    name: user.first_name || user.last_name  || 'Unknown User',
+    email: user.email,
+    avatar: user.profile_picture || '/user.png', // Fallback avatar if none provided
+  }
   return (
     <Sidebar collapsible="offcanvas" {...props}>
       <SidebarHeader>
@@ -265,9 +401,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <SidebarMenuItem>
             <SidebarMenuButton asChild className="data-[slot=sidebar-menu-button]:!p-1.5">
               <Link href="/">
-                <Logo/>
+                <Logo />
                 <span className="text-xl text-accent-600 font-semibold">
-                ምርጥ<strong>ገበያ</strong>
+                  ምርጥ<strong>ገበያ</strong>
                 </span>
               </Link>
             </SidebarMenuButton>
@@ -276,11 +412,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={sidebarData.navMain} />
-        <NavDocuments items={sidebarData.documents} />
-        <NavSecondary items={sidebarData.navSecondary} className="mt-auto" />
+        {/* <NavDocuments items={sidebarData.documents} /> */}
+        {/* <NavSecondary items={sidebarData.navSecondary} className="mt-auto" /> */}
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={user } />
+        <NavUser user={user} />
       </SidebarFooter>
     </Sidebar>
   );
