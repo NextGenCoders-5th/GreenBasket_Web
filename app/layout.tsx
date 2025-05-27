@@ -31,7 +31,7 @@ export default function RootLayout({
       <Head>
         <link rel="icon" href="/logo.png" />
       </Head>
-      <body className={`${geistSans.variable} scrollbar-custom min-h-screen max-h-screen overflow-hidden  ${geistMono.variable} antialiased`}>
+      <body className={`${geistSans.variable}  min-h-screen   ${geistMono.variable} antialiased`}>
         <Provider>
           <main className="text-sm">{children}</main>
         </Provider>

@@ -113,9 +113,9 @@ const ProductsPage = () => {
   }, [searchTerm, selectedCategory,data, selectedVendor, sortBy, showFeaturedOnly, priceRange])
 
   const formatPrice = (price: number) => {
-    return new Intl.NumberFormat("en-US", {
+    return new Intl.NumberFormat("en-ET", {
       style: "currency",
-      currency: "USD",
+      currency: "ETB",
     }).format(price)
   }
 
@@ -203,7 +203,7 @@ const ProductsPage = () => {
   }
 
   return (
-    <div className="min-h-screen h-[90vh] overflow-auto scrollbar-custom bg-gradient-to-br from-green-50 via-white to-green-50">
+    <div className="min-h-screen   bg-gradient-to-br from-green-50 via-white to-green-50">
       {/* Header */}
       <div className="bg-gradient-to-r max-w-7xl from-green-600 via-green-700 to-green-800 text-white py-16 relative overflow-hidden">
         <div className="absolute inset-0 bg-black/10"></div>

@@ -13,6 +13,7 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { Button } from './ui/button';
+import { useToast } from '@/providers/toast.provider';
 
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon-2x.png',
@@ -64,7 +65,7 @@ const MapComponent = ({
   onSelectLocation,
   triggerText
 }: Props) => {
-  const user = useAppSelector((state) => state.auth.user) as IUser | null;
+  const toast = useToast()
   const [userPosition, setUserPosition] = useState<{ lat: number; lng: number } | null>(null);
   const [clickedPosition, setClickedPosition] = useState<{ lat: number; lng: number } | null>(null);
 
@@ -104,6 +105,7 @@ const MapComponent = ({
   const handleMapClick = (lat: number, lng: number) => {
     setClickedPosition({ lat, lng });
     if (onSelectLocation) {
+      toast.info("Location selected, you can close the map now");
       onSelectLocation(lat, lng);
     }
   };

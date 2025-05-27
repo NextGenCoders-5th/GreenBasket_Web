@@ -31,6 +31,7 @@ import {
   Cherry,
   Grape,
 } from "lucide-react"
+import { IconCopyright } from "@tabler/icons-react"
 
 const LandingPage = () => {
   const [email, setEmail] = useState("")
@@ -50,54 +51,7 @@ const LandingPage = () => {
   }
 
   return (
-    <div className="min-h-screen h-screen w-full overflow-auto scrollbar-custom bg-white">
-      {/* Navigation */}
-      {/* <motion.nav
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="fixed top-0 w-full bg-white/95 backdrop-blur-md border-b border-green-100 z-50"
-      >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <div className="flex items-center gap-2">
-              <div className="w-10 h-10 bg-gradient-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center">
-                <Leaf className="w-6 h-6 text-white" />
-              </div>
-              <span className="text-2xl font-bold bg-gradient-to-r from-green-600 to-green-800 bg-clip-text text-transparent">
-                FreshMarket
-              </span>
-            </div>
-
-            <div className="hidden md:flex items-center space-x-8">
-              <a href="#home" className="text-slate-700 hover:text-green-600 transition-colors font-medium">
-                Home
-              </a>
-              <a href="#products" className="text-slate-700 hover:text-green-600 transition-colors font-medium">
-                Products
-              </a>
-              <a href="#vendors" className="text-slate-700 hover:text-green-600 transition-colors font-medium">
-                Vendors
-              </a>
-              <a href="#about" className="text-slate-700 hover:text-green-600 transition-colors font-medium">
-                About
-              </a>
-              <a href="#contact" className="text-slate-700 hover:text-green-600 transition-colors font-medium">
-                Contact
-              </a>
-            </div>
-
-            <div className="flex items-center gap-4">
-              <Button variant="outline" className="border-green-200 text-green-700 hover:bg-green-50">
-                Sign In
-              </Button>
-              <Button className="bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800">
-                Get Started
-              </Button>
-            </div>
-          </div>
-        </div>
-      </motion.nav> */}
-
+    <div className="w-full bg-white">
       {/* Hero Section */}
       <section
         id="home"
@@ -199,8 +153,8 @@ const LandingPage = () => {
                       <div className="aspect-square bg-gradient-to-br from-red-100 to-red-200 rounded-2xl flex items-center justify-center">
                         <Apple className="w-16 h-16 text-red-500" />
                       </div>
-                      <div className="aspect-square bg-gradient-to-br from-purple-100 to-purple-200 rounded-2xl flex items-center justify-center">
-                        <Grape className="w-16 h-16 text-purple-500" />
+                      <div className="aspect-square bg-gradient-to-br from-accent-100 to-accent-200 rounded-2xl flex items-center justify-center">
+                        <Grape className="w-16 h-16 text-accent-500" />
                       </div>
                     </div>
                     <div className="space-y-4 pt-8">
@@ -223,7 +177,7 @@ const LandingPage = () => {
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div {...fadeInUp} className="text-center mb-16">
-            <Badge className="bg-green-100 text-green-700 border-green-200 mb-4">Why Choose FreshMarket</Badge>
+            <Badge className="bg-green-100 text-green-700 border-green-200 mb-4">Why Choose GreenBasket</Badge>
             <h2 className="text-4xl md:text-5xl font-bold text-slate-800 mb-6">
               Experience the
               <span className="bg-gradient-to-r from-green-600 to-green-800 bg-clip-text text-transparent">
@@ -254,15 +208,15 @@ const LandingPage = () => {
                 icon: Truck,
                 title: "Fast Delivery",
                 description: "Same-day delivery to your doorstep with temperature control",
-                color: "from-blue-500 to-blue-600",
-                bgColor: "from-blue-50 to-blue-100",
+                color: "from-accent-500 to-accent-600",
+                bgColor: "from-accent-50 to-accent-100",
               },
               {
                 icon: Shield,
                 title: "Quality Assured",
                 description: "Every product is carefully inspected for quality and safety",
-                color: "from-purple-500 to-purple-600",
-                bgColor: "from-purple-50 to-purple-100",
+                color: "from-accent-500 to-accent-600",
+                bgColor: "from-accent-50 to-accent-100",
               },
               {
                 icon: Heart,
@@ -346,7 +300,7 @@ const LandingPage = () => {
                 products: "75+ varieties",
                 description: "Rare and unique flavors from around the world",
                 badge: "Premium",
-                color: "from-purple-500 to-pink-500",
+                color: "from-accent-500 to-pink-500",
               },
               {
                 name: "Root Vegetables",
@@ -405,10 +359,10 @@ const LandingPage = () => {
       <section id="vendors" className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div {...fadeInUp} className="text-center mb-16">
-            <Badge className="bg-blue-100 text-blue-700 border-blue-200 mb-4">Trusted Partners</Badge>
+            <Badge className="bg-accent-100 text-accent-700 border-accent-200 mb-4">Trusted Partners</Badge>
             <h2 className="text-4xl md:text-5xl font-bold text-slate-800 mb-6">
               Meet Our
-              <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-accent-600 to-accent-600 bg-clip-text text-transparent">
                 {" "}
                 Amazing Vendors
               </span>
@@ -506,16 +460,16 @@ const LandingPage = () => {
       <section className="py-20 bg-gradient-to-br from-slate-50 to-slate-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div {...fadeInUp} className="text-center mb-16">
-            <Badge className="bg-purple-100 text-purple-700 border-purple-200 mb-4">Customer Love</Badge>
+            <Badge className="bg-accent-100 text-accent-700 border-accent-200 mb-4">Customer Love</Badge>
             <h2 className="text-4xl md:text-5xl font-bold text-slate-800 mb-6">
               What Our
-              <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-accent-600 to-pink-600 bg-clip-text text-transparent">
                 {" "}
                 Customers Say
               </span>
             </h2>
             <p className="text-xl text-slate-600 max-w-3xl mx-auto">
-              Join thousands of satisfied customers who trust FreshMarket for their daily fresh produce needs.
+              Join thousands of satisfied customers who trust GreenBasket for their daily fresh produce needs.
             </p>
           </motion.div>
 
@@ -529,7 +483,7 @@ const LandingPage = () => {
                 name: "Sarah Johnson",
                 role: "Home Chef",
                 content:
-                  "FreshMarket has completely transformed my cooking! The quality of vegetables is outstanding, and the delivery is always on time. I love supporting local farmers through this platform.",
+                  "GreenBasket has completely transformed my cooking! The quality of vegetables is outstanding, and the delivery is always on time. I love supporting local farmers through this platform.",
                 rating: 5,
                 avatar: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&auto=format&fit=crop&q=60",
               },
@@ -537,7 +491,7 @@ const LandingPage = () => {
                 name: "Michael Chen",
                 role: "Restaurant Owner",
                 content:
-                  "As a restaurant owner, I need the freshest ingredients daily. FreshMarket's vendor network provides consistent quality and variety that keeps my customers coming back.",
+                  "As a restaurant owner, I need the freshest ingredients daily. GreenBasket's vendor network provides consistent quality and variety that keeps my customers coming back.",
                 rating: 5,
                 avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&auto=format&fit=crop&q=60",
               },
@@ -545,7 +499,7 @@ const LandingPage = () => {
                 name: "Emily Rodriguez",
                 role: "Nutritionist",
                 content:
-                  "I recommend FreshMarket to all my clients. The organic selection is impressive, and knowing the source of the produce gives me confidence in recommending it for healthy diets.",
+                  "I recommend GreenBasket to all my clients. The organic selection is impressive, and knowing the source of the produce gives me confidence in recommending it for healthy diets.",
                 rating: 5,
                 avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&auto=format&fit=crop&q=60",
               },
@@ -658,7 +612,7 @@ const LandingPage = () => {
                 <div className="w-10 h-10 bg-gradient-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center">
                   <Leaf className="w-6 h-6 text-white" />
                 </div>
-                <span className="text-2xl font-bold">FreshMarket</span>
+                <span className="text-2xl font-bold">GreenBasket</span>
               </div>
               <p className="text-slate-400 mb-6 leading-relaxed">
                 Connecting communities with fresh, local produce. Supporting farmers, delighting customers, one delivery
@@ -739,16 +693,16 @@ const LandingPage = () => {
               <ul className="space-y-4">
                 <li className="flex items-center gap-3">
                   <Phone className="w-5 h-5 text-green-500" />
-                  <span className="text-slate-400">+1 (555) 123-4567</span>
+                  <span className="text-slate-400">+251 925 52 72 12</span>
                 </li>
                 <li className="flex items-center gap-3">
                   <Mail className="w-5 h-5 text-green-500" />
-                  <span className="text-slate-400">hello@freshmarket.com</span>
+                  <span className="text-slate-400">info@greenbarket.com</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <MapPin className="w-5 h-5 text-green-500 mt-0.5" />
                   <span className="text-slate-400">
-                    123 Fresh Street
+                    Bahir Dar, St Goerge Street
                     <br />
                     Green Valley, CA 90210
                   </span>
@@ -759,7 +713,7 @@ const LandingPage = () => {
 
           <div className="border-t border-slate-800 pt-8 flex flex-col md:flex-row items-center justify-between">
             <p className="text-slate-400 text-sm">
-              © 2024 FreshMarket. All rights reserved. Made with ❤️ for fresh food lovers.
+              <IconCopyright/> 2024 GreenBasket. All rights reserved. Made with   for fresh food lovers.
             </p>
             <div className="flex items-center gap-6 mt-4 md:mt-0">
               <a href="#" className="text-slate-400 hover:text-white text-sm transition-colors">
