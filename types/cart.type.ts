@@ -26,13 +26,24 @@ export interface Product {
 }
 
 
-interface ICartItem extends CartItem, ITimeStamp {
-  id: string;
-  Product: IProduct;
-  price: number;
-  sub_total: number;
-  cart_total: number;
-  status: string;
+
+interface ICartItem {
+  id: string
+  price: number
+  quantity: number
+  sub_total: number
+  productId: string
+  cartId: string
+  Product: Product
 }
+
+interface Cart {
+  id: string
+  total_price: number
+  status: string
+  userId: string
+  CartItems: ICartItem[]
+}
+
   
-export type { ICartItem, CreateCartItemRequest, CreateCartItemResponse };
+export type { Cart, CartItem, CreateCartItemRequest, CreateCartItemResponse };

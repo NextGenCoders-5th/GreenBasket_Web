@@ -28,7 +28,7 @@ interface IOrder extends CreateOrderRequest, ITimeStamp {
 
 interface CheckoutOrderRequest{
   cartId: string;
-  address: string;
+  addressId: string;
 }
 
 export type { IOrder, CreateOrderRequest,CheckoutOrderRequest, CreateOrderResponse };
