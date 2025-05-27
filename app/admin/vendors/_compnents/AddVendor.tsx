@@ -15,6 +15,7 @@ import { Plus } from 'lucide-react';
 import { TooltipWrapper } from '@/components/tooltip.wrapper';
 import { useToast } from '@/providers/toast.provider';
 import { ErrorEnum } from '@/enums/error.enum';
+import { Role } from '@/enums/role.enum';
 
 export default function VendorRegisterDialog() {
     const toast = useToast();
@@ -56,7 +57,6 @@ export default function VendorRegisterDialog() {
                 reset();
                 setLogoPreview(null);
                 setOpen(false);
-                router.push('/admin/vendors');
             })
             .catch((error) => {
                 if (error.status === ErrorEnum.UNKOWN_ERROR)
@@ -88,7 +88,7 @@ export default function VendorRegisterDialog() {
 
                 <DialogTrigger asChild>
                     <button
-                        className="inline-flex py-2 items-center text-sm justify-center px-4  gap-2 bg-green-500 text-white  rounded-lg hover:bg-green-600 duration-100 transition"
+                        className="inline-flex py-0 items-center text-sm justify-center px-3  gap-2 bg-green-500 text-white  rounded-lg hover:bg-green-600 duration-100 transition"
                     >
                         <Plus className="w-4 h-4" />
                         <span className="hidden sm:inline">Add</span>
@@ -144,7 +144,7 @@ export default function VendorRegisterDialog() {
                             {...register('userId')}
                             setValue={(value: string) => setValue('userId', value)}
                             options={
-                                users?.map((user) => ({
+                                users?.filter(user => user.role === Role.CUSTOMER).map((user) => ({
                                     label: `${user.first_name || ''} ${user.email}`,
                                     value: user.id,
                                 })) || [{ label: 'No user found', value: '_' }]

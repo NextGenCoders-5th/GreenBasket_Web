@@ -1,4 +1,5 @@
 "use client"
+import { IconLocation } from "@tabler/icons-react"
 import { UserIcon, PencilIcon, Plus} from "lucide-react"
 
 
@@ -17,7 +18,7 @@ export default function ProfileTabs({ activeTab, setActiveTab }: ProfileTabsProp
   const tabs = [
     { id: TabsValueEnum.ABOUT, label: "About", icon: UserIcon },
     { id: TabsValueEnum.EDIT, label: "Edit Profile", icon: PencilIcon },
-    {id: TabsValueEnum.ADD_ADDRESS, label: "Add Address", icon:Plus},
+    {id: TabsValueEnum.ADD_ADDRESS, label: "My Address", icon:IconLocation},
     { id: TabsValueEnum.CHANGE_PASSWORD, label: "Change Password", icon: PencilIcon }
   ]
 

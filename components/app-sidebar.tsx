@@ -177,6 +177,11 @@ const VendorSideBarData = {
       url: '/vendor/settings',
       icon: IconSettings,
     },
+    {
+      title: 'Profile',
+      url: '/vendor/profile',
+      icon: IconUserCircle,
+    },
   ],
   navClouds: [
     {
@@ -403,7 +408,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               <Link href="/">
                 <Logo />
                 <span className="text-xl text-accent-600 font-semibold">
-                  ምርጥ<strong>ገበያ</strong>
+                  Green<strong>Market</strong>
                 </span>
               </Link>
             </SidebarMenuButton>

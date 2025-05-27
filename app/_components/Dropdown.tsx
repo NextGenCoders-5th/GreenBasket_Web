@@ -32,7 +32,7 @@ export default function SortDropdown({ options }: SortDropdownProps) {
           <SelectValue placeholder="Sort by" />
         </SelectTrigger>
         <SelectContent className='py-1.5'>
-          <SelectItem className='py-1.5 border border-red-700' value="none">None</SelectItem>
+          <SelectItem className='py-1.5 ' value="none">None</SelectItem>
           {options.map((option) => (
             <SelectItem key={option.value} value={option.value}>
               {option.label}

@@ -30,7 +30,7 @@ export default function ProductDetailDrawer({ products, initialIndex, }: Product
     const nextProduct: IProduct | null = products[currentIndex + 1];
     const currentProduct: IProduct = products[currentIndex];
     const { open: openOrderProduct } = useDialog(`${DialogEnum.ORDER_PRODUCT}-${currentProduct.id}`);
-    const { isOpen, close, open: openProductDetail } = useDialog(`${DialogEnum.PRODUCT_DETAIL}-${currentProduct.id}`);
+    const { isOpen, close, open: openProductDetail } = useDialog(`${DialogEnum.PRODUCT_DETAIL}-${products[initialIndex].id}`);
     const [direction, setDirection] = useState(0); // -1 for left, 1 for right
 
     const navigate = (dir: 'prev' | 'next') => {
@@ -41,13 +41,13 @@ export default function ProductDetailDrawer({ products, initialIndex, }: Product
     return (
         <Drawer open={isOpen} onClose={close} >
             <DrawerTrigger asChild>
-                <button onClick={openProductDetail} className={`${ClassName.BUTTON} z-20 text-sm bg-green-600 text-white rounded-full px-2.5 py-2 hover:bg-green-700 transition`}>
-                    Order Now
+                <button onClick={openProductDetail} className={`${ClassName.BUTTON} z-20 text-sm bg-green-600 text-white rounded-full hover:underline px-2.5 py-2 hover:bg-green-700 transition`}>
+                    Product Detail 
                 </button>
             </DrawerTrigger>
 
-            <DrawerContent className="max-w-8xl pb-3 mx-auto">
-                <DrawerHeader>
+            <DrawerContent className="max-w-8xl h-[80vh] pb-3 mx-auto">
+                <DrawerHeader className='py-3'>
                     <DrawerTitle className="text-2xl font-bold text-green-700 text-center">
                         Product Detail
                     </DrawerTitle>
@@ -165,15 +165,15 @@ export default function ProductDetailDrawer({ products, initialIndex, }: Product
                                         </div>
                                         <div className="flex items-center gap-3">
                                             <Image
-                                                src={currentProduct.Vendor.logo_url || '/images/vendor.png'}
-                                                alt={currentProduct.Vendor.business_name}
+                                                src={currentProduct.Vendor?.logo_url || '/images/vendor.png'}
+                                                alt={currentProduct.Vendor?.business_name}
                                                 width={50}
                                                 height={50}
                                                 className="rounded-full border border-gray-300"
                                             />
                                             <div>
-                                                <p className="text-sm font-medium text-gray-800">{currentProduct.Vendor.business_name}</p>
-                                                <p className="text-xs text-gray-500">{currentProduct.Vendor.business_email}</p>
+                                                <p className="text-sm font-medium text-gray-800">{currentProduct.Vendor?.business_name}</p>
+                                                <p className="text-xs text-gray-500">{currentProduct.Vendor?.business_email}</p>
                                             </div>
                                         </div>
                                     </div>

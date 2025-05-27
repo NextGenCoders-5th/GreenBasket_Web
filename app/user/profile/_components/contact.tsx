@@ -16,15 +16,8 @@ export default function ContactInfo() {
           value={user?.email ||  "Not email found"}
         />
 
-        <ContactItem icon={<PhoneIcon className="w-5 h-5 text-gray-500" />} label="Phone :" value={user?.phoneNumber || "No phone number yet"} />
-
-        <ContactItem
-          icon={<GlobeAltIcon className="w-5 h-5 text-gray-500" />}
-          label="Website :"
-          value={user?.first_name || "No Name"}
-        />
-
-        <ContactItem icon={<MapPinIcon className="w-5 h-5 text-gray-500" />} label="Location :" value="City, Country" />
+        <ContactItem icon={<PhoneIcon className="w-5 h-5 text-gray-500" />} label="Phone :" value={user?.phone_number || "No phone number yet"} />
+        <ContactItem icon={<MapPinIcon className="w-5 h-5 text-gray-500" />} label="Location :" value={`${user?.address.city || 'No City'}, ${user?.address.country}`} />
       </div>
     </div>
   )

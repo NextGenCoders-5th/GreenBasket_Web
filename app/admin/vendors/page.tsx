@@ -55,7 +55,7 @@ export default function VendorsPage() {
   }
 
   return (
-    <div className=" overflow-auto max-h-[80vh] bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 p-4 sm:p-6 lg:p-8">
+    <div className=" h-[90vh]  bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 p-4 sm:p-6 lg:p-8">
       {/* Header Section */}
       <div className="mb-8">
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
@@ -73,7 +73,7 @@ export default function VendorsPage() {
                 placeholder="Search vendors..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="w-full sm:w-80 px-4 py-3 pl-10 bg-white border border-slate-200 rounded-xl shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+                className="w-full sm:w-80 px-4 py-2.5 pl-10 bg-white border border-slate-200 rounded-xl shadow-sm focus:ring-1 focus:ring-accent-500 focus:border-accent-500 transition-all duration-200"
               />
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                 <svg className="h-5 w-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">

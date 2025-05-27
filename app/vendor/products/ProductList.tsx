@@ -3,7 +3,7 @@
 import { motion, AnimatePresence } from "framer-motion"
 import { useState } from "react"
 import LoadingPage from "@/components/loading.page"
-import { useDeleteProductMutation, useGetProductsQuery } from "@/redux/api/product.api"
+import { useDeleteProductMutation, useGetProductsQuery, useGetVendorProductsQuery } from "@/redux/api/product.api"
 import AddProductDialog from "./_components/AddProduct"
 import DeleteFeature, { type FeatureDeleteActionType } from "@/components/modals/DeleteFetureDialog"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -27,10 +27,10 @@ import {
   XCircle,
   Tag,
 } from "lucide-react"
-import ProductDetailDrawer from "./_components/ProductDetail"
+import ProductDetailDrawer from "../../_components/ProductDetail"
 
 const ProductList = () => {
-  const { data, error, isLoading } = useGetProductsQuery("")
+  const { data, error, isLoading } = useGetVendorProductsQuery("")
   const [searchTerm, setSearchTerm] = useState("")
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid")
   const [filterStatus, setFilterStatus] = useState<"all" | "ACTIVE" | "INACTIVE">("all")
@@ -87,9 +87,9 @@ const ProductList = () => {
   }
 
   const formatPrice = (price: number) => {
-    return new Intl.NumberFormat("en-US", {
+    return new Intl.NumberFormat("en-ET", {
       style: "currency",
-      currency: "USD",
+      currency: "ETB",
     }).format(price)
   }
 
@@ -128,7 +128,7 @@ const ProductList = () => {
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.6, delay: 0.1 }}
-                className="text-4xl md:text-5xl font-bold mb-2"
+                className="text-xl md:text-3xl font-bold mb-2"
               >
                 Product Inventory
               </motion.h1>
@@ -380,7 +380,7 @@ const ProductList = () => {
                                 <Button
                                   variant="outline"
                                   size="sm"
-                                  className="border-red-200 text-red-600 hover:bg-red-50"
+                                  className="border-red-200  hover:text-white text-red-600 hover:bg-red-500"
                                 >
                                   <Trash2 className="w-4 h-4" />
                                 </Button>
@@ -390,7 +390,7 @@ const ProductList = () => {
                               <Button
                                 variant="outline"
                                 size="sm"
-                                className="border-accent-200 text-accent-600 hover:bg-accent-50"
+                                className="border-accent-200 text-accent-600 hover:bg-accent-500 hover:text-white"
                               >
                                 <Eye className="w-4 h-4" />
                               </Button>

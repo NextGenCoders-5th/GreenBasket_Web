@@ -23,6 +23,7 @@ import type { IUser } from "@/types/user.type"
 import { useAppSelector } from "@/redux/store"
 import { Role } from "@/enums/role.enum"
 import { ScrollArea } from "@/components/ui/scroll-area"
+import { usePathname } from "next/navigation"
 
 interface Props {
   setActiveTab?: (tab: any) => void
@@ -32,6 +33,7 @@ interface Props {
 }
 
 export const AddressForm = ({ setActiveTab, address, withHeader = true, onSave }: Props) => {
+  const pathname = usePathname()
   const toast = useToast()
   const user = useAppSelector((state) => state.auth.user) as IUser | null
 
@@ -68,7 +70,7 @@ export const AddressForm = ({ setActiveTab, address, withHeader = true, onSave }
       toast.error("You must be logged in to add an address", { id: toastId })
       return
     }
-    const type = user.role === Role.VENDOR ? "vendor" : "user"
+    const type = pathname.includes('profile') ? "user" : "vendor"
     try {
       addMyAddress({ data, type })
         .unwrap()
@@ -95,7 +97,7 @@ export const AddressForm = ({ setActiveTab, address, withHeader = true, onSave }
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 p-4 sm:p-6 lg:p-8">
+    <div className="min-h-screen pb-10 bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 p-4 sm:p-6 lg:p-8">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -258,7 +260,7 @@ export const AddressForm = ({ setActiveTab, address, withHeader = true, onSave }
                     </CardHeader>
                     <CardContent>
                       <div className="relative">
-                        <div className="rounded-xl overflow-hidden border-2 border-slate-200 shadow-lg">
+                        <div onClick={(e) => e.preventDefault()} className="rounded-xl flex items-center justify-stretch overflow-hidden border-2 border-slate-200 shadow-lg">
                           <MapComponent
                             markers={[]}
                             center={[11.5665, 37.3392]}

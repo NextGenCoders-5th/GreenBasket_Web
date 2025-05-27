@@ -3,7 +3,6 @@ import { useAppSelector } from "@/redux/store"
 import { IUser } from "@/types/user.type"
 import { CircleDollarSign, ShoppingCart, SquareCheckBig } from "lucide-react"
 import { type ReactNode } from "react"
-import UserAddress from "./user-address"
 
 export default function ProfileHeader() {
   const user = useAppSelector((state) => state.auth.user) as unknown as IUser | null;
@@ -28,7 +27,6 @@ export default function ProfileHeader() {
         <div className="pt-14 px-6 pb-6">
           <h1 className="text-xl text-slate-600 font-bold dark:text-white ">{`${user?.last_name}`} {user?.last_name}</h1>
           {/* User address  */}
-          <UserAddress />
 
           {/* User statisitcs */}
           <div className="grid gap-2 bg-pu w-[70%]  grid-rows-1 grid-cols-[1fr_1fr_1fr]  items-center">

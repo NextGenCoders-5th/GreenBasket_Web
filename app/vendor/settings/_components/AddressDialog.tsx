@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form"
 import * as z from "zod";
 import { MapPin } from "lucide-react"
 import { Drawer, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle } from "@/components/ui/drawer"
-import { AddressForm } from "@/app/user/profile/_components/add-address"
+import { AddressForm } from "@/app/user/profile/_components/add-address";
 
 const addressSchema = z.object({
   country: z.string().min(1, "Country is required"),
