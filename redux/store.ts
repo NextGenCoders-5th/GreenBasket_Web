@@ -6,7 +6,8 @@ import { userApi } from './api/user.api';
 import { authApi } from './api/auth.api';
 import vendorApi from './api/vendor.api';
 import categoryApi from './api/category.api';
-import cartItemApi from './api/cart.api';
+import cartItemApi from './api/cart-item.api';
+import cartApi from './api/cart.api';
 import addressApi from './api/address.api';
 import productApi from './api/product.api';
 import reviewApi from './api/review.api';
@@ -27,6 +28,7 @@ export const store = configureStore({
     [reviewApi.reducerPath]: reviewApi.reducer,
     [paymentApi.reducerPath]: paymentApi.reducer,
     [orderApi.reducerPath]: orderApi.reducer,
+    [cartApi.reducerPath]: cartApi.reducer,
     auth: authReducer,
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware()
@@ -40,6 +42,7 @@ export const store = configureStore({
   .concat(reviewApi.middleware)
   .concat(orderApi.middleware)
   .concat(paymentApi.middleware)
+  .concat(cartApi.middleware),
 });
 
 type RootState = ReturnType<typeof store.getState>;

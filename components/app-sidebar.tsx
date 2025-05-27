@@ -17,6 +17,7 @@ import {
   IconReport,
   IconSearch,
   IconSettings,
+  IconGardenCart,
   IconUserCircle
 } from '@tabler/icons-react';
 
@@ -294,6 +295,11 @@ const UserSideBarData = {
       title: 'Profile',
       url: '/user/profile',
       icon: IconUserCircle,
+    },
+    {
+      title: 'Carts',
+      url: '/user/carts',
+      icon: IconGardenCart,
     },
   ],
   navClouds: [

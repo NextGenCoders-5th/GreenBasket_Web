@@ -23,7 +23,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   // Getting current user data;
   const { data, isLoading, error } = useCurrentUserQuery(undefined, {
-    skip: !!user || pathename === '/login' || pathename === '/register',   
+    skip:  pathename === '/login' || pathename === '/register',   
   });
   useEffect(() => {
     if (data && !error) {

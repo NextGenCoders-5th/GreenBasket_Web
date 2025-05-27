@@ -1,0 +1,170 @@
+{
+    "apiVersion": "1.0.0",
+    "data": {
+      "status": "success",
+      "message": "Carts found successfully",
+      "timestamp": "2025-05-27T16:43:42.803Z",
+      "data": [
+        {
+          "id": "58c9e169-3c6f-426a-b441-3cec8907f12c",
+          "updatedAt": "2025-05-27T16:17:04.212Z",
+          "createdAt": "2025-05-27T16:16:20.245Z",
+          "total_price": 846.76,
+          "status": "ACTIVE",
+          "userId": "3ba8af05-6ee3-46e0-9bfe-8a7ced4edf36",
+          "CartItems": [
+            {
+              "id": "16a159af-00dd-4e9a-a3a0-24e0a3a0cf04",
+              "updatedAt": "2025-05-27T16:16:20.315Z",
+              "createdAt": "2025-05-27T16:16:20.315Z",
+              "price": 39.03,
+              "quantity": 9,
+              "sub_total": 351.27,
+              "productId": "3c722767-e07e-44e7-ae2d-b5b48188e518",
+              "cartId": "58c9e169-3c6f-426a-b441-3cec8907f12c"
+            },
+            {
+              "id": "8207deb5-2e8f-4f89-94d1-03d82c09d18f",
+              "updatedAt": "2025-05-27T16:16:54.959Z",
+              "createdAt": "2025-05-27T16:16:54.959Z",
+              "price": 28.43,
+              "quantity": 13,
+              "sub_total": 369.59,
+              "productId": "c243b166-ee73-492e-a316-fe9b23dc7b42",
+              "cartId": "58c9e169-3c6f-426a-b441-3cec8907f12c"
+            },
+            {
+              "id": "1d24b343-f0b0-4240-b664-4df73070dd99",
+              "updatedAt": "2025-05-27T16:17:04.210Z",
+              "createdAt": "2025-05-27T16:17:04.210Z",
+              "price": 25.18,
+              "quantity": 5,
+              "sub_total": 125.9,
+              "productId": "56833fc3-b3a9-4c62-9798-0973e42361a9",
+              "cartId": "58c9e169-3c6f-426a-b441-3cec8907f12c"
+            }
+          ]
+        },
+        {
+            "id": "58c9e169-3c6f-426a-b441-3cec8907f12c",
+            "updatedAt": "2025-05-27T16:17:04.212Z",
+            "createdAt": "2025-05-27T16:16:20.245Z",
+            "total_price": 846.76,
+            "status": "ACTIVE",
+            "userId": "3ba8af05-6ee3-46e0-9bfe-8a7ced4edf36",
+            "CartItems": [
+              {
+                "id": "16a159af-00dd-4e9a-a3a0-24e0a3a0cf04",
+                "updatedAt": "2025-05-27T16:16:20.315Z",
+                "createdAt": "2025-05-27T16:16:20.315Z",
+                "price": 39.03,
+                "quantity": 9,
+                "sub_total": 351.27,
+                "productId": "3c722767-e07e-44e7-ae2d-b5b48188e518",
+                "cartId": "58c9e169-3c6f-426a-b441-3cec8907f12c"
+              },
+              {
+                "id": "8207deb5-2e8f-4f89-94d1-03d82c09d18f",
+                "updatedAt": "2025-05-27T16:16:54.959Z",
+                "createdAt": "2025-05-27T16:16:54.959Z",
+                "price": 28.43,
+                "quantity": 13,
+                "sub_total": 369.59,
+                "productId": "c243b166-ee73-492e-a316-fe9b23dc7b42",
+                "cartId": "58c9e169-3c6f-426a-b441-3cec8907f12c"
+              },
+              {
+                "id": "1d24b343-f0b0-4240-b664-4df73070dd99",
+                "updatedAt": "2025-05-27T16:17:04.210Z",
+                "createdAt": "2025-05-27T16:17:04.210Z",
+                "price": 25.18,
+                "quantity": 5,
+                "sub_total": 125.9,
+                "productId": "56833fc3-b3a9-4c62-9798-0973e42361a9",
+                "cartId": "58c9e169-3c6f-426a-b441-3cec8907f12c"
+              }
+            ]
+          },
+          {
+            "id": "58c9e169-3c6f-426a-b441-3cec8907f12c",
+            "updatedAt": "2025-05-27T16:17:04.212Z",
+            "createdAt": "2025-05-27T16:16:20.245Z",
+            "total_price": 846.76,
+            "status": "ACTIVE",
+            "userId": "3ba8af05-6ee3-46e0-9bfe-8a7ced4edf36",
+            "CartItems": [
+              {
+                "id": "16a159af-00dd-4e9a-a3a0-24e0a3a0cf04",
+                "updatedAt": "2025-05-27T16:16:20.315Z",
+                "createdAt": "2025-05-27T16:16:20.315Z",
+                "price": 39.03,
+                "quantity": 9,
+                "sub_total": 351.27,
+                "productId": "3c722767-e07e-44e7-ae2d-b5b48188e518",
+                "cartId": "58c9e169-3c6f-426a-b441-3cec8907f12c"
+              },
+              {
+                "id": "8207deb5-2e8f-4f89-94d1-03d82c09d18f",
+                "updatedAt": "2025-05-27T16:16:54.959Z",
+                "createdAt": "2025-05-27T16:16:54.959Z",
+                "price": 28.43,
+                "quantity": 13,
+                "sub_total": 369.59,
+                "productId": "c243b166-ee73-492e-a316-fe9b23dc7b42",
+                "cartId": "58c9e169-3c6f-426a-b441-3cec8907f12c"
+              },
+              {
+                "id": "1d24b343-f0b0-4240-b664-4df73070dd99",
+                "updatedAt": "2025-05-27T16:17:04.210Z",
+                "createdAt": "2025-05-27T16:17:04.210Z",
+                "price": 25.18,
+                "quantity": 5,
+                "sub_total": 125.9,
+                "productId": "56833fc3-b3a9-4c62-9798-0973e42361a9",
+                "cartId": "58c9e169-3c6f-426a-b441-3cec8907f12c"
+              }
+            ]
+          },
+          {
+            "id": "58c9e169-3c6f-426a-b441-3cec8907f12c",
+            "updatedAt": "2025-05-27T16:17:04.212Z",
+            "createdAt": "2025-05-27T16:16:20.245Z",
+            "total_price": 846.76,
+            "status": "ACTIVE",
+            "userId": "3ba8af05-6ee3-46e0-9bfe-8a7ced4edf36",
+            "CartItems": [
+              {
+                "id": "16a159af-00dd-4e9a-a3a0-24e0a3a0cf04",
+                "updatedAt": "2025-05-27T16:16:20.315Z",
+                "createdAt": "2025-05-27T16:16:20.315Z",
+                "price": 39.03,
+                "quantity": 9,
+                "sub_total": 351.27,
+                "productId": "3c722767-e07e-44e7-ae2d-b5b48188e518",
+                "cartId": "58c9e169-3c6f-426a-b441-3cec8907f12c"
+              },
+              {
+                "id": "8207deb5-2e8f-4f89-94d1-03d82c09d18f",
+                "updatedAt": "2025-05-27T16:16:54.959Z",
+                "createdAt": "2025-05-27T16:16:54.959Z",
+                "price": 28.43,
+                "quantity": 13,
+                "sub_total": 369.59,
+                "productId": "c243b166-ee73-492e-a316-fe9b23dc7b42",
+                "cartId": "58c9e169-3c6f-426a-b441-3cec8907f12c"
+              },
+              {
+                "id": "1d24b343-f0b0-4240-b664-4df73070dd99",
+                "updatedAt": "2025-05-27T16:17:04.210Z",
+                "createdAt": "2025-05-27T16:17:04.210Z",
+                "price": 25.18,
+                "quantity": 5,
+                "sub_total": 125.9,
+                "productId": "56833fc3-b3a9-4c62-9798-0973e42361a9",
+                "cartId": "58c9e169-3c6f-426a-b441-3cec8907f12c"
+              }
+            ]
+          }
+      ]
+    }
+  }

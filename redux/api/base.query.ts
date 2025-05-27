@@ -4,6 +4,7 @@ export const BASE_URL = 'http://localhost:5000/api/v1/'; // Replace with your ac
 export const API_URL = 'https://multi-vendor-marketplace-backend-6pue.onrender.com/api/v1/'; // Replace with your actual base URL
 export const baseQuery = fetchBaseQuery({
   baseUrl: BASE_URL,
+  credentials: 'include', // Include credentials (cookies) in requests
   prepareHeaders: (headers, { getState }) => {
     const token = localStorage.getItem('token');
     if (token) {
