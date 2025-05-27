@@ -11,10 +11,11 @@ import {
 } from "@/components/ui/sheet"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { User, Mail, Phone, Calendar, MapPin, Shield, Settings, Clock, CheckCircle, XCircle, AlertTriangle, Eye, Edit, Trash2, UserCheck, UserX, Key, ImageIcon } from 'lucide-react'
+import { User, Mail, Phone, Calendar,  Shield, Settings, Clock, CheckCircle, XCircle, AlertTriangle, Trash2, UserCheck, UserX, Key, ImageIcon, Pencil } from 'lucide-react'
 import { IUser } from "@/types/user.type"
 import DeleteFeature, { FeatureDeleteActionType } from "@/components/modals/DeleteFetureDialog"
 import { useDeleteUserMutation } from "@/redux/api/user.api"
+import EditUserDialog from "./EditUser"
 
 interface UserDetailDrawerProps {
   user: IUser | null
@@ -108,7 +109,7 @@ export function UserDetailDrawer({ user, open, onOpenChange }: UserDetailDrawerP
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent side="right" className="w-full sm:w-[540px] sm:max-w-[540px] overflow-y-auto">
+      <SheetContent side="right" className="w-full sm:w-[540px] sm:max-w-[540px] scrollbar-custom overflow-y-auto">
         <SheetHeader className="space-y-4">
           <div className="flex items-center gap-4">
             <Avatar className="h-16 w-16">
@@ -134,14 +135,18 @@ export function UserDetailDrawer({ user, open, onOpenChange }: UserDetailDrawerP
 
           {/* Action Buttons */}
           <div className="flex gap-2">
+            <EditUserDialog editUser={user}
+            onsuccess={() => onOpenChange(false)}
+            >
             <Button size="sm" variant="outline">
-              <Edit className="h-4 w-4 mr-2" />
+              <Pencil className="h-4 w-4 mr-2" />
               Edit
             </Button>
-            <Button size="sm" variant="outline">
+            </EditUserDialog>
+            {/* <Button size="sm" variant="outline">
               <Eye className="h-4 w-4 mr-2" />
               View Profile
-            </Button>
+            </Button> */}
             <DeleteFeature
               feature="User"
               featureId={user.id}

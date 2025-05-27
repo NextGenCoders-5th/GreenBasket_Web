@@ -6,7 +6,7 @@ import { useGetUserQuery, useUpdateUserMutation } from '@/redux/api/user.api';
 import { useToast } from '@/providers/toast.provider';
 import { Loader2, Pencil, Plus, UserCircle2 } from 'lucide-react';
 import { ClassName } from '@/enums/classnames.enum';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import {
   Dialog,
   DialogContent,
@@ -19,18 +19,22 @@ import { useEffect, useState } from 'react';
 import { Role } from '@/enums/role.enum';
 import { IUser } from '@/types/user.type';
 
+interface Props {
+  editUser?: IUser;
+  children?: React.ReactNode;
+  onsuccess: () => void;
+}
 
-export default function EditUserDialog() {
+export default function EditUserDialog({ editUser, children, onsuccess }: Props) {
   // TOAST:- toast instance to toast message
 
   const toast = useToast();
   const [open, setOpen] = useState(false)
-  const router = useRouter();
 
   const { userId } = useParams();
-  const { data, isLoading: fetching } = useGetUserQuery(userId as string, { skip: !userId });
+  const { data, isLoading: fetching } = useGetUserQuery(userId as string, { skip: !userId || !!editUser });
 
-  const user = data?.data.data as IUser
+  const user = data?.data.data as IUser || editUser;
 
   const {
     register,
@@ -77,6 +81,7 @@ export default function EditUserDialog() {
           toast.success('User saved successfully', { id: toastId });
           reset();
           setOpen(false)
+          onsuccess?.()
           // router.push('/admin/users');
         })
         .catch((error) => {
@@ -95,10 +100,10 @@ export default function EditUserDialog() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <button className={` ${ClassName.BUTTON} bg-blue-500/90 hover:bg-blue-500`} title="Edit User">
+        {children || <button className={` ${ClassName.BUTTON} bg-blue-500/90 hover:bg-blue-500`} title="Edit User">
           <Pencil className="w-4 h-4" />
           <span className="hidden sm:inline">Edit User</span>
-        </button>
+        </button>}
       </DialogTrigger>
       <DialogContent className="sm:max-w-[600px]">
         <DialogHeader className='flex flex-row items-center justify-between px-2.5' >
