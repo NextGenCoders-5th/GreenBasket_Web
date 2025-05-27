@@ -14,6 +14,7 @@ import NetworkErrorSection from "@/components/network-error"
 import { ResponseError } from "@/types/general.types"
 import NotFound from "@/app/_components/NotFound"
 import { IUser } from "@/types/user.type"
+import { UserDetailDrawer } from "../users/_compnents/UserDtailDialog"
 
 function getStatusBadgeVariant(status: string) {
   switch (status) {
@@ -65,12 +66,18 @@ function getInitials(firstName: string, lastName: string) {
 export default function VerificationRequestsPage() {
 
   const [selectedUser, setSelectedUser] = useState<IUser | null>(null)
-  const [isVerifyDialogOpen, setIsVerifyDialogOpen] = useState(false)
+  const [isVerifyDialogOpen, setIsVerifyDialogOpen] = useState(false);
+  const [isViewDialogOpen, setIsViewDialogOpen] = useState(false);
 
   const { data, error, isLoading } = useGetAllVerificationsQuery()
   const handleVerifyUser = (user: IUser) => {
     setSelectedUser(user)
     setIsVerifyDialogOpen(true)
+  }
+
+  const handleViewUser = (user: IUser) => {
+    setSelectedUser(user)
+    setIsViewDialogOpen(true)
   }
 
   const handleVerificationSuccess = () => {
@@ -162,7 +169,7 @@ export default function VerificationRequestsPage() {
             </Card>
           </div>
         </CardHeader>
-        <CardContent className="max-h-[75vh] overflow-auto">
+        <CardContent className="h-[75vh] scrollbar-custom overflow-auto">
           <div className="rounded-md border">
             <Table>
               <TableHeader>
@@ -239,7 +246,7 @@ export default function VerificationRequestsPage() {
                     </TableCell>
                     <TableCell className="text-right">
                       <div className="flex items-center gap-1 justify-end">
-                        <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                        <Button variant="ghost"  onClick={() => handleViewUser(request)} size="sm" className="h-8 w-8 p-0">
                           <Eye className="h-4 w-4" />
                           <span className="sr-only">View details</span>
                         </Button>
@@ -268,6 +275,8 @@ export default function VerificationRequestsPage() {
         onOpenChange={setIsVerifyDialogOpen}
         onSuccess={handleVerificationSuccess}
       />
+              <UserDetailDrawer user={selectedUser} open={isViewDialogOpen} onOpenChange={setIsViewDialogOpen} />
+      
     </div>
   )
 }
