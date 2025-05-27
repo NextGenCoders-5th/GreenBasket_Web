@@ -77,7 +77,7 @@ export default function EditUserDialog() {
           toast.success('User saved successfully', { id: toastId });
           reset();
           setOpen(false)
-          router.push('/admin/users');
+          // router.push('/admin/users');
         })
         .catch((error) => {
           if (error.status === 'UNKOWN_ERROR')

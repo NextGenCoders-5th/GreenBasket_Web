@@ -20,7 +20,7 @@ interface DashboardLayoutProps {
 export default function DashboardLayout({ children }: DashboardLayoutProps) {
   return (
     <ProtectedProvider>
-      <PermissionProvider roles={[Role.VENDOR]}>
+      <PermissionProvider roles={[Role.VENDOR, Role.ADMIN]}>
         <SidebarProvider
           style={
             {
@@ -30,7 +30,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
           }
         >
           <AppSidebar variant="inset" />
-          <SidebarInset>
+          <SidebarInset className='bg-slate-50'>
           <SiteHeader />
             {children}
             </SidebarInset>

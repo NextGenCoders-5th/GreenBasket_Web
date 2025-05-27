@@ -9,7 +9,7 @@ export default function ProfileHeader() {
   const user = useAppSelector((state) => state.auth.user) as unknown as IUser | null;
 
   return (
-    <div className="p-2">
+    <div className="p-2 w-full">
       <div className="rounded-lg  dark:bg-gray-800 bg-white shadow-md">
         {/* Banner */}
         <div className="h-32 bg-green-500/80 rounded-lg  relative">

@@ -6,7 +6,7 @@ import { ResponseError } from '@/types/general.types';
 
 
 interface NetworkErrorSectionProps {
-  error: ResponseError;
+  error: ResponseError | any;
 }
 export default function NetworkErrorSection({error}: NetworkErrorSectionProps) {
   // Reload page when connection is restored
@@ -23,15 +23,11 @@ export default function NetworkErrorSection({error}: NetworkErrorSectionProps) {
   }, []);
 
   return (
-    <div className="flex flex-col items-center justify-center w-full min-h-full h-full bg-red-50 border border-red-200 rounded-lg p-6 text-center shadow-sm">
+    <div className="flex flex-col items-center justify-center w-full min-h-full h-screen bg-red-50 border border-red-200 rounded-lg p-6 text-center shadow-sm">
       <AlertTriangle className="w-12 h-12 text-red-500 mb-4" />
-      <h2 className="text-lg sm:text-xl font-semibold text-red-700 mb-2">Network Error</h2>
+      <h2 className="text-lg sm:text-xl font-semibold text-red-700 mb-2">Error: {error.status}</h2>
       <p className="text-sm text-red-600 max-w-sm mb-4">
-        We couldn’t connect to the server. Please check your internet connection.
-        The page will refresh automatically when you’re back online.
-      </p>
-      <p className="text-sm text-red-600 max-w-sm mb-4">
-        Error Code: {error.status} - {error.message}
+        {error.message || 'An unexpected error occurred. Please check your network connection and try again.'}
       </p>
       <button
         onClick={() => window.location.reload()}
