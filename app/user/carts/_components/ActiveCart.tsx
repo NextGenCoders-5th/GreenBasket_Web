@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
@@ -9,127 +9,143 @@ import { Separator } from "@/components/ui/separator"
 import { Input } from "@/components/ui/input"
 import { ShoppingCart, Plus, Minus, Trash2, ArrowLeft, CreditCard, Tag, Package, AlertCircle } from "lucide-react"
 import Link from "next/link"
+import { useCheckOutOrderMutation } from "@/redux/api/order.api"
+import { useToast } from "@/providers/toast.provider"
+import { IUser } from "@/types/user.type"
+import { useAppSelector } from "@/redux/store"
+import { useGetMyCartQuery } from "@/redux/api/cart.api"
+import { Cart } from "@/types/cart.type"
+import LoadingPage from "@/components/loading.page"
 
-// Types based on your API response
-interface Product {
-  id: string
-  name: string
-  description: string
-  price: number
-  discount_price: number
-  unit: string
-  stock: number
-  image_url: string
-  status: string
-  is_featured: boolean
-  vendorId: string
-}
 
-interface CartItem {
-  id: string
-  price: number
-  quantity: number
-  sub_total: number
-  productId: string
-  cartId: string
-  Product: Product
-}
-
-interface Cart {
-  id: string
-  total_price: number
-  status: string
-  userId: string
-  CartItems: CartItem[]
-}
-
-// Mock data from your API response
-const mockCartData: Cart = {
-  id: "58c9e169-3c6f-426a-b441-3cec8907f12c",
-  total_price: 846.76,
-  status: "ACTIVE",
-  userId: "3ba8af05-6ee3-46e0-9bfe-8a7ced4edf36",
-  CartItems: [
-    {
-      id: "16a159af-00dd-4e9a-a3a0-24e0a3a0cf04",
-      price: 39.03,
-      quantity: 9,
-      sub_total: 351.27,
-      productId: "3c722767-e07e-44e7-ae2d-b5b48188e518",
-      cartId: "58c9e169-3c6f-426a-b441-3cec8907f12c",
-      Product: {
-        id: "3c722767-e07e-44e7-ae2d-b5b48188e518",
-        name: "Pineapple",
-        description: "Tropical pineapples, sweet and tangy.",
-        price: 39.03,
-        discount_price: 18.72,
-        unit: "kg",
-        stock: 972,
-        image_url:
-          "https://images.unsplash.com/photo-1572859704906-ab0716da285f?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fFBpbmVhcHBsZXxlbnwwfHwwfHx8MA%3D%3D",
-        status: "ACTIVE",
-        is_featured: true,
-        vendorId: "45dd5772-d967-4a80-a6a7-e611a0d83687",
-      },
-    },
-    {
-      id: "8207deb5-2e8f-4f89-94d1-03d82c09d18f",
-      price: 28.43,
-      quantity: 13,
-      sub_total: 369.59,
-      productId: "c243b166-ee73-492e-a316-fe9b23dc7b42",
-      cartId: "58c9e169-3c6f-426a-b441-3cec8907f12c",
-      Product: {
-        id: "c243b166-ee73-492e-a316-fe9b23dc7b42",
-        name: "Potato",
-        description: "Organic potatoes, versatile for many dishes.",
-        price: 28.43,
-        discount_price: 5.64,
-        unit: "kg",
-        stock: 676,
-        image_url:
-          "https://images.unsplash.com/photo-1590165482129-1b8b27698780?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8UG90YXRvfGVufDB8fDB8fHww",
-        status: "ACTIVE",
-        is_featured: true,
-        vendorId: "48ea7eee-19be-4359-bec3-f3b6e6466510",
-      },
-    },
-    {
-      id: "1d24b343-f0b0-4240-b664-4df73070dd99",
-      price: 25.18,
-      quantity: 5,
-      sub_total: 125.9,
-      productId: "56833fc3-b3a9-4c62-9798-0973e42361a9",
-      cartId: "58c9e169-3c6f-426a-b441-3cec8907f12c",
-      Product: {
-        id: "56833fc3-b3a9-4c62-9798-0973e42361a9",
-        name: "Strawberry",
-        description: "Fresh strawberries, perfect for desserts.",
-        price: 25.18,
-        discount_price: 5.71,
-        unit: "kg",
-        stock: 450,
-        image_url:
-          "https://images.unsplash.com/photo-1587393855524-087f83d95bc9?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8U3RyYXdiZXJyeXxlbnwwfHwwfHx8MA%3D%3D",
-        status: "ACTIVE",
-        is_featured: false,
-        vendorId: "45dd5772-d967-4a80-a6a7-e611a0d83687",
-      },
-    },
-  ],
-}
+// // Mock data from your API response
+// const mockCartData: Cart = {
+//   id: "58c9e169-3c6f-426a-b441-3cec8907f12c",
+//   total_price: 846.76,
+//   status: "ACTIVE",
+//   userId: "3ba8af05-6ee3-46e0-9bfe-8a7ced4edf36",
+//   CartItems: [
+//     {
+//       id: "16a159af-00dd-4e9a-a3a0-24e0a3a0cf04",
+//       price: 39.03,
+//       quantity: 9,
+//       sub_total: 351.27,
+//       productId: "3c722767-e07e-44e7-ae2d-b5b48188e518",
+//       cartId: "58c9e169-3c6f-426a-b441-3cec8907f12c",
+//       Product: {
+//         id: "3c722767-e07e-44e7-ae2d-b5b48188e518",
+//         name: "Pineapple",
+//         description: "Tropical pineapples, sweet and tangy.",
+//         price: 39.03,
+//         discount_price: 18.72,
+//         unit: "kg",
+//         stock: 972,
+//         image_url:
+//           "https://images.unsplash.com/photo-1572859704906-ab0716da285f?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fFBpbmVhcHBsZXxlbnwwfHwwfHx8MA%3D%3D",
+//         status: "ACTIVE",
+//         is_featured: true,
+//         vendorId: "45dd5772-d967-4a80-a6a7-e611a0d83687",
+//       },
+//     },
+//     {
+//       id: "8207deb5-2e8f-4f89-94d1-03d82c09d18f",
+//       price: 28.43,
+//       quantity: 13,
+//       sub_total: 369.59,
+//       productId: "c243b166-ee73-492e-a316-fe9b23dc7b42",
+//       cartId: "58c9e169-3c6f-426a-b441-3cec8907f12c",
+//       Product: {
+//         id: "c243b166-ee73-492e-a316-fe9b23dc7b42",
+//         name: "Potato",
+//         description: "Organic potatoes, versatile for many dishes.",
+//         price: 28.43,
+//         discount_price: 5.64,
+//         unit: "kg",
+//         stock: 676,
+//         image_url:
+//           "https://images.unsplash.com/photo-1590165482129-1b8b27698780?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8UG90YXRvfGVufDB8fDB8fHww",
+//         status: "ACTIVE",
+//         is_featured: true,
+//         vendorId: "48ea7eee-19be-4359-bec3-f3b6e6466510",
+//       },
+//     },
+//     {
+//       id: "1d24b343-f0b0-4240-b664-4df73070dd99",
+//       price: 25.18,
+//       quantity: 5,
+//       sub_total: 125.9,
+//       productId: "56833fc3-b3a9-4c62-9798-0973e42361a9",
+//       cartId: "58c9e169-3c6f-426a-b441-3cec8907f12c",
+//       Product: {
+//         id: "56833fc3-b3a9-4c62-9798-0973e42361a9",
+//         name: "Strawberry",
+//         description: "Fresh strawberries, perfect for desserts.",
+//         price: 25.18,
+//         discount_price: 5.71,
+//         unit: "kg",
+//         stock: 450,
+//         image_url:
+//           "https://images.unsplash.com/photo-1587393855524-087f83d95bc9?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8U3RyYXdiZXJyeXxlbnwwfHwwfHx8MA%3D%3D",
+//         status: "ACTIVE",
+//         is_featured: false,
+//         vendorId: "45dd5772-d967-4a80-a6a7-e611a0d83687",
+//       },
+//     },
+//   ],
+// }
 
 export default function ActiveCart() {
-  const [cartData, setCartData] = useState<Cart>(mockCartData)
-  const [isLoading, setIsLoading] = useState(false)
 
+  const {data, isLoading: fetching, error} = useGetMyCartQuery()
+  const toast = useToast();
+  const user = useAppSelector((state) => state.auth.user)  as IUser | null;
+  const [cartData, setCartData] = useState<Cart | null>(null)
+  const [checkOutOrder, {isLoading}] = useCheckOutOrderMutation()
+
+  // Set cart data when fetched
+  useEffect(() => {
+    const cart = data?.data.data || null;
+    if (!!cart) {
+      setCartData(cart)
+    }
+  }
+  , [data])
+
+  const handleCheckout = async () => {
+    if (!user){
+      toast.error("Please login to checkout")
+      return
+    }
+    if(!user.address){
+      toast.error("Please add your address before checking out")
+      return
+    }
+    const toastId = toast.loading("Checking out order...")
+    const address = user.address.id;
+    try {
+      await checkOutOrder({ cartId: cartData?.id || "", addressId: address }).unwrap().then(() => {
+          toast.success("Order checked out successfully", { id: toastId });
+      })
+        .catch((err) => {
+          if (err.status === 'UNKOWN_ERROR')
+            toast.error('Checking out order failed, please try again.', { id: toastId });
+          else {
+            toast.error(err.message || 'Checking out order failed, please try again.', { id: toastId });
+          }
+        });
+
+    } catch (err) {
+      toast.error( 'Checking out order failed, please try again.', { id: toastId });
+    }
+  }
+ 
   const updateQuantity = (itemId: string, newQuantity: number) => {
     if (newQuantity < 1) return
 
-    setCartData((prev) => ({
+    setCartData((prev) => prev && ({
       ...prev,
       CartItems: prev.CartItems.map((item) => {
-        if (item.id === itemId) {
+        if (item.productId === itemId) {
           const updatedItem = {
             ...item,
             quantity: newQuantity,
@@ -143,7 +159,7 @@ export default function ActiveCart() {
 
     // Recalculate total
     setTimeout(() => {
-      setCartData((prev) => ({
+      setCartData((prev) => prev && ({
         ...prev,
         total_price: prev.CartItems.reduce((total, item) => total + item.sub_total, 0),
       }))
@@ -152,6 +168,7 @@ export default function ActiveCart() {
 
   const removeItem = (itemId: string) => {
     setCartData((prev) => {
+      if (!prev) return prev
       const updatedItems = prev.CartItems.filter((item) => item.id !== itemId)
       const newTotal = updatedItems.reduce((total, item) => total + item.sub_total, 0)
 
@@ -164,16 +181,40 @@ export default function ActiveCart() {
   }
 
   const calculateSavings = () => {
-    return cartData.CartItems.reduce((savings, item) => {
+    return cartData?.CartItems.reduce((savings, item) => {
       const originalPrice = item.Product.price * item.quantity
       const discountPrice = item.Product.discount_price * item.quantity
       return savings + (originalPrice - discountPrice)
     }, 0)
   }
 
-  const totalSavings = calculateSavings()
+  const totalSavings = calculateSavings() || 0
 
-  if (cartData.CartItems.length === 0) {
+  //  Display loading
+
+  if(fetching){
+    <LoadingPage/>
+  }
+
+  // if an error occurs
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold text-red-600 mb-4">Error loading cart</h1>
+          <p className="text-gray-600 mb-6">There was an error loading your cart. Please try again later.</p>
+          <Link href="/marketplace">
+            <Button className="bg-emerald-600 hover:bg-emerald-700 text-white px-8 py-3 rounded-lg">
+              Continue Shopping
+            </Button>
+          </Link>
+        </div>
+      </div>
+    )
+  }
+
+
+  if (!cartData) {
     return (
       <div className="min-h-screen bg-gray-50">
         <div className="container mx-auto px-4 py-8">
@@ -182,7 +223,7 @@ export default function ActiveCart() {
               <ShoppingCart className="w-24 h-24 text-gray-300 mx-auto mb-6" />
               <h1 className="text-2xl font-bold text-gray-900 mb-4">Your cart is empty</h1>
               <p className="text-gray-600 mb-8">Looks like you haven't added any items to your cart yet.</p>
-              <Link href="/products">
+              <Link href="/marketplace">
                 <Button className="bg-emerald-600 hover:bg-emerald-700 text-white px-8 py-3 rounded-lg">
                   Continue Shopping
                 </Button>
@@ -200,7 +241,7 @@ export default function ActiveCart() {
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Cart Items */}
           <div className="lg:col-span-2 space-y-4">
-            {cartData.CartItems.map((item) => {
+            {cartData?.CartItems.map((item) => {
               const hasDiscount = item.Product.discount_price > 0
               const currentPrice = hasDiscount ? item.Product.discount_price : item.Product.price
 
@@ -321,8 +362,8 @@ export default function ActiveCart() {
 
                 <div className="space-y-3">
                   <div className="flex justify-between text-sm">
-                    <span className="text-gray-600">Subtotal ({cartData.CartItems.length} items)</span>
-                    <span className="font-medium">{(cartData.total_price + totalSavings).toFixed(2)} ETB</span>
+                    <span className="text-gray-600">Subtotal ({cartData?.CartItems.length} items)</span>
+                    <span className="font-medium">{(cartData?.total_price + totalSavings).toFixed(2)} ETB</span>
                   </div>
 
                   {totalSavings > 0 && (
@@ -344,7 +385,7 @@ export default function ActiveCart() {
 
                   <div className="flex justify-between text-lg font-bold">
                     <span>Total</span>
-                    <span className="text-emerald-600">{cartData.total_price.toFixed(2)} ETB</span>
+                    <span className="text-emerald-600">{cartData?.total_price.toFixed(2)} ETB</span>
                   </div>
                 </div>
 
@@ -360,9 +401,10 @@ export default function ActiveCart() {
                 )}
 
                 <Button
-                  className="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-3 rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-200"
+                  className="w-full bg-emerald-600 cursor-pointer hover:bg-emerald-700 text-white py-3 rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-200"
                   size="lg"
                   disabled={isLoading}
+                  onClick={handleCheckout}
                 >
                   <CreditCard className="w-5 h-5 mr-2" />
                   Proceed to Checkout
