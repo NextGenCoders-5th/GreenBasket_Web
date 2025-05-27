@@ -17,6 +17,7 @@ import { TooltipWrapper } from "@/components/tooltip.wrapper"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
+import Avatar from "@/app/_components/AvatarFallback"
 
 export default function VendorsPage() {
   const [search, setSearch] = useState("")
@@ -176,10 +177,11 @@ export default function VendorsPage() {
                       <div className="relative z-10 flex items-center justify-between">
                         <div className="flex items-center space-x-4">
                           <div className="relative">
-                            <Image
-                              src={vendor.logo_url || "/placeholder.svg"}
+                            <Avatar
+                              src={vendor.logo_url}
                               width={60}
                               height={60}
+                              
                               alt={`${vendor.business_name} Logo`}
                               className="w-15 h-15 object-cover rounded-full border-3 border-white shadow-lg"
                             />

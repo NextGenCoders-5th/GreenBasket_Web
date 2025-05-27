@@ -72,13 +72,16 @@ const AvatarFallback = ({
         className={`flex items-center justify-center bg-gradient-to-br from-blue-100 to-blue-200 rounded-full ${className}`}
         style={{ width: `${width}px`, height: `${height}px` }}
       >
-        {showInitials && alt ? (
-          <span className="font-semibold text-blue-600" style={{ fontSize: `${Math.max(width * 0.3, 12)}px` }}>
-            {getInitials(alt)}
-          </span>
-        ) : (
-          <User className="text-blue-500" size={Math.max(width * 0.5, 16)} />
-        )}
+        <Image
+        src={ fallbackSrc}
+        width={width}
+        height={height}
+        alt={alt}
+        className={className}
+        onError={handleImageError}
+        onLoad={handleImageLoad}
+        priority={width > 100} // Prioritize larger avatars
+      />
       </div>
     )
   }
