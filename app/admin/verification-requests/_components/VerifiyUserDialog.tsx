@@ -40,11 +40,12 @@ import {
 } from "lucide-react"
 import type { IUser } from "@/types/user.type"
 import { useToast } from "@/providers/toast.provider"
+import { useVerifyUserMutation } from "@/redux/api/user.api"
 
 // Interface as requested
 interface VerifyUserRequest {
   userId: string
-  verifyStatus: string
+  verify_status: string
 }
 
 // Extended interface for form data
@@ -54,34 +55,12 @@ interface VerifyUserFormData extends VerifyUserRequest {
 // Form validation schema
 const verifyUserSchema = z.object({
   userId: z.string().min(1, "User ID is required"),
-  verifyStatus: z.string({
+  verify_status: z.string({
     required_error: "Please select a verification status",
   }),
 })
 
-// Mock Redux mutation hook - replace with your actual implementation
-const useVerifyUserMutation = () => {
-  const [isLoading, setIsLoading] = useState(false)
 
-  const mutateAsync = async (data: VerifyUserRequest) => {
-    setIsLoading(true)
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 2000))
-    setIsLoading(false)
-
-    // Simulate success/error randomly for demo
-    if (Math.random() > 0.2) {
-      return { success: true, message: "User verification status updated successfully" }
-    } else {
-      throw new Error("Failed to update verification status")
-    }
-  }
-
-  return {
-    mutateAsync,
-    isLoading,
-  }
-}
 
 interface VerifyUserDialogProps {
   user: IUser | null
@@ -93,13 +72,13 @@ interface VerifyUserDialogProps {
 export function VerifyUserDialog({ user, open, onOpenChange, onSuccess }: VerifyUserDialogProps) {
   const toast = useToast()
   const [error, setError] = useState<string | null>(null)
-  const { mutateAsync: verifyUser, isLoading } = useVerifyUserMutation()
+  const [verifyUser, { isLoading }] = useVerifyUserMutation();
 
   const form = useForm<VerifyUserFormData>({
     resolver: zodResolver(verifyUserSchema),
     defaultValues: {
       userId: user?.id || "",
-      verifyStatus: user?.verify_status || "REQUESTED",
+      verify_status: user?.verify_status || "REQUESTED",
     },
   })
 
@@ -108,26 +87,35 @@ export function VerifyUserDialog({ user, open, onOpenChange, onSuccess }: Verify
     if (user) {
       form.reset({
         userId: user.id,
-        verifyStatus: user.verify_status,
+        verify_status: user.verify_status,
       })
       setError(null)
     }
   }, [user, form])
 
   const onSubmit = async (data: VerifyUserFormData) => {
+    const toastId = toast.loading("Updating verification status...")
     if (!user) return
-
     try {
       setError(null)
       const verifyRequest: VerifyUserRequest = {
         userId: data.userId,
-        verifyStatus: data.verifyStatus,
+        verify_status: data.verify_status,
       }
-      await verifyUser(verifyRequest)
-      toast.success(`${user.first_name} ${user.last_name} has been ${data.verifyStatus.toLowerCase()}`)
-      onOpenChange(false)
-      onSuccess?.()
-      form.reset()
+      await verifyUser(verifyRequest).unwrap().then(() => {
+        toast.success(`${user.first_name} ${user.last_name} has been ${data.verify_status.toLowerCase()}`, { id: toastId })
+        onOpenChange(false)
+        onSuccess?.()
+        form.reset()
+      })
+        .catch((err) => {
+          if (err.status === 'UNKOWN_ERROR')
+            toast.error('New user add failed, please try again.', { id: toastId });
+          else {
+            toast.error(err.message || 'New user add failed, please try again.', { id: toastId });
+          }
+        });
+
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : "An unexpected error occurred"
       setError(errorMessage)
@@ -529,7 +517,7 @@ export function VerifyUserDialog({ user, open, onOpenChange, onSuccess }: Verify
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
                       <FormField
                         control={form.control}
-                        name="verifyStatus"
+                        name="verify_status"
                         render={({ field }) => (
                           <FormItem>
                             <FormLabel>Verification Status</FormLabel>
