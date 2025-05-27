@@ -1,21 +1,22 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-@import 'tailwindcss';
-@import 'tw-animate-css';
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+@import "tailwindcss";
+@import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
 
 @theme {
-  --color-primary:         #10b981;  /* Emerald 500 */
-  --color-primary-light:   #34d399;  /* Emerald 400 */
-  --color-primary-lighter: #a7f3d0;  /* Emerald 200 */
-  --color-primary-dark:    #059669;  /* Emerald 600 */
-  --color-primary-darker:  #047857;  /* Emerald 700 */
+  --color-primary: #10b981; /* Emerald 500 */
+  --color-primary-light: #34d399; /* Emerald 400 */
+  --color-primary-lighter: #a7f3d0; /* Emerald 200 */
+  --color-primary-dark: #059669; /* Emerald 600 */
+  --color-primary-darker: #047857; /* Emerald 700 */
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, "Noto Sans", sans-serif;
   --font-mono: var(--font-geist-mono);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
@@ -49,29 +50,29 @@
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);--color-accent-50:  #ecfdf5;
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-accent-50: #ecfdf5;
   --color-green-100: #d1fae5;
   --color-green-200: #a7f3d0;
   --color-green-300: #6ee7b7;
   --color-green-400: #34d399;
-  --color-green-500: #10b981;  /* Main green (balanced green) */
+  --color-green-500: #10b981; /* Main green (balanced green) */
   --color-green-600: #059669;
   --color-green-700: #047857;
   --color-green-800: #065f46;
   --color-green-900: #064e3b;
   --color-green-950: #022c22;
-  
+
   --color-accent-100: #d1fae5;
   --color-accent-200: #a7f3d0;
   --color-accent-300: #6ee7b7;
   --color-accent-400: #34d399;
-  --color-accent-500: #10b981;  /* Main green (balanced accent) */
+  --color-accent-500: #10b981; /* Main green (balanced accent) */
   --color-accent-600: #059669;
   --color-accent-700: #047857;
   --color-accent-800: #065f46;
   --color-accent-900: #064e3b;
   --color-accent-950: #022c22;
-  
 }
 :root {
   --radius: 0.5rem;
@@ -98,6 +99,7 @@
   --accent-foreground: #ecfdf5;
 
   --destructive: #ef4444; /* red-500 */
+  --destructive-foreground: #ffffff;
   --border: #d1fae5; /* matches secondary */
   --input: #d1fae5;
 
@@ -122,8 +124,6 @@
   --sidebar-ring: #10b981;
 }
 
-
-
 .dark {
   --background: oklch(0.141 0.005 285.823);
   --foreground: oklch(0.985 0 0);
@@ -140,6 +140,7 @@
   --accent: oklch(0.274 0.006 286.033);
   --accent-foreground: oklch(0.985 0 0);
   --destructive: oklch(0.704 0.191 22.216);
+  --destructive-foreground: oklch(0.985 0 0);
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
   --ring: oklch(0.527 0.154 150.069);

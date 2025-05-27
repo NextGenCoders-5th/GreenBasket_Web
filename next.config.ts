@@ -4,7 +4,10 @@ const nextConfig: NextConfig = {
   experimental: {
     
   },
-  
+  webpack(config, { isServer }) {
+    // ❌ If you added MiniCssExtractPlugin manually, remove it!
+    return config;
+  },
   
   images: {
     remotePatterns: [
