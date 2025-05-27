@@ -76,8 +76,8 @@ export default function ProfileDropdown() {
             className="absolute right-0 mt-2 w-64 rounded-2xl border bg-white shadow-xl z-50 p-4"
           >
             <div className="mb-4 text-center">
-              <p className="font-semibold">John Doe</p>
-              <p className="text-sm text-gray-500">john.doe@example.com</p>
+              <p className="font-semibold"> {user?.first_name || user?.email} </p>
+              <p className="text-sm text-gray-500">{user?.email}</p>
             </div>
             <hr className="my-2" />
 

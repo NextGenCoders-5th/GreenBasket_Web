@@ -37,7 +37,7 @@ const SearchInput = ({className}:Props) => {
   return (
     <input
       type="text"
-      className={` max-w-xs p-3 py-2 border-1 border-green-300 rounded-md focus:outline-none focus:ring-1 focus:ring-green-500 ${className}`}
+      className={` max-w-xs p-3 py-2 border-[0.5px] border-green-300 rounded-md focus:outline-none focus:ring-[0.5px] focus:ring-green-500 ${className}`}
       placeholder="Search by product name"
       value={searchQuery}
       onChange={handleSearch}

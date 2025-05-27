@@ -21,20 +21,18 @@ const AdminUserLayout = ({ children }: LayoutProps) => {
     <div className="min-h-screen w-full flex flex-col bg-gray-100 p-4 sm:p-6 gap-4 items-center justify-start">
       <div className="bg-white shadow-md rounded-lg p-4 sm:p-6 w-full">
         {/* Header */}
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 gap-2 sm:gap-4">
+        <div className="flex px-4 sm:px-6 flex-col sm:flex-row items-start sm:items-center justify-between mb-4 gap-2 sm:gap-4">
           <div className="flex items-center gap-2 flex-wrap">
-            <button className="flex cursor-pointer items-center gap-1 bg-gray-200 text-gray-700 px-3 py-1.5 rounded-md" title="Back" onClick={() => router.back()}>
+            <button className="flex cursor-pointe hover:shadow-md items-center gap-1 bg-gray-200 text-gray-700 px-3 py-2 rounded-md" title="Back" onClick={() => router.back()}>
               <ArrowLeft className="w-4 h-4" />
               <span className="hidden sm:inline">Back</span>
             </button>
-            <h1 className="text-xl sm:text-2xl font-bold">User Details</h1>
           </div>
 
-          <p className="text-sm text-gray-500">View and manage user details here.</p>
-        </div>
+          
 
         {/* Action Buttons */}
-        <div className="flex flex-wrap gap-2 items-center justify-end mb-4">
+        <div className="flex flex-wrap gap-2 items-center justify-end ">
          <EditUserDialog />
           <DeleteFeature feature="user" useDelete={useDeleteUserMutation as FeatureDeleteActionType} redirectUrl="/admin/users" featureId={userId as string} />
 
@@ -55,10 +53,11 @@ const AdminUserLayout = ({ children }: LayoutProps) => {
             <span className="hidden sm:inline">View Permissions</span>
           </button>
         </div>
-      </div>
+        </div>
 
       {/* Content */}
       <div className="bg-white flex-1 rounded-lg p-4 sm:p-6 w-full">{children}</div>
+    </div>
     </div>
   );
 };

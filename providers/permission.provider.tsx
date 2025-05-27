@@ -11,6 +11,7 @@ interface PermissionProviderProps {
 }
 const PermissionProvider: React.FC<PermissionProviderProps> = ({ children, roles }) => {
   // Getting logged in user
+  const toast = useToast();
   const user = useAppSelector((state) => state.auth.user);
 
   // Getting router instance
@@ -18,7 +19,7 @@ const PermissionProvider: React.FC<PermissionProviderProps> = ({ children, roles
 
   if (user && !roles.includes((user as IUser).role)) {
     toast.error('You do not have permission to access this page');
-    router.push('/');
+    router.push('/login');
   }
 
   return <>{children}</>;

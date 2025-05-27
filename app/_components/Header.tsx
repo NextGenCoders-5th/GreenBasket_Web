@@ -27,16 +27,16 @@ export const Header = () => {
         </Link>
 
         {/* Desktop Nav */}
-        <nav className="hidden md:flex items-center gap-6 text-sm font-medium">
-          <Link href="/marketplace" className="hover:text-green-600 transition">
+        <nav className="hidden md:flex items-center gap-6 text-slate-800 text-sm font-medium">
+          <Link href="/marketplace" className="hover:text-green-600 hover:underline font-semibold   transition">
             Marketplace
           </Link>
-          <Link href="/vendors" className="hover:text-green-600 transition">
+          <Link href="/vendors" className="hover:text-green-600 hover:underline font-semibold  transition">
             Vendors
           </Link>
           {user ? (
             <>
-              <Link href={ isAdminOrVendor ? `/${(user as IUser ).role.toLowerCase()}/dashboard` :`/user/profile`} className="hover:text-green-600 transition">
+              <Link href={ isAdminOrVendor ? `/${(user as IUser ).role.toLowerCase()}/dashboard` :`/user/profile`} className="text-slate-50 p-2 py-1.5  bg-green-600 hover:underline font-semibold transition">
                 {
                   isAdminOrVendor
                     ? 'Dashboard'

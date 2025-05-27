@@ -2,7 +2,7 @@ import { Loader, Loader2, LoaderCircle } from 'lucide-react';
 
 const LoadingPage = () => {
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+    <div className="flex items-center justify-center   min-h-screen ">
       <div className="text-center">
         {/* Loading Indicator */}
         <div className="mb-6">

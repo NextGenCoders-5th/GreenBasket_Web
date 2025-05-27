@@ -28,7 +28,7 @@ export default function LoginPage() {
   const router = useRouter();
 
   // Getting redirect url from session storage
-  const redirect = sessionStorage.getItem(SessionEnum.REDIRECT_URL);
+  const redirect = undefined
 
   // Getting the login form handler instance and setting up the form validation
   const {
@@ -47,6 +47,10 @@ export default function LoginPage() {
       .unwrap()
       .then((response) => {
         console.log('Login successful:', response);
+        
+        // Store token in localStorage for persistence
+        localStorage.setItem('token', response.data.data.accessToken);
+        localStorage.setItem('refreshToken', response.data.data.refreshToken);
         dispatch(
           setCredentials({
             user: response.data.data.user,
