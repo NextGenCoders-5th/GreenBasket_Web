@@ -14,7 +14,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Separator } from "@/components/ui/separator"
 import { Badge } from "@/components/ui/badge"
 import MapComponent from "@/components/map"
-import { useAddAddressMutation } from "@/redux/api/address.api"
+import { useAddOrUpdateAddressMutation } from "@/redux/api/address.api"
 import { useToast } from "@/providers/toast.provider"
 import { TabsValueEnum } from "./profile-tabs"
 import { ErrorEnum } from "@/enums/error.enum"
@@ -36,6 +36,7 @@ export const AddressForm = ({ setActiveTab, address, withHeader = true, onSave }
   const pathname = usePathname()
   const toast = useToast()
   const user = useAppSelector((state) => state.auth.user) as IUser | null
+  const editMode = !!address
 
   const form = useForm<AddressSchemaType>({
     resolver: zodResolver(addressSchema),
@@ -62,7 +63,7 @@ export const AddressForm = ({ setActiveTab, address, withHeader = true, onSave }
     }
   }, [address, reset])
 
-  const [addMyAddress, { isLoading }] = useAddAddressMutation()
+  const [addMyAddress, { isLoading }] = useAddOrUpdateAddressMutation()
 
   const onSubmit = (data: AddressSchemaType) => {
     const toastId = toast.loading("Adding your address...")
@@ -71,28 +72,29 @@ export const AddressForm = ({ setActiveTab, address, withHeader = true, onSave }
       return
     }
     const type = pathname.includes('profile') ? "user" : "vendor"
+    const addressId = editMode && type === "vendor" ? address?.id : undefined
     try {
-      addMyAddress({ data, type })
+      addMyAddress({ data, type, update: editMode, addressId })
         .unwrap()
         .then(() => {
-          toast.success("Address added successfully!", { id: toastId })
+          toast.success(`Address ${editMode ? 'saved' : 'added'} successfully!`, { id: toastId })
           reset()
           setActiveTab?.(TabsValueEnum.ABOUT)
           onSave?.()
         })
         .catch((error) => {
-          console.error("Error adding address:", error)
+          console.error(`Error ${editMode ? 'saving' : 'adding'} address:`, error)
           if (error.status === ErrorEnum.UNKOWN_ERROR) {
-            toast.error("Address adding failed. Please try again.", { id: toastId })
+            toast.error(`Address ${editMode ? 'saving' : 'adding'} failed. Please try again.`, { id: toastId })
           } else {
-            toast.error(error.message || "An error occurred please try again", {
+            toast.error(error.message || `An error occurred please try again`, {
               id: toastId,
             })
           }
         })
     } catch (error) {
-      console.error("Error adding address:", error)
-      toast.error("Address adding failed. Please try again.", { id: toastId })
+      console.error(`Error ${editMode ? 'saving' : 'adding'} address:`, error)
+      toast.error(`Address ${editMode ? 'saving' : 'adding'} failed. Please try again.`, { id: toastId })
     }
   }
 

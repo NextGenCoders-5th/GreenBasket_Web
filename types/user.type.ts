@@ -33,7 +33,7 @@ interface IUser extends CreateUserRequest, ITimeStamp {
   first_name?: string;
   last_name?: string;
   phone_number: string;
-  address: IAddress,
+  address?: IAddress,
   verify_status: "REQUESTED" | "VERIFIED" | "REJECTED",
   date_of_birth: string;
   authProvider: string,

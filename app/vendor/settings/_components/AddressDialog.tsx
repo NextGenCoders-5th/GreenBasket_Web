@@ -1,8 +1,4 @@
 "use client"
-
-import { useState, useEffect } from "react"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
 import * as z from "zod";
 import { MapPin } from "lucide-react"
 import { Drawer, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle } from "@/components/ui/drawer"
@@ -43,7 +39,7 @@ export default function AddressDrawer({ open, onOpenChange, address , onSave}: A
           </DrawerDescription>
         </DrawerHeader>
 
-        <AddressForm  onSave={onSave} withHeader={false}/>
+        <AddressForm address={address}  onSave={onSave} withHeader={false}/>
       </DrawerContent>
     </Drawer>
   )

@@ -3,6 +3,7 @@ import { baseQueryWithReauth } from './base.query';
 import { CreateAddressRequest, CreateAddressResponse, IAddress } from '@/types/address.type';
 import { ApiResponse } from '@/types/base.type';
 import { useDeleteVendorMutation } from './vendor.api';
+import { UserTags } from './user.api';
 
 export enum AddressTags {
   ADDRESS = 'Address',
@@ -13,34 +14,17 @@ export enum AddressTags {
 const addressApi = createApi({
   reducerPath: 'addressApi',
   baseQuery: baseQueryWithReauth,
-  tagTypes: Object.values(AddressTags),
+  tagTypes: [...Object.values(AddressTags), UserTags.CURRENT_USER],
   endpoints: (builder) => ({
-    addAddress: builder.mutation<CreateAddressResponse, { type: string; data: CreateAddressRequest }>({
-      query: ({ type, data }) => ({
-        url: `addresses/${type}`,
-        method: 'POST',
+    addOrUpdateAddress: builder.mutation<CreateAddressResponse, { type: string; data: CreateAddressRequest , update?:boolean, addressId?: string}>({
+      query: ({ type, data, update, addressId }) => ({
+        url: `addresses/${type}${addressId ? `/${addressId}` : ''}`,
+        method: update ? 'PATCH' : 'POST',
         body: data,
       }),
-      invalidatesTags: [AddressTags.ADDRESSES],
+      invalidatesTags: [AddressTags.ADDRESSES, UserTags.CURRENT_USER],
     }),
-
-    updateUserAddress: builder.mutation<CreateAddressResponse,  CreateAddressRequest >({
-      query: ( data ) => ({
-        url: `addresses/user`,
-        method:'PATCH' ,
-        body: data,
-      }),
-      invalidatesTags: [AddressTags.ADDRESSES],
-    }),
-
-    updateVendorAddress: builder.mutation<CreateAddressResponse,  {addressId: string, data: CreateAddressRequest} >({
-      query: ( {addressId,data} ) => ({
-        url: `addresses/vendor/${addressId}`,
-        method:'PATCH' ,
-        body: data,
-      }),
-      invalidatesTags: [AddressTags.ADDRESSES],
-    }),
+    
 
 
  
@@ -111,10 +95,8 @@ const addressApi = createApi({
 });
 
 export const {
-  useAddAddressMutation,
+  useAddOrUpdateAddressMutation,
   useGetMyAddressQuery,
-  useUpdateUserAddressMutation,
-  useUpdateVendorAddressMutation,
   useDeleteAddressMutation,
   useGetAddressQuery,
   useGetAddressesQuery,
