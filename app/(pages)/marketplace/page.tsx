@@ -27,7 +27,7 @@ import {
   CheckCircle,
   XCircle,
 } from "lucide-react"
-import AddToCartDialog from "@/app/user/orders/components/OrderProduct"
+import AddToCartDialog from "@/app/user/orders/components/AddToCart"
 import { IProduct } from "@/types/product.type"
 import { useGetProductsQuery } from "@/redux/api/product.api"
 import LoadingPage from "@/components/loading.page"
@@ -485,7 +485,7 @@ const ProductsPage = () => {
 
                           {/* Cart Controls */}
                           <div className="flex items-center gap-2">
-                            {cartQuantity > 0 ? (
+                            {/* {cartQuantity > 0 ? (
                               <div className="flex items-center gap-2 flex-1">
                                 <Button
                                   size="sm"
@@ -516,7 +516,10 @@ const ProductsPage = () => {
                                 <ShoppingCart className="w-4 h-4 mr-2" />
                                 Add to Cart
                               </Button>
-                            )}
+                            )} */}
+                            <AddToCartDialog
+                              product={product}
+                            />
                           </div>
                         </div>
                       </CardContent>
