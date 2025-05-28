@@ -35,7 +35,7 @@ import ProductDetailDrawer from "@/app/_components/ProductDetail"
 
 
 const ProductsPage = () => {
-  const {data, error, isLoading} = useGetProductsQuery("")
+  const { data, error, isLoading } = useGetProductsQuery("")
   const [searchTerm, setSearchTerm] = useState("")
   const [product, setProduct] = useState<IProduct | null>(null)
   const [selectedCategory, setSelectedCategory] = useState("all")
@@ -47,12 +47,12 @@ const ProductsPage = () => {
   const [cart, setCart] = useState<Record<string, number>>({})
   const [wishlist, setWishlist] = useState<Set<string>>(new Set())
 
-  
+
   // Extract unique categories and vendors
   const categories = useMemo(() => {
     const cats = new Set<string>()
     data?.data.data.forEach((product) => {
-      product.categories?.forEach((cat) =>  typeof cat === 'string' ? cat : cats.add(cat.name))
+      product.categories?.forEach((cat) => typeof cat === 'string' ? cat : cats.add(cat.name))
     })
     return Array.from(cats)
   }, [data])
@@ -110,7 +110,7 @@ const ProductsPage = () => {
     })
 
     return filtered
-  }, [searchTerm, selectedCategory,data, selectedVendor, sortBy, showFeaturedOnly, priceRange])
+  }, [searchTerm, selectedCategory, data, selectedVendor, sortBy, showFeaturedOnly, priceRange])
 
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat("en-ET", {
@@ -178,17 +178,17 @@ const ProductsPage = () => {
     },
   }
 
-  if(isLoading){
-    return <LoadingPage/>
+  if (isLoading) {
+    return <LoadingPage />
   }
 
-  if(error){
+  if (error) {
     return <div className="text-center min-h-screen flex flex-col justify-center items-center h-screen py-16">
       <h2 className="text-xl font-semibold text-red-600 mb-4">Error loading products</h2>
       <p className="text-gray-600">Please try again later.</p>
-        <Button variant="outline" className="mt-4" onClick={() => window.location.reload()}>
-            Retry
-        </Button>
+      <Button variant="outline" className="mt-4" onClick={() => window.location.reload()}>
+        Retry
+      </Button>
 
     </div>
   }
@@ -203,7 +203,7 @@ const ProductsPage = () => {
   }
 
   return (
-    <div className="min-h-screen   bg-gradient-to-br from-green-50 via-white to-green-50">
+    <div className="min-h-screen  mt-10  bg-gradient-to-br from-green-50 via-white to-green-50">
       {/* Header */}
       <div className="bg-gradient-to-r max-w-7xl from-green-600 via-green-700 to-green-800 text-white py-16 relative overflow-hidden">
         <div className="absolute inset-0 bg-black/10"></div>
@@ -408,15 +408,15 @@ const ProductsPage = () => {
                           >
                             <Heart className={`w-4 h-4 ${isInWishlist ? "fill-current" : ""}`} />
                           </Button>
-                           <ProductDetailDrawer product={product}>
-                                                            <Button
-                                                              variant="outline"
-                                                              size="sm"
-                                                              className="border-accent-200 text-accent-600 hover:bg-accent-50"
-                                                            >
-                                                              <Eye className="w-4 h-4" />
-                                                            </Button>
-                                                          </ProductDetailDrawer>
+                          <ProductDetailDrawer product={product}>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className="border-accent-200 text-accent-600 hover:bg-accent-50"
+                            >
+                              <Eye className="w-4 h-4" />
+                            </Button>
+                          </ProductDetailDrawer>
                         </div>
 
                         {/* Stock Status */}
@@ -436,10 +436,10 @@ const ProductsPage = () => {
                             <p className="text-slate-600 text-sm line-clamp-2 mb-3">{product.description}</p>
 
                             {/* Categories */}
-                            {!!product.categories?.length  && (
+                            {!!product.categories?.length && (
                               <div className="flex flex-wrap gap-1 mb-3">
                                 {product.categories?.map((category) => (
-                                  typeof category === 'string' ? category :< Badge
+                                  typeof category === 'string' ? category : < Badge
                                     key={category.id}
                                     variant="outline"
                                     className="text-xs bg-green-50 text-green-700 border-green-200"
@@ -577,10 +577,10 @@ const ProductsPage = () => {
                                 <p className="text-slate-600 mb-2">{product.description}</p>
 
                                 {/* Categories */}
-                                {!!product.categories?.length  && (
+                                {!!product.categories?.length && (
                                   <div className="flex flex-wrap gap-1 mb-2">
                                     {product.categories.map((category) => (
-                                     typeof category === 'string' ? category :  <Badge
+                                      typeof category === 'string' ? category : <Badge
                                         key={category.id}
                                         variant="outline"
                                         className="text-xs bg-green-50 text-green-700 border-green-200"
@@ -601,13 +601,16 @@ const ProductsPage = () => {
                                 >
                                   <Heart className={`w-4 h-4 ${isInWishlist ? "fill-current" : ""}`} />
                                 </Button>
-                                <Button
-                                  size="sm"
-                                  variant="outline"
-                                  className="border-slate-200 text-slate-600 hover:bg-slate-50"
-                                >
-                                  <Eye className="w-4 h-4" />
-                                </Button>
+                                <ProductDetailDrawer product={product}>
+                                  <Button
+                                    variant="outline"
+                                    size="sm"
+                                    className="border-accent-200 text-accent-600 hover:bg-accent-50"
+                                  >
+                                    <Eye className="w-4 h-4" />
+                                  </Button>
+                                </ProductDetailDrawer>
+
                               </div>
                             </div>
 
@@ -686,15 +689,9 @@ const ProductsPage = () => {
                                     </Button>
                                   </div>
                                 ) : (
-                                  <Button
-                                    size="sm"
-                                    className="bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800"
-                                    onClick={() => addToCart(product.id)}
-                                    disabled={product.stock === 0}
-                                  >
-                                    <ShoppingCart className="w-4 h-4 mr-2" />
-                                    Add to Cart
-                                  </Button>
+                                  <AddToCartDialog
+                                    product={product}
+                                  />
                                 )}
                               </div>
                             </div>
@@ -765,7 +762,7 @@ const ProductsPage = () => {
                   </div>
                   <Button
                     size="sm"
-                    onClick={()=>{
+                    onClick={() => {
                       const productId = Object.keys(cart)[0]
                       setProduct(data?.data.data.find((p) => p.id === productId) || null)
 
@@ -776,7 +773,7 @@ const ProductsPage = () => {
                   </Button>
                   {
                     product && (
-                      <AddToCartDialog product={product}/>
+                      <AddToCartDialog product={product} />
                     )
                   }
                 </div>

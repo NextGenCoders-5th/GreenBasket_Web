@@ -9,11 +9,11 @@ import { Separator } from "@/components/ui/separator"
 import { Input } from "@/components/ui/input"
 import { ShoppingCart, Plus, Minus, Trash2, ArrowLeft, CreditCard, Tag, Package, AlertCircle } from "lucide-react"
 import Link from "next/link"
-import { useCheckOutOrderMutation } from "@/redux/api/order.api"
+import orderApi, { useCheckOutOrderMutation } from "@/redux/api/order.api"
 import { useToast } from "@/providers/toast.provider"
 import { IUser } from "@/types/user.type"
 import { useAppSelector } from "@/redux/store"
-import { useGetMyCartQuery } from "@/redux/api/cart.api"
+import cartApi, { CartTags, useGetMyCartQuery } from "@/redux/api/cart.api"
 import { Cart } from "@/types/cart.type"
 import LoadingPage from "@/components/loading.page"
 import { ErrorEnum } from "@/enums/error.enum"
@@ -126,6 +126,7 @@ export default function ActiveCart() {
     try {
       await checkOutOrder({ cartId: cartData?.id || "", addressId: address }).unwrap().then(() => {
           toast.success("Order checked out successfully", { id: toastId });
+          cartApi.util.invalidateTags([CartTags.MY_CART])
       })
         .catch((err) => {
           if (err.status === 'UNKOWN_ERROR')

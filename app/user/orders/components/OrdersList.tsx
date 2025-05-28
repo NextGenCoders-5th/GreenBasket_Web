@@ -7,7 +7,7 @@
     import { useGetMyCartsQuery } from '@/redux/api/cart.api';
     import { ResponseError } from '@/types/general.types';
     import { ArrowRight, Link } from 'lucide-react';
-    import React from 'react'
+    import React, { useRef } from 'react'
     import OrderTracking from './OrderTraking';
 import { useGetMyOrdersQuery } from '@/redux/api/order.api';
 
@@ -24,7 +24,7 @@ import { useGetMyOrdersQuery } from '@/redux/api/order.api';
         const orders = data?.data.data || [];
 
         if (!orders) return (
-            <div className='text-center flex items-center flex-col  border border-red-500 justify-center h-[55vh] gap-1.5    w-full text-2xl font-semibold'>
+            <div className='text-center flex items-center flex-col justify-center h-[55vh] gap-1.5    w-full text-2xl font-semibold'>
                 <p>No orders found</p>
                 <Link href={"/marketplace"} className={`${ClassName.BUTTON_LINK} text-white hover:text-white hover:underline text-sm bg-accent-600/90 hover:bg-accent-600`}>
                     Order Now <ArrowRight size={16} />
@@ -33,15 +33,15 @@ import { useGetMyOrdersQuery } from '@/redux/api/order.api';
         )
 
         return (
-            <div className='w-full bg-white flex  items-center flex-col  border border-red-500 justify-start h-[55vh] gap-1.5    text-2xl font-semibold'>
-                <Debugger
+            <div className='w-full bg-white flex  items-center flex-col justify-start h-[55vh] gap-1.5    text-2xl font-semibold'>
+                {/* <Debugger
             >
                 <pre>
                     {
                         JSON.stringify(orders || error , null, 2)
                     }
                 </pre>
-            </Debugger>
+            </Debugger> */}
 
                 {/* <Debugger>
                     <img src="/image.png" alt="" className='w-5xl object-top object-cover' />

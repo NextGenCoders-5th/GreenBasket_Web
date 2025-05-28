@@ -275,16 +275,6 @@ const UserSideBarData = {
       url: '/user/dashboard',
       icon: IconDashboard,
     },
-    {
-      title: 'Orders',
-      url: '/user/orders',
-      icon: IconChartBar,
-    },
-    {
-      title: 'Payments',
-      url: '/user/payments',
-      icon: IconFileDollar,
-    },
 
     {
       title: 'Profile',

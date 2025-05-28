@@ -14,6 +14,7 @@ const orderTabs = [
 ];
 
 export default function OrderTabs() {  
+  
   return (
     <div className="w-auto mx-auto mt-8 p-4">
       <Tabs defaultValue="pending" className="w-full">
