@@ -21,13 +21,11 @@ const categoryApi = createApi({
       }),
       invalidatesTags: [CategoryTags.CATEGORIES],
     }),
-    updateCategory: builder.mutation<CreateCategoryResponse, { categoryId: string; categoryData: Partial<CreateCategoryRequest > }>({
+    updateCategory: builder.mutation<CreateCategoryResponse, { categoryId: string; categoryData: FormData}>({
       query: ({ categoryId, categoryData }) => ({
         url: `categories/${categoryId}`,
         method: 'PATCH',
-        body: {
-          ...categoryData
-        },
+        body: categoryData
       }),
       invalidatesTags: (_, error, { categoryId }) => [{ type: CategoryTags.CATEGORY, id: categoryId }, CategoryTags.CATEGORIES],
     }),

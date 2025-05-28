@@ -1,3 +1,5 @@
+import { IProduct } from "./product.type"
+
 // Base timestamp interface for entities with creation/update tracking
 export interface BaseEntity {
     id: string
@@ -49,6 +51,7 @@ export interface BaseEntity {
     reviewed: boolean
     orderId: string
     productId: string
+    Product: IProduct
   }
   
   // Main Order Interface

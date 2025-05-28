@@ -35,11 +35,18 @@ const authApi = createApi({
       invalidatesTags: [AuthTags.Login],
     }),
     logout: builder.mutation<any, void>({
-      query: () => ({
-        url: 'auth/logout',
-        method: 'PATCH',
-      }),
-      invalidatesTags: [AuthTags.Logout],
+      query: () => {
+        return {
+          url: 'auth/logout',
+          method: 'PATCH',
+        };
+      },
+      invalidatesTags: () => {
+        document.cookie = 'accessToken=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;';
+        document.cookie = 'refreshToken=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;';
+
+        return [AuthTags.Logout, AuthTags.Refresh];
+      },
     }),
     signUp: builder.mutation<SignUpResponse, ISignUpRequest>({
       query: (userData) => ({
@@ -69,7 +76,7 @@ const authApi = createApi({
       invalidatesTags: [AuthTags.VerifyEmail],
     }),
     resetPassword: builder.mutation<any, ResetPasswordRequest>({
-      query: ({resetToken, body}) => ({
+      query: ({ resetToken, body }) => ({
         url: `auth/reset-password/${resetToken}`,
         method: 'POST',
         body: body,
@@ -110,7 +117,7 @@ export const {
   useResetPasswordMutation,
   useChangePasswordMutation,
   useVerifyTokenMutation,
-  useFotgotPasswordMutation
+  useFotgotPasswordMutation,
 } = authApi;
 
 export { authApi };
