@@ -270,11 +270,6 @@ const UserSideBarData = {
     avatar: '/avatars/shadcn.jpg',
   },
   navMain: [
-    {
-      title: 'Dashboard',
-      url: '/user/dashboard',
-      icon: IconDashboard,
-    },
 
     {
       title: 'Profile',
