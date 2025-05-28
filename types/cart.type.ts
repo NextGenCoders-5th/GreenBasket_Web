@@ -43,6 +43,8 @@ interface Cart {
   status: string
   userId: string
   CartItems: ICartItem[]
+  createdAt: string;
+  updatedAt: string;
 }
 
   

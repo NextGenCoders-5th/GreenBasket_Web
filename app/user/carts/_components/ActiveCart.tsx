@@ -17,6 +17,7 @@ import cartApi, { CartTags, useGetMyCartQuery } from "@/redux/api/cart.api"
 import { Cart } from "@/types/cart.type"
 import LoadingPage from "@/components/loading.page"
 import { ErrorEnum } from "@/enums/error.enum"
+import { useRouter } from "next/navigation"
 
 
 // // Mock data from your API response
@@ -96,6 +97,7 @@ import { ErrorEnum } from "@/enums/error.enum"
 // }
 
 export default function ActiveCart() {
+  const router = useRouter()
 
   const {data, isLoading: fetching, error} = useGetMyCartQuery()
   const toast = useToast();
@@ -127,6 +129,7 @@ export default function ActiveCart() {
       await checkOutOrder({ cartId: cartData?.id || "", addressId: address }).unwrap().then(() => {
           toast.success("Order checked out successfully", { id: toastId });
           cartApi.util.invalidateTags([CartTags.MY_CART])
+          router.refresh()
       })
         .catch((err) => {
           if (err.status === 'UNKOWN_ERROR')

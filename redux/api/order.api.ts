@@ -54,17 +54,14 @@ const orderApi = createApi({
     }),
     getMyOrders: builder.query<{ data: { data: Order[] } }, string | void>({
       query: (params) => {
-        const queryString = params ? `?${new URLSearchParams(params).toString()}` : '';
         return {
-          url: `orders/my-orders${queryString}`,
+          url: `orders/my-orders`,
           method: 'GET',
+          params: {status: params}
         };
 
       },
-      providesTags: (result, error) => {
-        const token = localStorage.getItem('token') || '';
-        return [{ type: OrderTags.MY_ORDERS, id: token }];
-      },
+      providesTags: [OrderTags.MY_ORDERS]
     }),
     getOrders: builder.query<ApiResponse<{ data: Order[] }>, string>({
       query: (params) => {

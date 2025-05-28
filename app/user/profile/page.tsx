@@ -19,7 +19,7 @@ export default function ProfilePage() {
   const isVerified = user?.verify_status === "VERIFIED";
   const isRejected = user?.verify_status === "REJECTED";
 
-  const isOnboarding = user?.verify_status === 'UNVERIFIED';
+  const isOnboarding = user?.is_onboarding
   return (
     <div className="flex-grow flex flex-col items-start   w-full  py-12 px-2 sm:px-6 dark:bg-[#1E1E1E] md:px-8 lg:px-10 bg-white">
       <WelcomeCard />

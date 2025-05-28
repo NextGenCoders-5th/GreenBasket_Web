@@ -1,8 +1,8 @@
 "use client"
 
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import Image from "next/image"
-import { Calendar, MapPin, Package, CreditCard, Clock, CheckCircle, Truck, Star, ArrowRight } from "lucide-react"
+import { Calendar, MapPin, Package, CreditCard, Clock, CheckCircle, Truck, Star, ArrowRight, ShoppingCart } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -15,126 +15,17 @@ import {
     DialogFooter,
     DialogHeader,
     DialogTitle,
-    DialogTrigger,
 } from "@/components/ui/dialog"
-import { useGetMyOrdersQuery } from "@/redux/api/order.api"
+import orderApi, { OrderTags, useGetMyOrdersQuery } from "@/redux/api/order.api"
 import LoadingPage from "@/components/loading.page"
 import { ResponseError } from "@/types/general.types"
 import NetworkErrorSection from "@/components/network-error"
 import Link from "next/link"
-import { ClassName } from "@/enums/classnames.enum"
 import { useInitializePaymentMutation } from "@/redux/api/payment.api"
 import { useToast } from "@/providers/toast.provider"
 import { useSearchParams } from "next/navigation"
 
-// Sample data based on your format
-// const ordersData = [
-//   {
-//     id: "4a493fd5-73aa-4577-9e16-5ace6d1835b3",
-//     updatedAt: "2025-05-27T18:56:44.017Z",
-//     createdAt: "2025-05-27T18:51:11.510Z",
-//     total_price: 600,
-//     status: "CONFIRMED",
-//     shippedAt: null,
-//     deliveredAt: null,
-//     receivedAt: null,
-//     Adress: {
-//       street: "Bahir Dar, St George",
-//       city: "Bahir Dar",
-//       sub_city: "Bahir Dar",
-//       zip_code: "6000",
-//       country: "Ethiopia",
-//     },
-//     OrderItems: [
-//       {
-//         price: 200,
-//         quantity: 3,
-//         sub_total: 600,
-//         Product: {
-//           name: "Test Product 2",
-//           description: "Test Product 2 Description",
-//           price: 200,
-//           unit: "kg",
-//           image_url: "https://res.cloudinary.com/dvp1mjhd9/image/upload/v1744938280/d8fbhim9ixedbebaxf28.jpg",
-//         },
-//       },
-//     ],
-//   },
-//   {
-//     id: "e225dac0-2bc6-4aa3-b0b5-676dd9ec00fc",
-//     updatedAt: "2025-05-28T06:39:47.919Z",
-//     createdAt: "2025-05-28T06:39:47.919Z",
-//     total_price: 3430,
-//     status: "PENDING",
-//     shippedAt: null,
-//     deliveredAt: null,
-//     receivedAt: null,
-//     Adress: {
-//       street: "Bahir Dar, St George",
-//       city: "Bahir Dar",
-//       sub_city: "Bahir Dar",
-//       zip_code: "6000",
-//       country: "Ethiopia",
-//     },
-//     OrderItems: [
-//       {
-//         price: 490,
-//         quantity: 7,
-//         sub_total: 3430,
-//         Product: {
-//           name: "Banana",
-//           description: "Sweet bananas, rich in potassium.",
-//           price: 490,
-//           unit: "killogram",
-//           image_url: "/placeholder.svg?height=80&width=80",
-//         },
-//       },
-//     ],
-//   },
-//   {
-//     id: "2d988fa9-1980-4431-b56b-08a8b877c4d5",
-//     updatedAt: "2025-05-28T07:02:57.507Z",
-//     createdAt: "2025-05-28T07:02:57.507Z",
-//     total_price: 4002,
-//     status: "PENDING",
-//     shippedAt: null,
-//     deliveredAt: null,
-//     receivedAt: null,
-//     Adress: {
-//       street: "Bahir Dar, St George",
-//       city: "Bahir Dar",
-//       sub_city: "Bahir Dar",
-//       zip_code: "6000",
-//       country: "Ethiopia",
-//     },
-//     OrderItems: [
-//       {
-//         price: 490,
-//         quantity: 5,
-//         sub_total: 2450,
-//         Product: {
-//           name: "Banana",
-//           description: "Sweet bananas, rich in potassium.",
-//           price: 490,
-//           unit: "killogram",
-//           image_url: "/placeholder.svg?height=80&width=80",
-//         },
-//       },
-//       {
-//         price: 388,
-//         quantity: 4,
-//         sub_total: 1552,
-//         Product: {
-//           name: "Strawberry",
-//           description: "Fresh strawberries, perfect for desserts.",
-//           price: 388,
-//           unit: "killogram",
-//           image_url: "/placeholder.svg?height=80&width=80",
-//         },
-//       },
-//     ],
-//   },
-// ]
+
 
 const getStatusIcon = (status: string) => {
     switch (status) {
@@ -190,22 +81,32 @@ export default function OrdersPage() {
     const [initialize, { isLoading: isSubmitting }] = useInitializePaymentMutation()
     console.log("searcParams", searchParams.get('status'))
 
-    const { data, isLoading, error } = useGetMyOrdersQuery(searchParams?.toString(), {
-        refetchOnMountOrArgChange: true,
-        refetchOnReconnect: true,
+    const { data, isLoading, error } = useGetMyOrdersQuery( searchParams.get('status') || undefined,{
+        refetchOnMountOrArgChange:true,
+        refetchOnFocus:true
     });
+
+    useEffect(()=>{
+        orderApi.util.invalidateTags([OrderTags.MY_ORDERS])
+    }, [])
 
     if (isLoading) return <LoadingPage />
     if (error) return <NetworkErrorSection error={error as ResponseError} />
 
     const orders = data?.data.data || [];
 
-    if (!orders) return (
-        <div className='text-center flex items-center flex-col justify-center h-[55vh] gap-1.5    w-full text-2xl font-semibold'>
-            <p>No orders found</p>
-            <Link href={"/marketplace"} className={`${ClassName.BUTTON_LINK} text-white hover:text-white hover:underline text-sm bg-accent-600/90 hover:bg-accent-600`}>
-                Order Now <ArrowRight size={16} />
-            </Link>
+    if (!orders.length) return (
+        <div className="max-w-2xl h-screen mx-auto text-center">
+            <div className="bg-white rounded-2xl shadow-sm p-12">
+                <ShoppingCart className="w-24 h-24 text-gray-300 mx-auto mb-6" />
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">No orders found</h2>
+                <p className="text-gray-600 mb-8">You haven't created any orders yet.</p>
+                <Link href="/marketplace">
+                    <Button className="bg-emerald-600 hover:bg-emerald-700 text-white px-8 py-3 rounded-lg">
+                        Start Shopping
+                    </Button>
+                </Link>
+            </div>
         </div>
     )
 
@@ -234,6 +135,8 @@ export default function OrdersPage() {
         }
     }
 
+
+
     return (
         <div className="min-h-screen bg-gray-50 py-8">
             <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -245,7 +148,7 @@ export default function OrdersPage() {
 
                 {/* Orders Grid */}
                 <div className="space-y-6">
-                    {orders.map((order) => (
+                    {data?.data.data.map((order) => (
                         <>
                             <Card key={order.id} className="overflow-hidden hover:shadow-lg transition-shadow">
                                 <CardHeader className="bg-white border-b">
@@ -329,7 +232,7 @@ export default function OrdersPage() {
                                         </Button>
 
                                         {order.status === "PENDING" && (
-                                            <Button onClick={() => handlePayment(order.id)} className="sm:w-auto bg-green-600 hover:bg-green-700">
+                                            <Button disabled={isSubmitting} onClick={() => handlePayment(order.id)} className="sm:w-auto bg-green-600 hover:bg-green-700">
                                                 <CreditCard className="h-4 w-4 mr-2" />
                                                 Pay Now
                                             </Button>
@@ -353,7 +256,7 @@ export default function OrdersPage() {
                 </div>
 
                 {/* Order Details Modal */}
-                {selectedOrder && (
+                {selectedOrder && !url && (
                     <Dialog open={!!selectedOrder} onOpenChange={() => setSelectedOrder(null)}>
                         <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
                             <DialogHeader>
@@ -433,8 +336,8 @@ export default function OrdersPage() {
                         <Link
                             href={`${url}`}
                             target="_blank"
-                            onClick={() => handlePayment(selectedOrder.id)}
-                            className="w-full bg-green-600 hover:bg-green-700"
+                            onClick={() => setSelectedOrder(null)}
+                            className="w-full bg-green-600 text-white py-2 px-4 flex items-center gap-1 hover:bg-green-700"
                         >
                             <CreditCard className="h-4 w-4 mr-2" />
                             Pay with Chapa
