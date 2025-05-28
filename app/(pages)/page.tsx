@@ -32,6 +32,7 @@ import {
   Grape,
 } from "lucide-react"
 import { IconCopyright } from "@tabler/icons-react"
+import Link from "next/link"
 
 const LandingPage = () => {
   const [email, setEmail] = useState("")
@@ -105,22 +106,15 @@ const LandingPage = () => {
               </div>
 
               <div className="flex flex-col sm:flex-row gap-4">
-                <Button
-                  size="lg"
-                  className="bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white px-8 py-4 text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
+                <Link
+                  href={'/marketplace'}
+                  className="bg-gradient-to-r rounded-md flex items-center gap-1 from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white px-8 py-2 text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
                 >
                   <ShoppingCart className="w-5 h-5 mr-2" />
                   Start Shopping
                   <ArrowRight className="w-5 h-5 ml-2" />
-                </Button>
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="border-green-200 text-green-700 hover:bg-green-50 px-8 py-4 text-lg font-semibold"
-                >
-                  <Users className="w-5 h-5 mr-2" />
-                  Become a Vendor
-                </Button>
+                </Link>
+                
               </div>
 
               <div className="flex items-center gap-8 pt-8">
@@ -569,39 +563,7 @@ const LandingPage = () => {
       </section>
 
       {/* Newsletter Section */}
-      <section className="py-20 bg-white">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <motion.div {...fadeInUp}>
-            <div className="w-20 h-20 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center mx-auto mb-8">
-              <Sparkles className="w-10 h-10 text-white" />
-            </div>
-            <h2 className="text-4xl md:text-5xl font-bold text-slate-800 mb-6">
-              Stay Fresh with
-              <span className="bg-gradient-to-r from-green-600 to-green-800 bg-clip-text text-transparent">
-                {" "}
-                Our Newsletter
-              </span>
-            </h2>
-            <p className="text-xl text-slate-600 mb-8 max-w-2xl mx-auto">
-              Get the latest updates on seasonal produce, special offers, and new vendor partnerships delivered to your
-              inbox.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
-              <Input
-                type="email"
-                placeholder="Enter your email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="flex-1 h-12 border-slate-200 focus:border-green-500 focus:ring-green-500/20"
-              />
-              <Button className="bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 h-12 px-8">
-                Subscribe
-              </Button>
-            </div>
-            <p className="text-sm text-slate-500 mt-4">No spam, unsubscribe at any time. We respect your privacy.</p>
-          </motion.div>
-        </div>
-      </section>
+      
 
       {/* Footer */}
       <footer className="bg-slate-900 text-white py-16">

@@ -10,6 +10,7 @@ import { useToast } from '@/providers/toast.provider';
 import { useAppSelector } from '@/redux/store';
 import { IUser } from '@/types/user.type';
 import { Role } from '@/enums/role.enum';
+import Link from 'next/link';
 
 export default function ProfileDropdown() {
   // TOAST: toast instance to toast messages
@@ -39,6 +40,10 @@ export default function ProfileDropdown() {
       .then(() => {
         toast.dismiss(toastId);
         router.push('/login');
+        localStorage.removeItem('token');
+        localStorage.removeItem('refreshToken');
+        document.cookie = 'accessToken=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;';
+        document.cookie = 'refreshToken=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;';
       })
       .catch((error) => {
         console.error('Logout failed:', error);
@@ -46,13 +51,14 @@ export default function ProfileDropdown() {
           toast.error('Logout failed. Please try again.', { id: toastId });
         }
         else {
-          toast.error(error.message || 'Logout failed. Please try again.' ,{ id: toastId });
+          toast.error(error.message || 'Logout failed. Please try again.', { id: toastId });
         }
       });
   };
 
 
-  const role = user?.role  !== Role.CUSTOMER ? user?.role.toLowerCase() : 'user';
+  const role = user?.role !== Role.CUSTOMER ? user?.role.toLowerCase() : 'user';
+  const isAdminOrVendor = user && (user.role === Role.ADMIN || user.role === Role.VENDOR);
   return (
     <div className="relative" ref={ref}>
       <Avatar onClick={() => setOpen(!open)} className="cursor-pointer border">
@@ -86,16 +92,18 @@ export default function ProfileDropdown() {
             <ul className="space-y-2">
               <li
                 className="flex items-center gap-2 p-2 rounded-lg hover:bg-gray-100 cursor-pointer"
-                onClick={() => router.push('/'+role+'/profile')}
+                onClick={() => router.push('/' + role + '/profile')}
               >
                 <User size={18} /> Profile
               </li>
+              {isAdminOrVendor && 
               <li
-                className="flex items-center gap-2 p-2 rounded-lg hover:bg-gray-100 cursor-pointer"
-                onClick={() => router.push('/reset-password')}
+              className="flex items-center gap-2 p-2 rounded-lg hover:bg-accent-600 cursor-pointer text-slate-50  py-1.5  w-full bg-green-600 hover:underline font-semibold transition"
               >
-                <KeyRound size={18} /> Reset Password
-              </li>
+                <Link href={ `/${(user as IUser).role.toLowerCase()}/dashboard`} className="">
+                  Dashboard
+                </Link>
+              </li>}
               <li
                 className="flex items-center gap-2 p-2 rounded-lg hover:bg-red-50 text-red-600 cursor-pointer"
                 onClick={handleLogout}

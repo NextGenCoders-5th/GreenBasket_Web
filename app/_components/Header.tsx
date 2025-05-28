@@ -8,6 +8,7 @@ import ProfileDropdown from './ProfileCard';
 import { Role } from '@/enums/role.enum';
 import { motion } from 'framer-motion';
 import { IconBasket } from '@tabler/icons-react';
+import { ShoppingCart } from 'lucide-react';
 
 export const Header = () => {
   const [menuOpen, setMenuOpen] = React.useState(false);
@@ -35,16 +36,16 @@ export const Header = () => {
             </div>
 
             <div className="hidden md:flex items-center space-x-8">
-              <a href="#home" className="text-slate-700 hover:text-green-600 transition-colors font-medium">
+              <a href="/#home" className="text-slate-700 hover:text-green-600 transition-colors font-medium">
                 Home
               </a>
-              <a href="#vendors" className="text-slate-700 hover:text-green-600 transition-colors font-medium">
+              <a href="/#vendors" className="text-slate-700 hover:text-green-600 transition-colors font-medium">
                 Vendors
               </a>
-              <a href="#features" className="text-slate-700 hover:text-green-600 transition-colors font-medium">
+              <a href="/#features" className="text-slate-700 hover:text-green-600 transition-colors font-medium">
                 Features
               </a>
-              <a href="#contact" className="text-slate-700 hover:text-green-600 transition-colors font-medium">
+              <a href="/#contact" className="text-slate-700 hover:text-green-600 transition-colors font-medium">
                 Contact
               </a>
               <Link href="/marketplace" className="hover:text-green-600 hover:underline font-semibold   transition">
@@ -53,13 +54,9 @@ export const Header = () => {
 
               {user ? (
                 <>
-                  <Link href={isAdminOrVendor ? `/${(user as IUser).role.toLowerCase()}/dashboard` : `/user/profile`} className="text-slate-50 p-2 py-1.5  bg-green-600 hover:underline font-semibold transition">
-                    {
-                      isAdminOrVendor
-                        ? 'Dashboard'
-                        : 'Profile'
-                    }
-                  </Link>
+                  {!isAdminOrVendor && <Link href={`/user/carts`} className="hover:text-slate-50  flex items-center gap-1 p-2 py-1.5 text-accent-500  hover:bg-green-600 hover:underline font-semibold transition">
+                    <ShoppingCart className="w-5 h-5" /> My Cart
+                  </Link>}
                   <div className="flex">
                     <ProfileDropdown />
                   </div>
