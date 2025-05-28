@@ -1,3 +1,4 @@
+import { Role } from "@/enums/role.enum";
 import { useAppSelector } from "@/redux/store";
 import { IUser } from "@/types/user.type";
 import { motion } from "framer-motion";
@@ -8,6 +9,7 @@ interface Props {
 }
 export default function WelcomeCard({ withBtn = true }: Props) {
   const user = useAppSelector((state) => state.auth.user) as unknown as IUser | null;
+  const isUser = user?.role === Role.CUSTOMER;
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -22,7 +24,7 @@ export default function WelcomeCard({ withBtn = true }: Props) {
             Order you favorite fresh fruits and vegetables from the comfort of your home.
           </p>
           {
-            withBtn && <Link
+            withBtn && isUser && <Link
               href="/marketplace"
               className="flex items-center gap-1.5 text-sm px-4 py-2 rounded-lg bg-green-400/80 hover:bg-green-400 text-white transition duration-300 ease-in-out text-center shadow-sm hover:shadow dark:shadow-indigo-900/20"
             >

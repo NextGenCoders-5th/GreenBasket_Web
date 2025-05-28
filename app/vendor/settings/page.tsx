@@ -16,6 +16,7 @@ import {
   User,
   Hash,
   Navigation,
+  Pencil,
 } from "lucide-react"
 import Image from "next/image"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -25,7 +26,8 @@ import { Separator } from "@/components/ui/separator"
 import BankAccountDialog from "./_components/BankAccountDialog"
 import AddressDialog from "./_components/AddressDialog"
 import { useAppSelector } from "@/redux/store"
-import { IUser } from "@/types/user.type"
+import { ICurrentUser, IUser } from "@/types/user.type"
+import { IAddress } from "@/types/address.type"
 
 // Mock data - replace with actual API calls
 const mockVendor = {
@@ -52,35 +54,35 @@ const mockAddress = {
   longitude: 38.7525,
 }
 
-const mockBankAccounts = [
-  {
-    id: "bank-1",
-    account_name: "Casper LLC Business Account",
-    account_number: "1234567890123456",
-    bank_name: "Commercial Bank of Ethiopia",
-  },
-  {
-    id: "bank-2",
-    account_name: "Casper LLC Savings",
-    account_number: "9876543210987654",
-    bank_name: "Dashen Bank",
-  },
-]
+// const mockBankAccounts = [
+//   {
+//     id: "bank-1",
+//     account_name: "Casper LLC Business Account",
+//     account_number: "1234567890123456",
+//     bank_name: "Commercial Bank of Ethiopia",
+//   },
+//   {
+//     id: "bank-2",
+//     account_name: "Casper LLC Savings",
+//     account_number: "9876543210987654",
+//     bank_name: "Dashen Bank",
+//   },
+// ]
 
 export default function VendorDetailPage() {
   const [addAddress, setAddAddress] = useState(false)
-  const user = useAppSelector((state => state.auth.user)) as unknown as IUser || null
+  const user = useAppSelector((state => state.auth.user)) as unknown as ICurrentUser || null
   const [addressDialogOpen, setAddressDialogOpen] = useState(false)
   const [editingAddress, setEditingAddress] = useState<any>(null)
   const [bankDialogOpen, setBankDialogOpen] = useState(false)
   const [editingBankAccount, setEditingBankAccount] = useState<any>(null)
-   const vendor = user.vendor || mockVendor;
+  const vendor = user.vendor || mockVendor;
 
 
 
   // Mock data - replace with actual API calls
-  const address = mockAddress
-  const bankAccounts = mockBankAccounts
+  const address = vendor.address
+  const bankAccount = vendor.VendorBankAccount
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("en-US", {
@@ -105,7 +107,7 @@ export default function VendorDetailPage() {
     }
   }
 
-  const handleEditAddress = () => {
+  const handleEditAddress = (addres: IAddress) => {
     setEditingAddress(address)
     setAddressDialogOpen(true)
   }
@@ -198,12 +200,7 @@ export default function VendorDetailPage() {
                   Address Information
                 </CardTitle>
                 <div className="flex gap-2">
-                  {address ? (
-                    <Button size="sm" variant="outline" onClick={handleEditAddress}>
-                      <Edit className="w-4 h-4 mr-1" />
-                      Edit
-                    </Button>
-                  ) : (
+                  {(
                     <Button size="sm" onClick={handleAddAddress}>
                       <Plus className="w-4 h-4 mr-1" />
                       Add Address
@@ -213,85 +210,91 @@ export default function VendorDetailPage() {
               </div>
             </CardHeader>
             <CardContent>
-              { address ?
-              (
-                <div className="space-y-4">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <div className="flex items-center gap-2 text-sm text-slate-600">
-                        <Globe className="w-4 h-4 text-blue-500" />
-                        <span className="font-medium">Country:</span>
+              {address && !!address.length ?
+                (
+                  address.map((addr) => (
+                  <div key={addr.id} className="space-y-4">
+                    <div  className="grid relative grid-cols-1 md:grid-cols-2 gap-4">
+                      <Button size="sm" className='top-0.5 absolute right-2' variant="outline" onClick={() => handleEditAddress(addr)}>
+                        <Pencil className="w-4 h-4 mr-1" />
+                        Edit
+                      </Button>
+                      <div className="space-y-2">
+                        <div className="flex items-center gap-2 text-sm text-slate-600">
+                          <Globe className="w-4 h-4 text-blue-500" />
+                          <span className="font-medium">Country:</span>
+                        </div>
+                        <p className="text-slate-900 ml-6">{addr.country}</p>
                       </div>
-                      <p className="text-slate-900 ml-6">{address.country}</p>
+
+                      <div className="space-y-2">
+                        <div className="flex items-center gap-2 text-sm text-slate-600">
+                          <Building2 className="w-4 h-4 text-green-500" />
+                          <span className="font-medium">City:</span>
+                        </div>
+                        <p className="text-slate-900 ml-6">{addr.city}</p>
+                      </div>
+
+                      <div className="space-y-2">
+                        <div className="flex items-center gap-2 text-sm text-slate-600">
+                          <MapPin className="w-4 h-4 text-purple-500" />
+                          <span className="font-medium">Sub City:</span>
+                        </div>
+                        <p className="text-slate-900 ml-6">{addr.sub_city}</p>
+                      </div>
+
+                      <div className="space-y-2">
+                        <div className="flex items-center gap-2 text-sm text-slate-600">
+                          <Hash className="w-4 h-4 text-orange-500" />
+                          <span className="font-medium">Zip Code:</span>
+                        </div>
+                        <p className="text-slate-900 ml-6">{addr.zip_code}</p>
+                      </div>
                     </div>
+
+                    <Separator />
 
                     <div className="space-y-2">
                       <div className="flex items-center gap-2 text-sm text-slate-600">
-                        <Building2 className="w-4 h-4 text-green-500" />
-                        <span className="font-medium">City:</span>
+                        <MapPin className="w-4 h-4 text-red-500" />
+                        <span className="font-medium">Street Address:</span>
                       </div>
-                      <p className="text-slate-900 ml-6">{address.city}</p>
+                      <p className="text-slate-900 ml-6">{addr.street}</p>
                     </div>
 
-                    <div className="space-y-2">
-                      <div className="flex items-center gap-2 text-sm text-slate-600">
-                        <MapPin className="w-4 h-4 text-purple-500" />
-                        <span className="font-medium">Sub City:</span>
-                      </div>
-                      <p className="text-slate-900 ml-6">{address.sub_city}</p>
-                    </div>
+                    <Separator />
 
-                    <div className="space-y-2">
-                      <div className="flex items-center gap-2 text-sm text-slate-600">
-                        <Hash className="w-4 h-4 text-orange-500" />
-                        <span className="font-medium">Zip Code:</span>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <div className="flex items-center gap-2 text-sm text-slate-600">
+                          <Navigation className="w-4 h-4 text-blue-500" />
+                          <span className="font-medium">Latitude:</span>
+                        </div>
+                        <p className="text-slate-900 ml-6 font-mono text-sm">{addr.latitude}</p>
                       </div>
-                      <p className="text-slate-900 ml-6">{address.zip_code}</p>
+
+                      <div className="space-y-2">
+                        <div className="flex items-center gap-2 text-sm text-slate-600">
+                          <Navigation className="w-4 h-4 text-blue-500" />
+                          <span className="font-medium">Longitude:</span>
+                        </div>
+                        <p className="text-slate-900 ml-6 font-mono text-sm">{addr.longitude}</p>
+                      </div>
                     </div>
                   </div>
-
-                  <Separator />
-
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-2 text-sm text-slate-600">
-                      <MapPin className="w-4 h-4 text-red-500" />
-                      <span className="font-medium">Street Address:</span>
-                    </div>
-                    <p className="text-slate-900 ml-6">{address.street}</p>
+                  ))
+                ) :
+                (
+                  <div className="text-center py-8">
+                    <MapPin className="w-12 h-12 text-slate-300 mx-auto mb-4" />
+                    <h3 className="text-lg font-medium text-slate-600 mb-2">No Address Added</h3>
+                    <p className="text-slate-500 mb-4">Add an address to complete the vendor profile</p>
+                    <Button onClick={handleAddAddress}>
+                      <Plus className="w-4 h-4 mr-2" />
+                      Add Address
+                    </Button>
                   </div>
-
-                  <Separator />
-
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <div className="flex items-center gap-2 text-sm text-slate-600">
-                        <Navigation className="w-4 h-4 text-blue-500" />
-                        <span className="font-medium">Latitude:</span>
-                      </div>
-                      <p className="text-slate-900 ml-6 font-mono text-sm">{address.latitude}</p>
-                    </div>
-
-                    <div className="space-y-2">
-                      <div className="flex items-center gap-2 text-sm text-slate-600">
-                        <Navigation className="w-4 h-4 text-blue-500" />
-                        <span className="font-medium">Longitude:</span>
-                      </div>
-                      <p className="text-slate-900 ml-6 font-mono text-sm">{address.longitude}</p>
-                    </div>
-                  </div>
-                </div>
-              ) :
-               (
-                <div className="text-center py-8">
-                  <MapPin className="w-12 h-12 text-slate-300 mx-auto mb-4" />
-                  <h3 className="text-lg font-medium text-slate-600 mb-2">No Address Added</h3>
-                  <p className="text-slate-500 mb-4">Add an address to complete the vendor profile</p>
-                  <Button onClick={handleAddAddress}>
-                    <Plus className="w-4 h-4 mr-2" />
-                    Add Address
-                  </Button>
-                </div>
-              )}
+                )}
             </CardContent>
           </Card>
         </motion.div>
@@ -316,54 +319,48 @@ export default function VendorDetailPage() {
               </div>
             </CardHeader>
             <CardContent>
-              {bankAccounts.length > 0 ? (
-                <div className="space-y-4">
-                  {bankAccounts.map((account, index) => (
-                    <div key={account.id}>
-                      <Card className="bg-slate-50 border border-slate-200">
-                        <CardContent className="p-4">
-                          <div className="flex items-start justify-between mb-3">
-                            <div className="flex items-center gap-2">
-                              <Landmark className="w-5 h-5 text-blue-500" />
-                              <h4 className="font-semibold text-slate-900">{account.bank_name}</h4>
-                            </div>
-                            <Button size="sm" variant="ghost" onClick={() => handleEditBankAccount(account)}>
-                              <Edit className="w-4 h-4" />
-                            </Button>
-                          </div>
-
-                          <div className="space-y-2">
-                            <div className="flex items-center gap-2 text-sm">
-                              <User className="w-4 h-4 text-green-500" />
-                              <span className="font-medium text-slate-600">Account Name:</span>
-                              <span className="text-slate-900">{account.account_name}</span>
-                            </div>
-
-                            <div className="flex items-center gap-2 text-sm">
-                              <Hash className="w-4 h-4 text-purple-500" />
-                              <span className="font-medium text-slate-600">Account Number:</span>
-                              <span className="text-slate-900 font-mono">
-                                {account.account_number.replace(/(.{4})/g, "$1 ").trim()}
-                              </span>
-                            </div>
-                          </div>
-                        </CardContent>
-                      </Card>
-                      {index < bankAccounts.length - 1 && <Separator className="my-4" />}
+              {bankAccount ? (
+                <Card className="bg-slate-50 border border-slate-200">
+                  <CardContent className="p-4">
+                    <div className="flex items-start justify-between mb-3">
+                      <div className="flex items-center gap-2">
+                        <Landmark className="w-5 h-5 text-blue-500" />
+                        <h4 className="font-semibold text-slate-900">{bankAccount.bank_name}</h4>
+                      </div>
+                      <Button size="sm" variant="ghost" onClick={() => handleEditBankAccount(bankAccount)}>
+                        <Edit className="w-4 h-4" />
+                      </Button>
                     </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="text-center py-8">
-                  <CreditCard className="w-12 h-12 text-slate-300 mx-auto mb-4" />
-                  <h3 className="text-lg font-medium text-slate-600 mb-2">No Bank Accounts</h3>
-                  <p className="text-slate-500 mb-4">Add bank account information for payments</p>
-                  <Button onClick={handleAddBankAccount}>
-                    <Plus className="w-4 h-4 mr-2" />
-                    Add Bank Account
-                  </Button>
-                </div>
-              )}
+
+                    <div className="space-y-2">
+                      <div className="flex items-center gap-2 text-sm">
+                        <User className="w-4 h-4 text-green-500" />
+                        <span className="font-medium text-slate-600">Account Name:</span>
+                        <span className="text-slate-900">{bankAccount.account_name}</span>
+                      </div>
+
+                      <div className="flex items-center gap-2 text-sm">
+                        <Hash className="w-4 h-4 text-purple-500" />
+                        <span className="font-medium text-slate-600">Account Number:</span>
+                        <span className="text-slate-900 font-mono">
+                          {bankAccount.account_number.replace(/(.{4})/g, "$1 ").trim()}
+                        </span>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              )
+                : (
+                  <div className="text-center py-8">
+                    <CreditCard className="w-12 h-12 text-slate-300 mx-auto mb-4" />
+                    <h3 className="text-lg font-medium text-slate-600 mb-2">No Bank Account</h3>
+                    <p className="text-slate-500 mb-4">Add bank account information for payments</p>
+                    <Button onClick={handleAddBankAccount}>
+                      <Plus className="w-4 h-4 mr-2" />
+                      Add Bank Account
+                    </Button>
+                  </div>
+                )}
             </CardContent>
           </Card>
         </motion.div>
@@ -390,7 +387,7 @@ export default function VendorDetailPage() {
           setEditingBankAccount(null)
         }}
       />
-      
+
     </div>
   )
 }

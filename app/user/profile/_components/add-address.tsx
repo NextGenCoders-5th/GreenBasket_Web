@@ -24,6 +24,7 @@ import { useAppSelector } from "@/redux/store"
 import { Role } from "@/enums/role.enum"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { usePathname } from "next/navigation"
+import { userApi, UserTags } from "@/redux/api/user.api"
 
 interface Props {
   setActiveTab?: (tab: any) => void
@@ -81,6 +82,7 @@ export const AddressForm = ({ setActiveTab, address, withHeader = true, onSave }
           reset()
           setActiveTab?.(TabsValueEnum.ABOUT)
           onSave?.()
+          userApi.util.invalidateTags([UserTags.CURRENT_USER])
         })
         .catch((error) => {
           console.error(`Error ${editMode ? 'saving' : 'adding'} address:`, error)

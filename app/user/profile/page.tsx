@@ -7,11 +7,19 @@ import WelcomeCard from "./_components/WelcomeCard"
 import AboutTab from "./_components/about"
 import EdiProfile from "./_components/editptofile"
 import MyAddress from "./_components/my-address"
-import UserVerificationDialog from "./_components/user-verification"
+import CompleteOnBoarding from "./_components/user-verification"
 import VerificationRequestDialog from "./_components/request-verification"
+import { useAppSelector } from "@/redux/store"
+import { Badge } from "@/components/ui/badge"
+import { IUser } from "@/types/user.type"
 
 export default function ProfilePage() {
   const [activeTab, setActiveTab] = useState("about")
+  const user = useAppSelector((state) => state.auth.user) as unknown as IUser | null;
+  const isVerified = user?.verify_status === "VERIFIED";
+  const isRejected = user?.verify_status === "REJECTED";
+
+  const isOnboarding = user?.verify_status === 'UNVERIFIED';
   return (
     <div className="flex-grow flex flex-col items-start   w-full  py-12 px-2 sm:px-6 dark:bg-[#1E1E1E] md:px-8 lg:px-10 bg-white">
       <WelcomeCard />
@@ -19,15 +27,30 @@ export default function ProfilePage() {
         {/* Left Column (Profile Header) */}
         <div className="w-full lg:w-1/3 mb-6 lg:mb-0">
           <ProfileHeader />
-          {
-             (
-              <div className="mt-4 flex flex-col gap-3 xl:flex-row items-start justify-between w-fit">
-                <UserVerificationDialog/>
-                <VerificationRequestDialog/>
-              </div>
-            )
+          <div className="w-full flex flex-col items-start justify-start mt-4">
 
-          }
+            {isOnboarding && <CompleteOnBoarding />}
+
+            {isVerified ? (
+              <Badge
+                className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors"
+              >
+                Verified
+              </Badge>
+            )
+              : isRejected ? (
+                <Badge
+                  className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors"
+                >
+                  Verification Rejected
+                </Badge>
+              ) :
+                (
+                  <VerificationRequestDialog />
+
+                )}
+          </div>
+
         </div>
 
         {/* Right Column (Tabs and Content) */}
@@ -45,15 +68,6 @@ export default function ProfilePage() {
             </div>
           </div>
         </div>
-        {/* <Debugger>
-        <img
-        src="/profile.png"
-        alt="Debugger"
-        width={100}
-        height={100}
-        className="w-full h-full object-fill"
-      />
-        </Debugger> */}
       </div>
     </div>
   )

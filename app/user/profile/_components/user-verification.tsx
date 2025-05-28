@@ -137,7 +137,7 @@ function FileUploadField({ label, description, icon, value, onChange, error }: F
   )
 }
 
-export default function UserVerificationDialog() {
+export default function CompleteOnBoarding() {
   const [open, setOpen] = useState(false)
   const toast = useToast()
 
@@ -185,7 +185,7 @@ export default function UserVerificationDialog() {
       <DialogTrigger asChild>
         <Button className="bg-blue-600 px-4 w-fit hover:bg-blue-700">
           <User className="w-4 h-4 mr-2" />
-          Complete Verification
+          Complete Onboarding
         </Button>
       </DialogTrigger>
       <DialogContent className="min-w-3xl ">

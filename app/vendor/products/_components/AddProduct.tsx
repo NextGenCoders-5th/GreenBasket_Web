@@ -15,15 +15,20 @@ import { useGetCategoriesQuery } from '@/redux/api/category.api';
 import DropDownInput from '@/app/_components/DropdownInput';
 import { product_units } from './data';
 import { IProduct } from '@/types/product.type';
-import { Pencil, Plus } from 'lucide-react';
+import { Link, Pencil, Plus } from 'lucide-react';
 import FileUploadInput from '@/app/_components/FileInput';
 import { TooltipWrapper } from '@/components/tooltip.wrapper';
+import { useAppSelector } from '@/redux/store';
+import { ICurrentUser } from '@/types/user.type';
+import { VerificationEnum } from '@/enums/verification.enum';
 
 interface Props {
     product?: IProduct
 }
 
 export default function AddProductDialog({ product }: Props) {
+    const user = useAppSelector((state) => state.auth.user) as ICurrentUser | null;
+    const isVerified = user?.verify_status === VerificationEnum.VERIFIED;
     const [open, setOpen] = useState(false);
 
     const editMode = Boolean(product);
@@ -138,26 +143,53 @@ export default function AddProductDialog({ product }: Props) {
     };
     return (
         <Dialog open={open} onOpenChange={setOpen}>
-            <TooltipWrapper
-                title={editMode ? 'Edit Product' : 'Add Product'}
-                className={editMode ? 'bg-blue-600' : 'bg-green-500'}
-                arroClassName={editMode ? 'bg-blue-600 fill-blue-600' : 'bg-green-500 fill-green-500'}
-            >
+            {
+                isVerified ?
 
-                <DialogTrigger asChild>
-                    {
-                        editMode ? (
-                            <span className='text-blue-600 text-sm sm:text-base border border-blue-600 bg-blue-500/10  flex items-center gap-1 cursor-pointer hover:text-white py-2 px-3 rounded-md hover:bg-blue-700 transition-colors duration-300'>
-                                <Pencil size={14}  /> 
-                            </span>
-                        ) : (
-                            <span className='bg-green-600 text-sm sm:text-base flex items-center gap-1 cursor-pointer text-white py-2 px-3 rounded-md hover:bg-green-700 transition-colors duration-300'>
-                                <Plus size={18} />  Product
-                            </span>
-                        )
-                    }
-                </DialogTrigger>
-            </TooltipWrapper>
+                    (<TooltipWrapper
+                        title={editMode ? 'Edit Product' : 'Add Product'}
+                        className={editMode ? 'bg-blue-600' : 'bg-green-500'}
+                        arroClassName={editMode ? 'bg-blue-600 fill-blue-600' : 'bg-green-500 fill-green-500'}
+                    >
+
+                        <DialogTrigger asChild>
+                            {
+                                editMode ? (
+                                    <span className='text-blue-600 text-sm sm:text-base border border-blue-600 bg-blue-500/10  flex items-center gap-1 cursor-pointer hover:text-white py-2 px-3 rounded-md hover:bg-blue-700 transition-colors duration-300'>
+                                        <Pencil size={14} />
+                                    </span>
+                                ) : (
+                                    <span className='bg-green-600 text-sm sm:text-base flex items-center gap-1 cursor-pointer text-white py-2 px-3 rounded-md hover:bg-green-700 transition-colors duration-300'>
+                                        <Plus size={18} />  Product
+                                    </span>
+                                )
+                            }
+                        </DialogTrigger>
+                    </TooltipWrapper>)
+                    :
+                    (<TooltipWrapper
+                        title='You need to verify your account to add or edit products'
+                        className='bg-red-600'
+                        arroClassName='bg-red-600 fill-red-600'
+                    >
+                        <DialogTrigger onClick={e => {
+                            e.preventDefault();
+                            toast.error('You need to verify your account to add or edit products');
+                        }} asChild>
+                            {
+                                editMode ? (
+                                    <span className='text-blue-600 text-sm sm:text-base border border-blue-600 bg-blue-500/10  flex items-center gap-1 cursor-pointer hover:text-white py-2 px-3 rounded-md hover:bg-blue-700 transition-colors duration-300'>
+                                        <Pencil size={14} />
+                                    </span>
+                                ) : (
+                                    <span className='bg-green-600 text-sm sm:text-base flex items-center gap-1 cursor-pointer text-white py-2 px-3 rounded-md hover:bg-green-700 transition-colors duration-300'>
+                                        <Plus size={18} />  Product
+                                    </span>
+                                )
+                            }
+                        </DialogTrigger>
+                    </TooltipWrapper>)
+            }
             <DialogContent className='max-w-lg text-slate-700'>
                 <DialogHeader>
                     <DialogTitle className='text-green-700'>{editMode ? 'Edit' : 'Add New'} Product</DialogTitle>

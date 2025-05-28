@@ -1,7 +1,8 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import { baseQueryWithReauth } from './base.query';
-import { CheckoutOrderRequest, CreateOrderRequest, CreateOrderResponse, IOrder } from '@/types/order.type';
+import { CheckoutOrderRequest } from '@/types/order.type';
 import { ApiResponse } from '@/types/base.type';
+import { Order } from '@/types/or.type';
 
 export enum OrderTags {
   ORDER = 'Order',
@@ -14,7 +15,7 @@ const orderApi = createApi({
   baseQuery: baseQueryWithReauth,
   tagTypes: Object.values(OrderTags),
   endpoints: (builder) => ({
-    createOrder: builder.mutation<CreateOrderResponse, CreateOrderRequest>({
+    createOrder: builder.mutation<any, any>({
       query: (orderData) => ({
         url: 'orders',
         method: 'POST',
@@ -22,7 +23,7 @@ const orderApi = createApi({
       }),
       invalidatesTags: [OrderTags.ORDERS],
     }),
-    updateOrder: builder.mutation<CreateOrderResponse, any>({
+    updateOrder: builder.mutation<any, any>({
       query: ({ orderId, orderData }) => ({
         url: `orders/${orderId}`,
         method: 'PATCH',
@@ -37,21 +38,21 @@ const orderApi = createApi({
       }),
       invalidatesTags: (_, error, orderId) => [{ type: OrderTags.ORDER, id: orderId }, OrderTags.ORDERS],
     }),
-    getOrder: builder.query<{ data: { data: IOrder } }, string>({
+    getOrder: builder.query<{ data: { data: Order } }, string>({
       query: (orderId) => ({
         url: `orders/${orderId}`,
         method: 'GET',
       }),
       providesTags: (result, error, orderId) => [{ type: OrderTags.ORDER, id: orderId }, OrderTags.ORDERS],
     }),
-    getMyOrder: builder.query<{ data: { data: IOrder } }, string>({
+    getMyOrder: builder.query<{ data: { data: Order } }, string>({
       query: (orderId) => ({
         url: `orders/my-orders/${orderId}`,
         method: 'GET',
       }),
       providesTags: (result, error, orderId) => [{ type: OrderTags.ORDER, id: orderId }, OrderTags.ORDERS],
     }),
-    getMyOrders: builder.query<{ data: { data: IOrder } }, void>({
+    getMyOrders: builder.query<{ data: { data: Order } }, void>({
       query: () => ({
         url: `orders/my-orders`,
         method: 'GET',
@@ -61,7 +62,7 @@ const orderApi = createApi({
         return [{ type: OrderTags.MY_ORDERS, id: token }];
       },
     }),
-    getOrders: builder.query<ApiResponse<{ data: IOrder[] }>, string>({
+    getOrders: builder.query<ApiResponse<{ data: Order[] }>, string>({
       query: (params) => {
         const queryString = new URLSearchParams(params).toString();
         return {
@@ -71,7 +72,7 @@ const orderApi = createApi({
       },
       providesTags: [OrderTags.ORDERS],
     }),
-    getVendorOrders: builder.query<ApiResponse<{ data: IOrder[] }>, string>({
+    getVendorOrders: builder.query<ApiResponse<{ data: Order[] }>, string>({
       query: (params) => {
         return {
           url: `orders/vendor/${params }`,
@@ -80,7 +81,7 @@ const orderApi = createApi({
       },
       providesTags: [OrderTags.ORDERS],
     }),
-    getMyCarts: builder.query<ApiResponse<{ data: IOrder[] }>, void>({
+    getMyCarts: builder.query<ApiResponse<{ data: Order[] }>, void>({
       query: () => {
         return {
           url: `orders/user`,
@@ -92,7 +93,7 @@ const orderApi = createApi({
         return [{ type: OrderTags.MY_ORDERS, id: accessToken || '' }];
       },
     }),
-    checkOutOrder: builder.mutation<CreateOrderResponse, CheckoutOrderRequest>({
+    checkOutOrder: builder.mutation<any, CheckoutOrderRequest>({
       query: (orderData) => ({
         url: `orders/checkout`,
         method: 'POST',
@@ -103,7 +104,7 @@ const orderApi = createApi({
         return [{type: OrderTags.MY_ORDERS, id: token}]
       },
     }),
-    updateOrderStatus: builder.mutation<CreateOrderResponse, {orderId:string, status: string}>({
+    updateOrderStatus: builder.mutation<any, {orderId:string, status: string}>({
       query: ({  orderId,status }) => ({
         url: `orders/${orderId}`,
         method: 'PATCH',

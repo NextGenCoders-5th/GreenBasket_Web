@@ -41,7 +41,7 @@ export default function ProfileHeader() {
         </div>
 
         {/* Profile Info */}
-        <div className="pt-14 px-6 pb-6">
+        <div className="pt-14 px-6  space-y-2 pb-6">
           <h1 className="text-xl text-slate-600 font-bold dark:text-white ">{`${user?.last_name}`} {user?.last_name}</h1>
           {/* User address  */}
 

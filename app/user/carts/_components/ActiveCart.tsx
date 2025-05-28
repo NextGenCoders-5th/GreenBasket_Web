@@ -16,6 +16,7 @@ import { useAppSelector } from "@/redux/store"
 import { useGetMyCartQuery } from "@/redux/api/cart.api"
 import { Cart } from "@/types/cart.type"
 import LoadingPage from "@/components/loading.page"
+import { ErrorEnum } from "@/enums/error.enum"
 
 
 // // Mock data from your API response
@@ -197,7 +198,7 @@ export default function ActiveCart() {
   }
 
   // if an error occurs
-  if (error) {
+  if (error && 'status' in error && error.status !== ErrorEnum.NOT_FOUND) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
@@ -221,7 +222,7 @@ export default function ActiveCart() {
           <div className="max-w-2xl mx-auto text-center">
             <div className="bg-white rounded-2xl shadow-sm p-12">
               <ShoppingCart className="w-24 h-24 text-gray-300 mx-auto mb-6" />
-              <h1 className="text-2xl font-bold text-gray-900 mb-4">Your cart is empty</h1>
+              <h1 className="text-2xl font-bold text-gray-900 mb-4">Your  haven't active cart </h1>
               <p className="text-gray-600 mb-8">Looks like you haven't added any items to your cart yet.</p>
               <Link href="/marketplace">
                 <Button className="bg-emerald-600 hover:bg-emerald-700 text-white px-8 py-3 rounded-lg">

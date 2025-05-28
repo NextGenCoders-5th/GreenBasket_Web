@@ -1,6 +1,7 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import {  baseQueryWithReauth } from './base.query';
 import { ApiResponse } from '@/types/base.type';
+import { Cart } from '@/types/cart.type';
 
 export enum CartTags {
   MY_CART = 'MyCart',
@@ -12,7 +13,7 @@ const cartApi = createApi({
   baseQuery: baseQueryWithReauth,
   tagTypes: Object.values(CartTags),
   endpoints: (builder) => ({
-    getMyCarts: builder.query<ApiResponse<{ data: any[] }>, void>({
+    getMyCarts: builder.query<ApiResponse<{ data: Cart[] }>, void>({
       query: () => {
         return {
           url: `cart/my-carts`,
@@ -21,7 +22,7 @@ const cartApi = createApi({
       },
       providesTags: [CartTags.MY_CARTS],
     }),
-    getMyCart: builder.query<ApiResponse<{ data: any }>, void>({
+    getMyCart: builder.query<ApiResponse<{ data: Cart }>, void>({
       query: () => ({
         url: `cart/my-cart`,
         method: 'GET',

@@ -15,7 +15,7 @@ interface CreateVendorResponse extends ApiResponse<IVendor> {}
 interface IVendor extends CreateVendorRequest, ITimeStamp {
   id: string;
   logo_url: string;
-  status: string;
+  status: 'APPROVED' | 'PENDING' | 'REJECTED'; // Assuming these are the possible vendor statuses
   have_bank_details?: boolean;
 }
 

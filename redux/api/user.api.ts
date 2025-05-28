@@ -1,6 +1,6 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import { baseQueryWithReauth } from './base.query';
-import { CreateUserRequest, CreateUserResponse, IUser, UpdatePasswordRequest, UpdateProfileRquest, VerifyUserRequest } from '@/types/user.type';
+import { CreateUserRequest, CreateUserResponse, ICurrentUser, IUser, UpdatePasswordRequest, UpdateProfileRquest, VerifyUserRequest } from '@/types/user.type';
 import { ApiResponse } from '@/types/base.type';
 import { UserFormData } from '@/schema/user.schema';
 
@@ -49,10 +49,7 @@ export const userApi = createApi({
         method: 'PATCH',
         body: data,
       }),
-      invalidatesTags: (_, error, {}) => {
-        const token = localStorage.getItem('token') || '';
-        return [{ type: UserTags.CURRENT_USER, id: token }];
-      },
+      invalidatesTags:[ UserTags.CURRENT_USER],
     }),
     updatePassword: builder.mutation<CreateUserResponse, UpdatePasswordRequest>({
       query: (data) => ({
@@ -67,7 +64,7 @@ export const userApi = createApi({
         method: 'PATCH',
         body: data,
       }),
-      invalidatesTags: [UserTags.CURRENT_USER, UserTags.VERIFICATION_REQUESTS, UserTags.USERS],
+      invalidatesTags: [UserTags.CURRENT_USER],
     }),
     requestAccountVerification: builder.mutation<CreateUserResponse, void>({
       query: () => ({
@@ -115,7 +112,7 @@ export const userApi = createApi({
       },
       providesTags: [UserTags.USERS],
     }),
-    currentUser: builder.query<ApiResponse<{ data: IUser }>, void>({
+    currentUser: builder.query<ApiResponse<{ data: ICurrentUser }>, void>({
       query: () => ({
         url: 'users/account/current-user',
         method: 'GET',
@@ -123,7 +120,7 @@ export const userApi = createApi({
           Authorization: `Bearer ${localStorage.getItem('token') || ''}`, // Use token from localStorage
         },
       }),
-      providesTags: [UserTags.CURRENT_USER],
+      providesTags: [UserTags.CURRENT_USER], 
     }),
   }),
 });

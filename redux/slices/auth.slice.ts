@@ -1,9 +1,9 @@
 import { ErrorEnum } from '@/enums/error.enum';
-import { IUser } from '@/types/user.type';
+import { ICurrentUser, IUser } from '@/types/user.type';
 import { createSlice } from '@reduxjs/toolkit';
 
 interface AuthState {
-  user: IUser | null;
+  user: ICurrentUser | null;
   token: string | null;
   refreshToken: string | null;
   isAuthChecked: boolean;

@@ -9,6 +9,7 @@ import { useLogoutMutation } from '@/redux/api/auth.api';
 import { useToast } from '@/providers/toast.provider';
 import { useAppSelector } from '@/redux/store';
 import { IUser } from '@/types/user.type';
+import { Role } from '@/enums/role.enum';
 
 export default function ProfileDropdown() {
   // TOAST: toast instance to toast messages
@@ -51,6 +52,7 @@ export default function ProfileDropdown() {
   };
 
 
+  const role = user?.role  !== Role.CUSTOMER ? user?.role.toLowerCase() : 'user';
   return (
     <div className="relative" ref={ref}>
       <Avatar onClick={() => setOpen(!open)} className="cursor-pointer border">
@@ -84,7 +86,7 @@ export default function ProfileDropdown() {
             <ul className="space-y-2">
               <li
                 className="flex items-center gap-2 p-2 rounded-lg hover:bg-gray-100 cursor-pointer"
-                onClick={() => router.push('/profile')}
+                onClick={() => router.push('/'+role+'/profile')}
               >
                 <User size={18} /> Profile
               </li>

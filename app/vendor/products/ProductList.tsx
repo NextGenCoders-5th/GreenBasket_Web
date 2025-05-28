@@ -28,8 +28,13 @@ import {
   Tag,
 } from "lucide-react"
 import ProductDetailDrawer from "../../_components/ProductDetail"
+import { useAppSelector } from "@/redux/store"
+import { ICurrentUser } from "@/types/user.type"
+import { VerificationEnum } from "@/enums/verification.enum"
 
 const ProductList = () => {
+      const user = useAppSelector((state) => state.auth.user) as ICurrentUser | null;
+      const isVerified = user?.verify_status === VerificationEnum.VERIFIED;
   const { data, error, isLoading } = useGetVendorProductsQuery("")
   const [searchTerm, setSearchTerm] = useState("")
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid")

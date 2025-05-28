@@ -1,20 +1,74 @@
-'use client'; 
+'use client';
 import Debugger from '@/app/_components/Debugger';
-import { useGetMyOrdersQuery, useGetOrdersQuery, useGetVendorOrdersQuery } from '@/redux/api/order.api'
+import { useGetVendorOrdersQuery } from '@/redux/api/order.api'
 import { useAppSelector } from '@/redux/store';
 import { IUser } from '@/types/user.type';
-import React, { useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
+import VendorOrdersList from './components/order-list';
+import LoadingPage from '@/components/loading.page';
+import { useGetProductsQuery } from '@/redux/api/product.api';
+import { Order } from '@/types/or.type';
 
 const VendorOrdersPage = () => {
   const user = useAppSelector((state) => state.auth.user) as IUser | null;
-  const { data, isLoading, error } = useGetVendorOrdersQuery(user?.vendor?.id ||"", {
+  const [orders, setOrders] = React.useState<Order[]>([]);
+  const { data, isLoading, error } = useGetVendorOrdersQuery(user?.vendor?.id || "", {
     refetchOnMountOrArgChange: true,
     refetchOnReconnect: true,
-
-
   });
 
+  const { data: productsData } = useGetProductsQuery("")
+  const products = productsData?.data.data || []
+
+  const ordersData = data?.data.data || [];
+  useEffect(() => {
+    if (ordersData && products ) {
+      const enrichedOrders = ordersData.map((order: Order) => {
+        const enrichedProducts = order.OrderItems.map((item) => {
+          const productDetails = products.find(p => p.id === item.productId);
+          return {
+            ...item,
+            product: productDetails || null,
+          };
+        });
+        return {
+          ...order,
+          OrderItems: enrichedProducts,
+        };
+      });
+      setOrders(enrichedOrders);
+    }
+
+
+  }, [ordersData, products]);
+
+
+
+  
   const contentRef = useRef<HTMLPreElement>(null);
+  if (isLoading) {
+    return <LoadingPage />
+  }
+
+  if (error) {
+    <div className="flex h-screen items-center justify-center flex-col">
+      <p className="text-red-500">
+        Error loading orders: {('message' in error && error.message) || 'An unknown error occurred'}
+      </p>
+      <button onClick={() => window.location.reload()} className="ml-4 bg-blue-500 text-white px-4 py-2 rounded">
+        Retry
+      </button>
+    </div>
+  }
+
+  if (!orders || orders.length === 0) {
+    return (
+      <div className='w-full bg-white flex items-center flex-col justify-start h-[55vh] gap-1.5 text-2xl font-semibold'>
+        <p>No orders found</p>
+      </div>
+    );
+  }
+
 
   return (
     <div className='w-full bg-white flex items-center flex-col justify-start h-[55vh] gap-1.5 text-2xl font-semibold'>
@@ -25,10 +79,11 @@ const VendorOrdersPage = () => {
       >
         <pre ref={contentRef}>
           {
-            JSON.stringify(data?.data.data || error, null, 2)
+            JSON.stringify(orders || error, null, 2)
           }
         </pre>
       </Debugger>
+      <VendorOrdersList orders={orders} />
     </div>
   )
 }

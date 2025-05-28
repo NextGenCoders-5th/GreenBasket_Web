@@ -106,7 +106,7 @@ export default function VerificationRequestDialog({
                             Verification Requested
                         </Button>
                     ) : (
-                        <Button variant="default" className="">
+                        <Button variant="default" className="cursor-pointer">
                             Request Verification
                         </Button>
                     )

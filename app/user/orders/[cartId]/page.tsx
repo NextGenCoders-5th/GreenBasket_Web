@@ -54,7 +54,7 @@ const CartItemPage = () => {
         <div className="div">
           <Card className="shadow-md border  gap-0 p-0 border-muted bg-background rounded-2xl">
             <CardHeader className="bg-gradient-to-r py-3 from-accent-500 to-accent-600 rounded-t-xl">
-              <CardTitle className="text-xl">Order summary</CardTitle>
+              <CardTitle className="text-xl text-slate-50">Order summary</CardTitle>
             </CardHeader>
 
             <CardContent className="p-6 grid grid-cols-1 gap-6 items-center">
@@ -64,11 +64,11 @@ const CartItemPage = () => {
                   <AvatarImage src={product.image_url} alt={product.name} />
                 </Avatar>
                 <div className="space-y-1 text-sm">
-                  <h1>Product information</h1>
-                  <h2 className="text-lg font-semibold">Name: {product.name}</h2>
+                  <h1 className='font-bold text-lg  underline text-accent'>Product information</h1>
+                  <h2 className=" text-slate-600  font-semibold">Name: {product.name}</h2>
                   <p className="text-sm text-muted-foreground line-clamp-2"> Description: {product.description}</p>
                   <p className="text-green-600 font-bold text-sm">Price: ${product.price} / {product.unit}</p>
-                  <p >Stock: {product.stock}</p>
+                  <p className='p-2 py-1 bg-accent-100  rounded-xl'>Stock: {product.stock}</p>
                 </div>
               </div>
 
