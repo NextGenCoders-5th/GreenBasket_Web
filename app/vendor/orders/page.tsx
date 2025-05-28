@@ -11,40 +11,18 @@ import { Order } from '@/types/or.type';
 
 const VendorOrdersPage = () => {
   const user = useAppSelector((state) => state.auth.user) as IUser | null;
-  const [orders, setOrders] = React.useState<Order[]>([]);
   const { data, isLoading, error } = useGetVendorOrdersQuery(user?.vendor?.id || "", {
     refetchOnMountOrArgChange: true,
     refetchOnReconnect: true,
   });
 
-  const { data: productsData } = useGetProductsQuery("")
-  const products = productsData?.data.data || []
 
-  const ordersData = data?.data.data || [];
-  useEffect(() => {
-    if (ordersData && products ) {
-      const enrichedOrders = ordersData.map((order: Order) => {
-        const enrichedProducts = order.OrderItems.map((item) => {
-          const productDetails = products.find(p => p.id === item.productId);
-          return {
-            ...item,
-            product: productDetails || null,
-          };
-        });
-        return {
-          ...order,
-          OrderItems: enrichedProducts,
-        };
-      });
-      setOrders(enrichedOrders);
-    }
-
-
-  }, [ordersData, products]);
+  const orders = data?.data.data || [];
 
 
 
-  
+
+
   const contentRef = useRef<HTMLPreElement>(null);
   if (isLoading) {
     return <LoadingPage />
@@ -72,7 +50,7 @@ const VendorOrdersPage = () => {
 
   return (
     <div className='w-full bg-white flex items-center flex-col justify-start h-[55vh] gap-1.5 text-2xl font-semibold'>
-      {isLoading && <p>Loading...</p>}
+      {/* {isLoading && <p>Loading...</p>}
       {error && <p>Error loading orders</p>}
       <Debugger
         copyContentRef={contentRef}
@@ -82,7 +60,7 @@ const VendorOrdersPage = () => {
             JSON.stringify(orders || error, null, 2)
           }
         </pre>
-      </Debugger>
+      </Debugger> */}
       <VendorOrdersList orders={orders} />
     </div>
   )
