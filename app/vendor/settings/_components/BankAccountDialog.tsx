@@ -19,6 +19,7 @@ import { CreditCard, Loader2 } from "lucide-react"
 import { useAddBankAccountMutation } from "@/redux/api/vendor.api"
 import { useToast } from "@/providers/toast.provider"
 import { ErrorEnum } from "@/enums/error.enum"
+import { userApi, UserTags } from "@/redux/api/user.api"
 
 const bankAccountSchema = z.object({
   account_name: z.string().min(1, "Account name is required"),
@@ -76,6 +77,8 @@ export default function BankAccountDialog({ open, onOpenChange, bankAccount, onS
           toast.success('Bank Account added successfully', { id: toastId });
           form.reset();
           onOpenChange(false);
+          onSave(data);
+          userApi.util.invalidateTags([UserTags.CURRENT_USER])
         })
         .catch((error) => {
           if (error.status === ErrorEnum.UNKOWN_ERROR)
