@@ -20,6 +20,7 @@ import { ErrorEnum } from '@/enums/error.enum';
 import { ICategory } from '@/types/category.type';
 import { ClassName } from '@/enums/classnames.enum';
 import { TooltipWrapper } from '@/components/tooltip.wrapper';
+import FileUploadInput from '@/app/_components/FileInput';
 
 interface Props {
   categoryId: string;
@@ -32,8 +33,10 @@ export default function EditCategory({ categoryId, category }: Props) {
   const toast = useToast()
 
   // State to mange dialog open and close
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(false);
 
+
+  const [image, setImage] = useState<File | null>(null)
   // Getting  redux api method to create category
   const [updateCategory, { isLoading }] = useUpdateCategoryMutation()
   const {
@@ -60,7 +63,12 @@ export default function EditCategory({ categoryId, category }: Props) {
     const toastId = toast.loading('Saving category...');
 
     try {
-      updateCategory({ categoryId, categoryData: data }).unwrap().then(() => {
+      const formData = new FormData();
+      formData.append('name', data.name);
+      if (image) {
+        formData.append('image', image);
+      }
+      updateCategory({ categoryId, categoryData: formData }).unwrap().then(() => {
         toast.success('Category edited successfully', { id: toastId })
         setOpen(false);
         reset();
@@ -102,7 +110,23 @@ export default function EditCategory({ categoryId, category }: Props) {
             <Input {...register('name', { required: "Category name is required" })} placeholder="Enter category name" />
             {errors.name && <p className="text-sm text-red-600 mt-1">{errors.name.message}</p>}
           </div>
-
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Category Image *</label>
+            <FileUploadInput
+              onFileSelect={(file) => {
+                setImage(file);
+              }}
+              label='Upload Image'
+              accept='image/*'
+            />
+            {image && (
+              <img
+                src={URL.createObjectURL(image)}
+                alt="Preview"
+                className="mt-2 w-24 h-24 object-cover rounded"
+              />
+            )}
+          </div>
           <DialogFooter>
             <DialogClose asChild>
               <Button type="button" variant="outline">
