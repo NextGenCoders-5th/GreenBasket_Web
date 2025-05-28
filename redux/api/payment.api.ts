@@ -14,9 +14,9 @@ const paymentApi = createApi({
   baseQuery: baseQueryWithReauth,
   tagTypes: Object.values(PaymentTags),
   endpoints: (builder) => ({
-    initializePayment: builder.mutation<CreatePaymentResponse, CreatePaymentRequest>({
+    initializePayment: builder.mutation<ApiResponse<{data: any}>, CreatePaymentRequest>({
       query: (paymentData) => ({
-        url: 'payments/chapa/initialize',
+        url: 'payments/initialize',
         method: 'POST',
         body: paymentData,
       }),

@@ -1,7 +1,7 @@
 import { ApiResponse, ITimeStamp } from './base.type';
 
 interface Payment {
-  orderItemId: string;
+  orderId: string;
 }
 
 interface CreatePaymentRequest extends Payment {}

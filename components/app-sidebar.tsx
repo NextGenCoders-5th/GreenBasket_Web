@@ -286,6 +286,12 @@ const UserSideBarData = {
       url: '/user/carts',
       icon: IconGardenCart,
     },
+
+    {
+      title: 'My orders',
+      url: '/user/orders',
+      icon: IconGardenCart,
+    },
   ],
   navClouds: [
     {
@@ -399,7 +405,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               <Link href="/">
                 <Logo />
                 <span className="text-xl text-accent-600 font-semibold">
-                  Green<strong>Market</strong>
+                  Green<strong>Basket</strong>
                 </span>
               </Link>
             </SidebarMenuButton>

@@ -52,11 +52,15 @@ const orderApi = createApi({
       }),
       providesTags: (result, error, orderId) => [{ type: OrderTags.ORDER, id: orderId }, OrderTags.ORDERS],
     }),
-    getMyOrders: builder.query<{ data: { data: Order } }, void>({
-      query: () => ({
-        url: `orders/my-orders`,
-        method: 'GET',
-      }),
+    getMyOrders: builder.query<{ data: { data: Order[] } }, string | void>({
+      query: (params) => {
+        const queryString = params ? `?${new URLSearchParams(params).toString()}` : '';
+        return {
+          url: `orders/my-orders${queryString}`,
+          method: 'GET',
+        };
+
+      },
       providesTags: (result, error) => {
         const token = localStorage.getItem('token') || '';
         return [{ type: OrderTags.MY_ORDERS, id: token }];
