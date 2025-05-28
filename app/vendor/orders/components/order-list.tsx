@@ -558,13 +558,13 @@ const OrderDetailsDrawer = ({ order }: { order: any }) => (
         <Card className="p-4">
           <div className="text-sm text-muted-foreground">Payment Method</div>
           <div className="flex items-center gap-2 mt-1">
-            {getPaymentIcon(order.paymentMethod)}
-            <span className="font-medium">{order.paymentMethod?.replace("_", " ")}</span>
+            {getPaymentIcon('MOBILE_MONEY')}
+            <span className="text text-slate-600">Transfer</span>
           </div>
         </Card>
         <Card className="p-4">
           <div className="text-sm text-muted-foreground">Priority</div>
-          <Badge className={`${getPriorityColor('LOW')} mt-1`}>{order.priority}</Badge>
+          <Badge className={`${getPriorityColor('LOW')} mt-1`}>LOW</Badge>
         </Card>
       </div>
 
@@ -674,16 +674,16 @@ const OrderDetailsDrawer = ({ order }: { order: any }) => (
           {order.OrderItems.map((item: any) => (
             <div key={item.id} className="flex items-center gap-4 p-4 border rounded-lg">
               <img
-                src={item.product?.image || "/placeholder.svg"}
-                alt={item.product?.name}
+                src={item.Product?.image || "/placeholder.svg"}
+                alt={item.Product?.name}
                 className="w-16 h-16 object-cover rounded-lg"
               />
               <div className="flex-1">
-                <h5 className="font-medium">{item.product?.name}</h5>
-                <p className="text-sm text-muted-foreground">{item.product?.category}</p>
+                <h5 className="font-medium">{item.Product?.name}</h5>
+                <p className="text-sm text-muted-foreground">{item.Product?.category}</p>
                 <div className="flex items-center gap-1 text-sm">
                   <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
-                  <span>{item.product?.rating}</span>
+                  <span>{item.Product?.rating}</span>
                 </div>
               </div>
               <div className="text-right">
@@ -733,10 +733,10 @@ const OrderDetailsDrawer = ({ order }: { order: any }) => (
 )
 
 
-interface Props{
+interface Props {
   orders: Order[]
 }
-export default function VendorOrdersList({orders}:Props) {
+export default function VendorOrdersList({ orders }: Props) {
 
 
   const [coppiedContent, setCoppiedContent] = useState<string | null>(null)
@@ -775,7 +775,7 @@ export default function VendorOrdersList({orders}:Props) {
             <ShoppingBag className="h-5 w-5 text-accent" />
             <span className="text-sm font-medium text-accent">Vendor Dashboard</span>
           </div>
-          <h1 className="text-4xl font-bold">Orders Management</h1>
+          <h1 className="text-2 font-bold">Orders Management</h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             Track, manage, and fulfill all your customer orders in one place
           </p>
@@ -878,7 +878,7 @@ export default function VendorOrdersList({orders}:Props) {
                         <div className="flex items-center gap-3">
                           <h3 className="text-xl font-bold">Order #{order.id.slice(0, 8)}</h3>
                           <Badge className={getPriorityColor('SMALL')} variant="outline">
-                            {order.priority  ? order.priority : 'No Priority'}
+                            {order.priority ? order.priority : 'No Priority'}
                           </Badge>
                         </div>
                         <div className="flex items-center gap-2 text-sm text-muted-foreground">
@@ -943,12 +943,13 @@ export default function VendorOrdersList({orders}:Props) {
                             <div className="text-muted-foreground">
                               {order.Adress.city}, {order.Adress.country}
                             </div>
+                            <div className="flex items-center gap-2">
+                              {getPaymentIcon('MOBILE_MONEY')}
+                              <span className="text text-slate-600"> {order.User.phone_number} </span>
+                            </div>
                           </div>
                         </div>
-                        <div className="flex items-center gap-2">
-                          {getPaymentIcon('MOBILE_MONEY')}
-                          <span className="text-sm">Transfer</span>
-                        </div>
+
                       </div>
                     </div>
 
@@ -963,19 +964,19 @@ export default function VendorOrdersList({orders}:Props) {
                             <PopoverTrigger asChild>
                               <button className="flex items-center gap-3 hover:bg-muted/50 p-2 rounded-lg transition-colors w-full text-left">
                                 <img
-                                  src={ "/placeholder.png"}
-                                  alt={item.product?.name}
+                                  src={"/placeholder.png"}
+                                  alt={item.Product?.name}
                                   className="w-8 h-8 object-cover rounded"
                                 />
                                 <div className="flex-1 min-w-0">
-                                  <div className="font-medium text-sm truncate">{item.product?.name}</div>
+                                  <div className="font-medium text-sm truncate">{item.Product?.name}</div>
                                   <div className="text-xs text-muted-foreground">
                                     {item.quantity} × {formatCurrency(item.price)}
                                   </div>
                                 </div>
                               </button>
                             </PopoverTrigger>
-                            <ProductPopover product={item.product} item={item} />
+                            <ProductPopover product={item.Product} item={item} />
                           </Popover>
                         ))}
                         {order.OrderItems.length > 2 && (
@@ -1045,7 +1046,7 @@ export default function VendorOrdersList({orders}:Props) {
                 <Package className="h-10 w-10 text-muted-foreground" />
               </div>
               <h3 className="text-xl font-semibold mb-2">No orders found</h3>
-              <p className="text-muted-foreground max-w-md mx-auto">
+              <p className="text-muted-foreground text-sm max-w-md mx-auto">
                 {searchTerm || statusFilter !== "all"
                   ? "Try adjusting your search or filter criteria to find the orders you're looking for."
                   : "You haven't received any orders yet. Orders will appear here once customers start placing them."}
