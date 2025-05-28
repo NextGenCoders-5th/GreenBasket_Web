@@ -169,11 +169,6 @@ const VendorSideBarData = {
       icon: IconChartBar,
     },
     {
-      title: 'Payments',
-      url: '/vendor/payments',
-      icon: IconFileDollar,
-    },
-    {
       title: 'Settings',
       url: '/vendor/settings',
       icon: IconSettings,

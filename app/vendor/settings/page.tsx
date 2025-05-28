@@ -28,6 +28,7 @@ import AddressDialog from "./_components/AddressDialog"
 import { useAppSelector } from "@/redux/store"
 import { ICurrentUser, IUser } from "@/types/user.type"
 import { IAddress } from "@/types/address.type"
+import VendorBalanceCard from "./_components/balance-card"
 
 // Mock data - replace with actual API calls
 const mockVendor = {
@@ -108,7 +109,7 @@ export default function VendorDetailPage() {
   }
 
   const handleEditAddress = (addres: IAddress) => {
-    setEditingAddress(address)
+    setEditingAddress(addres)
     setAddressDialogOpen(true)
   }
 
@@ -215,7 +216,10 @@ export default function VendorDetailPage() {
                   address.map((addr) => (
                   <div key={addr.id} className="space-y-4">
                     <div  className="grid relative grid-cols-1 md:grid-cols-2 gap-4">
-                      <Button size="sm" className='top-0.5 absolute right-2' variant="outline" onClick={() => handleEditAddress(addr)}>
+                      <Button size="sm" className='top-0.5 absolute right-2' variant="outline" onClick={(e) => {
+                        e.stopPropagation()
+                        handleEditAddress(addr)
+                      }}>
                         <Pencil className="w-4 h-4 mr-1" />
                         Edit
                       </Button>
@@ -363,6 +367,7 @@ export default function VendorDetailPage() {
                 )}
             </CardContent>
           </Card>
+          <VendorBalanceCard {...user.vendor.VendorBalance}/>
         </motion.div>
       </div>
 
