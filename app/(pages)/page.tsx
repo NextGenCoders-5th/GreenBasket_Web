@@ -114,7 +114,7 @@ const LandingPage = () => {
                   Start Shopping
                   <ArrowRight className="w-5 h-5 ml-2" />
                 </Link>
-                
+
               </div>
 
               <div className="flex items-center gap-8 pt-8">
@@ -123,11 +123,11 @@ const LandingPage = () => {
                   <div className="text-sm text-slate-600">Happy Customers</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-slate-800">50+</div>
+                  <div className="text-3xl font-bold text-slate-800">10+</div>
                   <div className="text-sm text-slate-600">Local Vendors</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-slate-800">1000+</div>
+                  <div className="text-3xl font-bold text-slate-800">200+</div>
                   <div className="text-sm text-slate-600">Fresh Products</div>
                 </div>
               </div>
@@ -168,7 +168,7 @@ const LandingPage = () => {
       </section>
 
       {/* Features Section */}
-      <section className="py-20 bg-white">
+      <section id="features" className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div {...fadeInUp} className="text-center mb-16">
             <Badge className="bg-green-100 text-green-700 border-green-200 mb-4">Why Choose GreenBasket</Badge>
@@ -357,7 +357,6 @@ const LandingPage = () => {
             <h2 className="text-4xl md:text-5xl font-bold text-slate-800 mb-6">
               Meet Our
               <span className="bg-gradient-to-r from-accent-600 to-accent-600 bg-clip-text text-transparent">
-                {" "}
                 Amazing Vendors
               </span>
             </h2>
@@ -563,7 +562,7 @@ const LandingPage = () => {
       </section>
 
       {/* Newsletter Section */}
-      
+
 
       {/* Footer */}
       <footer className="bg-slate-900 text-white py-16">
@@ -666,27 +665,10 @@ const LandingPage = () => {
                   <span className="text-slate-400">
                     Bahir Dar, St Goerge Street
                     <br />
-                    Green Valley, CA 90210
+                    GreebBasket
                   </span>
                 </li>
               </ul>
-            </div>
-          </div>
-
-          <div className="border-t border-slate-800 pt-8 flex flex-col md:flex-row items-center justify-between">
-            <p className="text-slate-400 text-sm">
-              <IconCopyright/> 2024 GreenBasket. All rights reserved. Made with   for fresh food lovers.
-            </p>
-            <div className="flex items-center gap-6 mt-4 md:mt-0">
-              <a href="#" className="text-slate-400 hover:text-white text-sm transition-colors">
-                Privacy Policy
-              </a>
-              <a href="#" className="text-slate-400 hover:text-white text-sm transition-colors">
-                Terms of Service
-              </a>
-              <a href="#" className="text-slate-400 hover:text-white text-sm transition-colors">
-                Cookie Policy
-              </a>
             </div>
           </div>
         </div>

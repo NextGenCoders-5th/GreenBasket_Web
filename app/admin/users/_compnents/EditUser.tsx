@@ -22,7 +22,7 @@ import { IUser } from '@/types/user.type';
 interface Props {
   editUser?: IUser;
   children?: React.ReactNode;
-  onsuccess: () => void;
+  onsuccess?: () => void;
 }
 
 export default function EditUserDialog({ editUser, children, onsuccess }: Props) {

@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { use, useState } from "react"
 import { motion } from "framer-motion"
 import {
   ArrowLeft,
@@ -24,8 +24,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
-import BankAccountDialog from "./_components/BankAccountDialog"
-import AddressDialog from "./_components/AddressDialog"
 import { useParams } from "next/navigation"
 import { useGetVendorQuery } from "@/redux/api/vendor.api"
 import LoadingPage from "@/components/loading.page"
@@ -71,6 +69,7 @@ const mockBankAccounts = [
     bank_name: "Dashen Bank",
   },
 ]
+
 
 export default function VendorDetailPage() {
 
