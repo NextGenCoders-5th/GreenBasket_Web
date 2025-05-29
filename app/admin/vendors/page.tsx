@@ -8,11 +8,8 @@ import Link from "next/link"
 import { useDeleteVendorMutation, useGetVendorsQuery } from "@/redux/api/vendor.api"
 import LoadingPage from "@/components/loading.page"
 import DeleteFeature, { type FeatureDeleteActionType } from "@/components/modals/DeleteFetureDialog"
-import UpdateVendorStatusModal from "./_compnents/UpdateVendorStatus"
-import type { VendorStatus } from "@/enums/status.enum"
 import EditVendorModal from "./_compnents/EditVendor"
 import VendorRegisterDialog from "./_compnents/AddVendor"
-import Image from "next/image"
 import { TooltipWrapper } from "@/components/tooltip.wrapper"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
@@ -254,7 +251,6 @@ export default function VendorsPage() {
                           </Button>
                         </TooltipWrapper>
 
-                        <UpdateVendorStatusModal currentStatus={vendor.status as VendorStatus} vendorId={vendor.id} />
 
                         <EditVendorModal vendor={vendor} />
 

@@ -27,7 +27,7 @@ export interface Product {
 
 
 
-interface ICartItem {
+interface ICartItem extends ITimeStamp {
   id: string
   price: number
   quantity: number
@@ -48,4 +48,4 @@ interface Cart {
 }
 
   
-export type { Cart, CartItem, CreateCartItemRequest, CreateCartItemResponse };
+export type { Cart, ICartItem, CartItem, CreateCartItemRequest, CreateCartItemResponse };

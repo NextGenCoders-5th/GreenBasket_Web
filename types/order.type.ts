@@ -378,3 +378,5 @@ interface CheckoutOrderRequest{
 }
 
 export type { CheckoutOrderRequest };
+
+export interface IOrder extends Order {}

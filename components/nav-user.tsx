@@ -24,6 +24,8 @@ export function NavUser({
   user: IUser | null;
 }) {
 
+  // Getting toast instance
+  const toast = useToast()
   // Getting router instance
   const router = useRouter()
 

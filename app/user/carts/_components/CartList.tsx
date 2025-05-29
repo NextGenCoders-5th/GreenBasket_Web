@@ -58,7 +58,7 @@ interface DetailedCart extends Omit<Cart, "CartItems"> {
 
 export default function CartList() {
   const {data, isLoading,error} = useGetMyCartsQuery();
-  const [allCarts, setAllCarts] = useState<Cart[]>([])
+  const [allCarts, setAllCarts] = useState<any[]>([])
 
 
   useEffect(() => {
