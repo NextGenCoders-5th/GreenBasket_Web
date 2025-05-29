@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { addressSchema, AddressSchemaType } from "@/schema/address.schema";
 import MapComponent from "@/components/map";
-import { useUpdateUserAddressMutation } from "@/redux/api/address.api";
+import { useAddOrUpdateAddressMutation } from "@/redux/api/address.api";
 import { useToast } from "@/providers/toast.provider";
 import { ErrorEnum } from "@/enums/error.enum";
 import {
@@ -68,12 +68,12 @@ export const EditAddress = ({ address }: Props) => {
       ...address
     })
   }, [address])
-  const [updateMyAddress, { isLoading }] = useUpdateUserAddressMutation();
+  const [updateMyAddress, { isLoading }] = useAddOrUpdateAddressMutation();
 
   const onSubmit = (data: AddressSchemaType) => {
     const toastId = toast.loading("Adding your address...");
     try {
-      updateMyAddress(data)
+      updateMyAddress({data, type: 'user', update: true, addressId: address.id})
         .unwrap()
         .then(() => {
           toast.success(`Address saved successfully!`, { id: toastId });
