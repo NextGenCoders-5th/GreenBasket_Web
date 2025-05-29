@@ -297,7 +297,7 @@ export default function ActiveCart() {
                             <div className="flex items-center gap-2">
                               {hasDiscount ? (
                                 <>
-                                  <span className="text-lg font-bold text-emerald-600">${currentPrice.toFixed(2)}</span>
+                                  <span className="text-lg font-bold text-emerald-600">{currentPrice.toFixed(2)} ETB</span>
                                   <span className="text-sm text-gray-400 line-through">
                                     {item.Product.price.toFixed(2)} ETB
                                   </span>
